@@ -1,0 +1,15 @@
+apply plugin: "groovy"
+
+version "1.0-SNAPSHOT"
+
+dependencies {
+    compile project(":soyuz-jongo")
+    compile project(":soyuz-log")
+    compile project(":soyuz-queue-domain")
+    compile cl.log.logback
+    compile cl.utils.guava
+    compile cl.utils.lombok
+    compile cl.utils.jsr305
+
+    testCompile cl.test.spock.core
+}

@@ -1,0 +1,7 @@
+version "1.0-SNAPSHOT"
+
+dependencies {
+    compile cl.mongo.driver
+    compile cl.json.jackson
+    compile cl.utils.lombok
+}

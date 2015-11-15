@@ -1,0 +1,10 @@
+apply plugin: "groovy"
+
+version "1.0-SNAPSHOT"
+
+dependencies {
+    compile cl.mongo.jongo
+    compile cl.mongo.driver
+
+    testCompile cl.test.spock.core
+}
