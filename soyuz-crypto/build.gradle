@@ -1,0 +1,9 @@
+version "1.0-SNAPSHOT"
+
+dependencies {
+    compile cl.log.api
+    compile cl.utils.guava
+
+    testCompile cl.log.logback
+    testCompile cl.test.spock.core
+}
