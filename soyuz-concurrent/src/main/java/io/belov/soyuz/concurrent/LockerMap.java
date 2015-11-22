@@ -3,9 +3,9 @@ package io.belov.soyuz.concurrent;
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 public class LockerMap<T> {
 
-    private Map<T, Lock> locksByProjectIds = new HashMap<>();
+    private Map<T, Lock> locksByProjectIds = new ConcurrentHashMap<>();
 
     public synchronized Lock get(T key) {
         Lock answer = locksByProjectIds.get(key);

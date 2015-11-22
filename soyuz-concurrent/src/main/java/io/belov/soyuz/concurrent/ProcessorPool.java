@@ -1,12 +1,16 @@
 package io.belov.soyuz.concurrent;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.Sets;
 import io.belov.soyuz.log.Mdc;
 import io.belov.soyuz.utils.to;
 
+import javax.annotation.Nullable;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
@@ -14,6 +18,8 @@ import java.util.function.Consumer;
  */
 public class ProcessorPool<T> {
 
+    private LockerMap<String> lockers = new LockerMap<>();
+    private Set<String> scheduled = Sets.newConcurrentHashSet();
     private Consumer<T> processor;
     private Semaphore semaphore;
     private ExecutorService executor;
@@ -28,23 +34,50 @@ public class ProcessorPool<T> {
         process(null, action);
     }
 
-    public void process(String actionId, T action) {
+    public void process(@Nullable String actionId, T action) {
         try {
             semaphore.acquire();
 
-            executor.submit(() -> {
-                Runnable runnable = () -> processor.accept(action);
+            if (actionId != null) {
+                AtomicBoolean isScheduled = new AtomicBoolean(false);
 
-                if (actionId == null) {
-                    runnable.run();
-                } else {
-                    Mdc.wrap(to.map("a", actionId), runnable).run();
+                lockers.lockAndDo(actionId, () -> {
+                    if (!scheduled.contains(actionId)) {
+                        scheduled.add(actionId);
+                        isScheduled.set(true);
+                    }
+                });
+
+                if (isScheduled.get()) {
+                    try {
+                        doProcess(actionId, action);
+                    } finally {
+                        scheduled.remove(actionId);
+                    }
                 }
-            }).get();
+            } else {
+                doProcess(actionId, action);
+            }
         } catch (Exception e) {
             throw Throwables.propagate(e);
         } finally {
             semaphore.release();
+        }
+    }
+
+    private void doProcess(@Nullable String actionId, T action) {
+        try {
+            executor.submit(() -> {
+                Runnable rProcess = () -> processor.accept(action);
+
+                if (actionId == null) {
+                    rProcess.run();
+                } else {
+                    Mdc.wrap(to.map("a", actionId), rProcess).run();
+                }
+            }).get();
+        } catch (Exception e) {
+            throw Throwables.propagate(e);
         }
     }
 }

@@ -2,6 +2,10 @@ version "1.0-SNAPSHOT"
 
 dependencies {
     compile project(":soyuz-log")
+    compile cl.utils.jsr305
     compile cl.utils.soyuz
     compile cl.utils.guava
+
+    testCompile cl.test.spring
+    testCompile cl.utils.commons.lang
 }
