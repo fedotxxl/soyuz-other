@@ -26,11 +26,6 @@ public class MdcRunnable implements Runnable {
 
     @Override
     public void run() {
-        try {
-            MDC.setContextMap(context);
-            runnable.run();
-        } finally {
-            context.keySet().forEach(MDC::remove);
-        }
+        Mdc.wrap(context, runnable).run();
     }
 }

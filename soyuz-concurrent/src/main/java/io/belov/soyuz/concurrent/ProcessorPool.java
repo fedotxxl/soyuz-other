@@ -1,6 +1,8 @@
 package io.belov.soyuz.concurrent;
 
 import com.google.common.base.Throwables;
+import io.belov.soyuz.log.Mdc;
+import io.belov.soyuz.utils.to;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,10 +25,22 @@ public class ProcessorPool<T> {
     }
 
     public void process(T action) {
+        process(null, action);
+    }
+
+    public void process(String actionId, T action) {
         try {
             semaphore.acquire();
 
-            executor.submit(() -> processor.accept(action)).get();
+            executor.submit(() -> {
+                Runnable runnable = () -> processor.accept(action);
+
+                if (actionId == null) {
+                    runnable.run();
+                } else {
+                    Mdc.wrap(to.map("a", actionId), runnable).run();
+                }
+            }).get();
         } catch (Exception e) {
             throw Throwables.propagate(e);
         } finally {
