@@ -1,0 +1,9 @@
+#docker-compose --file ./dc.es.yml up -d > /job/log/dc.es.log
+es:
+  container_name: support-es
+  image: fbelov/elasticsearch
+  ports:
+   - "9200:9200"
+   - "9300:9300"
+  volumes:
+   - /job:/job

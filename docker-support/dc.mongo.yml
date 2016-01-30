@@ -1,0 +1,8 @@
+#docker-compose --file ./dc.mongo.yml up -d > /job/log/dc.mongo.log
+mongo:
+  container_name: support-mongo
+  image: fbelov/mongo-dev
+  ports:
+   - "27017:27017"
+  volumes:
+   - /job:/job
