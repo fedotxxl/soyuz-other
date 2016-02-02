@@ -1,0 +1,7 @@
+#docker-compose --file ./dc.nginx.yml up -d > /job/log/dc.nginx.log
+nginx:
+  container_name: support-nginx
+  image: fbelov/nginx-dev
+  net: host
+  volumes:
+   - /job:/job
