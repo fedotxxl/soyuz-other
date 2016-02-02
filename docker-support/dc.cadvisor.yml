@@ -1,0 +1,18 @@
+#docker-compose --file ./dc.cadvisor.yml up -d > /job/log/dc.cadvisor.log
+#https://raw.githubusercontent.com/vegasbrianc/prometheus/master/docker-compose.yml
+cadvisor:
+  container_name: support-cadvisor
+  image: "google/cadvisor"
+  volumes:
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
+  ports:
+    - "8080:8080"
+  expose:
+    - "8080"
+  labels:
+    - "name=cAdvisor"
+    - "description=Google Container Advisor collects metrics from host and containers"
+    - "version=latest"
