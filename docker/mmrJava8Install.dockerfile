@@ -1,4 +1,4 @@
-#docker build -t fbelov/mmr-8-install:latest .
+#docker build -f mmrJava8Install.dockerfile -t fbelov/mmr-8-install:latest .
 #docker push fbelov/mmr-8-install:latest
 
 #base image
