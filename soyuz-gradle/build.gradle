@@ -1,15 +1,22 @@
-apply plugin: "maven-publish"
+version = "1.0"
 
-publishing {
+configurations {
+    myConfig
+}
+
+artifacts{
+    for (def f : file("files").listFiles()) {
+        myConfig f
+    }
+}
+
+task publish(type: Upload) {
+    configuration = configurations.myConfig
+
     repositories {
         maven {
             url "https://mymavenrepo.com/repo/${myMavenRepoWriteToken}/"
         }
     }
 
-    publications {
-        maven(MavenPublication) {
-            from file("files")
-        }
-    }
 }

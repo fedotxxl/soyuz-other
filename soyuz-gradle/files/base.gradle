@@ -1,6 +1,3 @@
-apply from: "/cl/pluginsAndProperties.20150813.gradle"
-apply from: "/cl/cl.150814.gradle"
-apply from: "/generateSources.1.gradle"
-apply from: "/configuration.provided.1.gradle"
-apply from: "/snapshot.gradle"
-apply from: "/java8.gradle"
+["pluginsAndProperties", "cl", "soyuz.read", "soyuz.publish", "configuration.provided", "java8", "logging"].each {
+    apply from: "https://mymavenrepo.com/repo/${myMavenRepoReadToken}/soyuz-gradle/1.0/${it}-1.0.gradle"
+}
