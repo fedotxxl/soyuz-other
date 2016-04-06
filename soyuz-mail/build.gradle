@@ -1,0 +1,13 @@
+version "1.0"
+
+dependencies {
+    compile project(":soyuz-log")
+
+    compile cl.log.api
+    compile cl.utils.guava
+    compile cl.utils.soyuz.isTo
+    compile cl.utils.prometheus
+    compile cl.javax.mail
+
+    testCompile cl.test.spock.core
+}
