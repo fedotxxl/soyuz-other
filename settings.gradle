@@ -1,1 +1,1 @@
-include (["concurrent", "crypto", "jongo", "log", "mail", "queue", "queue-domain"].collect { ":soyuz-${it}"} as String[])
+include (["concurrent", "crypto", "jongo", "log", "mail", "metrics-prometheus", "queue", "queue-domain"].collect { ":soyuz-${it}"} as String[])

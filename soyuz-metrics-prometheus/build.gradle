@@ -1,0 +1,10 @@
+version "1.0"
+
+dependencies {
+    compile project(":soyuz-log")
+
+    compile cl.utils.soyuz.isTo
+    compile cl.utils.prometheus
+
+    testCompile cl.test.spock.core
+}
