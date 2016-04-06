@@ -1,0 +1,15 @@
+apply plugin: "maven-publish"
+
+publishing {
+    repositories {
+        maven {
+            url "https://mymavenrepo.com/repo/${myMavenRepoWriteToken}/"
+        }
+    }
+
+    publications {
+        mavenDeb(MavenPublication) {
+            artifact source: deb, extension: "deb"
+        }
+    }
+}

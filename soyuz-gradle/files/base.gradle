@@ -1,0 +1,6 @@
+apply from: "/cl/pluginsAndProperties.20150813.gradle"
+apply from: "/cl/cl.150814.gradle"
+apply from: "/generateSources.1.gradle"
+apply from: "/configuration.provided.1.gradle"
+apply from: "/snapshot.gradle"
+apply from: "/java8.gradle"

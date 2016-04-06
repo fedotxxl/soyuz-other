@@ -1,0 +1,12 @@
+allprojects {
+    apply plugin: "maven"
+
+    repositories {
+        mavenCentral()
+        jcenter()
+
+        maven {
+            url "https://mymavenrepo.com/repo/${myMavenRepoReadToken}/"
+        }
+    }
+}

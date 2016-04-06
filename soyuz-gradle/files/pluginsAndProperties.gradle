@@ -1,0 +1,20 @@
+allprojects {
+    apply plugin: "idea"
+    apply plugin: "java"
+    apply plugin: "maven"
+
+    project.ext.or = { dependency, value ->
+        return project.ext.has(dependency) ? project.ext[dependency] : (value ?: "-1")
+    }
+
+    project.ext {
+        groovyVersion = "2.4.4"
+        jacksonVersion = project.ext.or("jacksonVersion", "2.6.3")
+        jerseyVersion = project.ext.or("jerseyVersion", "2.22.1")
+        logbackVersion = "1.0.13"
+        slf4jVersion = "1.7.7"
+        spockVersion = "1.0-groovy-2.4"
+        springVersion = "4.1.6.RELEASE"
+        hibernateVersion = "4.3.8.Final"
+    }
+}

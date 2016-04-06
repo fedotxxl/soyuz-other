@@ -1,0 +1,12 @@
+allprojects {
+    configurations {
+        //exclude commons-logging to enable spring logging over slf4j
+        //http://blog.sadogursky.com/2011/06/22/banning-transitive-dependencies-with-maven23-gradle-and-ivy/
+        all*.exclude module: 'commons-logging'
+    }
+
+    dependencies {
+        compile "org.slf4j:slf4j-api:$slf4jVersion"
+        compile "org.slf4j:jcl-over-slf4j:$slf4jVersion" //to log spring over slf4j http://www.adamthody.com/2012/01/logging-spring-framework-with-logback/
+    }
+}

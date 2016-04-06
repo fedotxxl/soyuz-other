@@ -1,36 +1,14 @@
 allprojects {
-    group = "io.belov"
-
-    apply plugin: "java"
-    apply plugin: "idea"
-    apply plugin: "maven-publish"
-
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
-
     ext {
-        spockVersion = "1.0-groovy-2.3"
-        springVersion = "4.1.6.RELEASE"
-        jerseyVersion = "2.17"
-
-        repos = [
-                mymavenrepo: "https://mymavenrepo.com/repo/SbfutqGx3LM3VdY6CLKu/",
-                jongo      : "http://repository-jongo.forge.cloudbees.com/release",
-                urlBuilder : "http://maven2.gueck.com/releases",
-                spring     : [
-                        libsReleaseRemote: "http://repo.spring.io/libs-release-remote"
-                ]
-        ]
-
         cl = [
-                spring    : [
+                spring       : [
                         core : "org.springframework:spring-context:$springVersion",
                         cache: "org.springframework:spring-context-support:$springVersion"
                 ],
-                javax     : [
+                javax        : [
                         mail: "javax.mail:mail:1.4"
                 ],
-                log       : [
+                log          : [
                         api       : "org.slf4j:slf4j-api:1.7.12",
                         utils     : [
                                 "org.slf4j:jcl-over-slf4j:1.7.12",
@@ -42,14 +20,18 @@ allprojects {
                         ],
                         logentries: "com.logentries:logentries-appender:1.1.30"
                 ],
-                mongo     : [
+                mongo        : [
                         driver: "org.mongodb:mongo-java-driver:2.13.0",
                         jongo : "org.jongo:jongo:1.2"
                 ],
-                cache     : [
+                elasticsearch: [
+                        jest  : "io.searchbox:jest:2.0.0",
+                        client: "org.elasticsearch:elasticsearch:2.1.0"
+                ],
+                cache        : [
                         ehcache: "net.sf.ehcache:ehcache:2.9.0"
                 ],
-                test      : [
+                test         : [
                         junit : "junit:junit:4.11",
                         spring: [
                                 "org.springframework:spring-context:$springVersion",
@@ -64,17 +46,27 @@ allprojects {
                                 ]
                         ]
                 ],
-                utils     : [
+                html         : [
+                        jsoup: "org.jsoup:jsoup:1.8.3"
+                ],
+                utils        : [
                         guava     : "com.google.guava:guava:18.0",
                         soyuz     : [
-                                common          : "io.belov:soyuz-utils:1.28",
+                                base            : "io.belov:soyuz-utils:1.28",
+                                concurrent      : "io.belov:soyuz-concurrent:1.1",
                                 isTo            : "io.belov:soyuz:soyuz-is-to:1.8",
+                                jongo           : "io.belov:soyuz-jongo:1.1",
+                                log             : "io.belov:soyuz-log:1.1",
                                 mail            : "io.belov:soyuz-metrics-mail:1.0",
                                 metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.0",
+                                queue           : "io.belov:soyuz-queue:1.1",
+                                queueDomain     : "io.belov:soyuz-queue-domain:1.1",
                         ],
-                        lombok    : "org.projectlombok:lombok:1.16.6",
+                        lombok    : "org.projectlombok:lombok:1.16.8",
                         ua        : "net.sf.uadetector:uadetector-resources:2014.10",
                         metrics   : "io.dropwizard.metrics:metrics-core:3.1.2",
+                        humanize  : "com.github.mfornos:humanize-slim:1.2.2",
+                        jsch      : "com.jcraft:jsch:0.1.53",
                         prometheus: [
                                 "io.prometheus:simpleclient:0.0.10",
                                 "io.prometheus:simpleclient_pushgateway:0.0.10"
@@ -92,18 +84,18 @@ allprojects {
                         ],
                         jsr305    : "com.google.code.findbugs:jsr305:3.0.0"
                 ],
-                md        : [
+                md           : [
                         parser: "org.pegdown:pegdown:1.6.0"
                 ],
-                sourcemaps: [
+                sourcemaps   : [
                         atlassian: "com.atlassian.sourcemap:sourcemap:1.7.4",
                         closure  : "com.google.javascript:closure-compiler:v20150609"
                 ],
-                json      : [
+                json         : [
                         jackson: "com.fasterxml.jackson.core:jackson-databind:2.4.4"
                 ],
-                rabbit    : "com.rabbitmq:amqp-client:3.5.6",
-                jersey    : [
+                rabbit       : "com.rabbitmq:amqp-client:3.5.6",
+                jersey       : [
                         client: [
                                 "org.glassfish.jersey.core:jersey-client:$jerseyVersion",
                                 "org.glassfish.jersey.ext.rx:jersey-rx-client-java8:$jerseyVersion",
@@ -112,35 +104,4 @@ allprojects {
                 ]
         ]
     }
-
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven { url repos.mymavenrepo }
-        maven { url repos.jongo }
-        maven { url repos.urlBuilder }
-    }
-
-    test {
-        systemProperties "file.encoding": "UTF-8" //fix utf-8 problems in tests
-        testLogging.showStandardStreams = true //display stdout on tests
-    }
-
-    publishing {
-        repositories {
-            maven {
-                url "https://mymavenrepo.com/repo/${myMavenRepoWriteToken}/"
-            }
-        }
-
-        publications {
-            maven(MavenPublication) {
-                from components.java
-            }
-        }
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "2.3"
 }

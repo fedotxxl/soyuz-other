@@ -1,0 +1,15 @@
+apply plugin: "maven-publish"
+
+publishing {
+    repositories {
+        maven {
+            url "https://mymavenrepo.com/repo/${myMavenRepoWriteToken}/"
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            from file("files")
+        }
+    }
+}
