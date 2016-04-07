@@ -57,7 +57,7 @@ allprojects {
                                 isTo            : "io.belov.soyuz:soyuz-is-to:1.8",
                                 jongo           : "io.belov:soyuz-jongo:1.1",
                                 log             : "io.belov:soyuz-log:1.1",
-                                mail            : "io.belov:soyuz-metrics-mail:1.0",
+                                mail            : "io.belov:soyuz-mail:1.0",
                                 metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.0",
                                 queue           : "io.belov:soyuz-queue:1.1",
                                 queueDomain     : "io.belov:soyuz-queue-domain:1.1",
