@@ -1,3 +1,5 @@
+//use it by apply from: "https://mymavenrepo.com/repo/${myMavenRepoReadToken}/soyuz-gradle/1.0/base-1.0.gradle"
+
 ["pluginsAndProperties", "cl", "soyuz.read", "soyuz.publish", "configuration.provided", "java8", "logging"].each {
     apply from: "https://mymavenrepo.com/repo/${myMavenRepoReadToken}/soyuz-gradle/1.0/${it}-1.0.gradle"
 }
