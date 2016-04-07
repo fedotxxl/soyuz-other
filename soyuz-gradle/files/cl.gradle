@@ -61,10 +61,13 @@ allprojects {
                                 metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.0",
                                 queue           : "io.belov:soyuz-queue:1.1",
                                 queueDomain     : "io.belov:soyuz-queue-domain:1.1",
+                                template        : "io.belov:soyuz-template:1.0",
                         ],
                         lombok    : "org.projectlombok:lombok:1.16.8",
                         ua        : "net.sf.uadetector:uadetector-resources:2014.10",
                         metrics   : "io.dropwizard.metrics:metrics-core:3.1.2",
+                        mustache  : "com.github.spullara.mustache.java:compiler:0.9.1",
+                        handlebars: "com.github.jknack:handlebars.java:4.0.5",
                         humanize  : "com.github.mfornos:humanize-slim:1.2.2",
                         jsch      : "com.jcraft:jsch:0.1.53",
                         prometheus: [

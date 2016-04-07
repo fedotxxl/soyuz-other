@@ -1,0 +1,9 @@
+apply plugin: "groovy"
+
+version "1.0"
+
+dependencies {
+    compile cl.utils.mustache
+
+    testCompile cl.test.spock.core
+}
