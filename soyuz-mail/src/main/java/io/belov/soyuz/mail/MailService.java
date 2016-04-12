@@ -44,28 +44,41 @@ public class MailService {
     }
 
     public void send(String from, String recipientEmail, String templateKey, Map templateParams) {
-        MailTemplateResolverI.MailData data = mailTemplateResolver.resolve(templateKey, templateParams);
+        Map context = to.map("template", templateKey, "to", recipientEmail);
 
-        send(from, recipientEmail, templateKey, data.getTitle(), data.getMessage());
+        if (dryRun) {
+            loge.info("mail.send", to.map(context, "params", templateParams));
+        } else {
+            loge.debug("mail.send", context);
+
+            MailTemplateResolverI.MailData data = mailTemplateResolver.resolve(templateKey, templateParams);
+
+            doSend(from, recipientEmail, templateKey, data.getTitle(), data.getMessage());
+        }
     }
 
     public void send(String from, String recipientEmail, String templateKey, String title, String message) {
-        mailCounter.labels(templateKey).inc();
+        Map context = to.map("template", templateKey, "to", recipientEmail);
 
-        loge.info("mail.send", to.map("template", templateKey, "to", recipientEmail));
+        if (dryRun) {
+            loge.info("mail.send", context);
+        } else {
+            loge.debug("mail.send", context);
+
+            doSend(from, recipientEmail, templateKey, title, message);
+        }
+    }
+
+    private void doSend(String from, String recipientEmail, String templateKey, String title, String message) {
+        mailCounter.labels(templateKey).inc();
 
         if (!dryRun) {
             try {
-                send(connectionSettings, username, password, from, recipientEmail, title, message);
+                Mail.sendAsHtml(connectionSettings, username, password, from, recipientEmail, title, message);
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-
-    private void send(Properties props, final String username, final String password, String from, String recipientEmail, String title, String message) throws AddressException, MessagingException {
-        Mail.sendAsHtml(props, username, password, from, recipientEmail, title, message);
     }
 
     /**
