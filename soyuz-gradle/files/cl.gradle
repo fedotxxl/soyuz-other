@@ -1,6 +1,7 @@
 allprojects {
     ext {
         cl = [
+                groovy       : "org.codehaus.groovy:groovy-all:$groovyVersion",
                 spring       : [
                         core : "org.springframework:spring-context:$springVersion",
                         cache: "org.springframework:spring-context-support:$springVersion"
