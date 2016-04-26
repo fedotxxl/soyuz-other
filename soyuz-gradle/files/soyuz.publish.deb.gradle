@@ -1,0 +1,17 @@
+//use it by apply from: "https://mymavenrepo.com/repo/${myMavenRepoReadToken}/soyuz-gradle/1.0/soyuz.publish.deb-1.0.gradle"
+
+apply plugin: "maven-publish"
+
+publishing {
+    repositories {
+        maven {
+            url "https://mymavenrepo.com/repo/${myMavenRepoWriteToken}/"
+        }
+    }
+
+    publications {
+        mavenDeb(MavenPublication) {
+            artifact source: deb, extension: "deb"
+        }
+    }
+}
