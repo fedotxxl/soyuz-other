@@ -1,5 +1,7 @@
 package io.belov.soyuz.validator;
 
+import sun.util.resources.cldr.ss.CalendarData_ss_SZ;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,10 @@ public class FluentValidatorBuilder<T> {
     public static class ChainBuilder {
         public ObjectData<Object, ObjectData> object() {
             return new ObjectData<>();
+        }
+
+        public <V> ObjectData<Object, ObjectData> object(Class<V> clazz) {
+
         }
 
         public StringData<StringData> string() {
@@ -125,7 +131,7 @@ public class FluentValidatorBuilder<T> {
             return this;
         }
 
-        public ObjectBuilder<P, V> validator(ObjectData validator) {
+        public ObjectBuilder<P, V> validator(FluentValidator.Data<V> validator) {
             data.validator(validator);
             return this;
         }
@@ -134,10 +140,19 @@ public class FluentValidatorBuilder<T> {
             data.custom(customValidator);
             return this;
         }
+
+        public ObjectBuilder<P, V> custom(CustomValidatorWithBuilder<P, V> customValidatorWithBuilder) {
+            data.custom(customValidator);
+            return this;
+        }
     }
 
     public static interface CustomValidator<P, V> {
         FluentValidator.Result validate(P object, V propertyValue);
+    }
+
+    public static interface CustomValidatorWithBuilder<P, V> {
+        FluentValidator.Result validate(P object, V propertyValue, FluentValidatorBuilder<V> fluentValidatorBuilder);
     }
 
     public static interface ValidationData {
@@ -176,7 +191,7 @@ public class FluentValidatorBuilder<T> {
 
     public static class ObjectData implements ValidationData {
         private boolean notNull;
-        private ObjectData validator;
+        private FluentValidator.Data<T> validator;
         private List<CustomValidator> customValidators = new ArrayList<>();
 
         public ObjectData notNull() {
@@ -184,7 +199,7 @@ public class FluentValidatorBuilder<T> {
             return this;
         }
 
-        public ObjectData validator(ObjectData validator) {
+        public ObjectData validator(FluentValidator.Data<T> validator) {
             this.validator = validator;
             return this;
         }
