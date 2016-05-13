@@ -136,22 +136,25 @@ public class FluentValidatorBuilder<T> {
             return this;
         }
 
-        public ObjectBuilder<P, V> custom(CustomValidator<P, V> customValidator) {
+        public ObjectBuilder<P, V> custom(CustomValidatorSimple<P, V> customValidator) {
             data.custom(customValidator);
             return this;
         }
 
         public ObjectBuilder<P, V> custom(CustomValidatorWithBuilder<P, V> customValidatorWithBuilder) {
-            data.custom(customValidator);
+            data.custom(customValidatorWithBuilder);
             return this;
         }
     }
 
-    public static interface CustomValidator<P, V> {
+    public static interface CustomValidator {
+    }
+
+    public static interface CustomValidatorSimple<P, V> extends CustomValidator {
         FluentValidator.Result validate(P object, V propertyValue);
     }
 
-    public static interface CustomValidatorWithBuilder<P, V> {
+    public static interface CustomValidatorWithBuilder<P, V> extends CustomValidator {
         FluentValidator.Result validate(P object, V propertyValue, FluentValidatorBuilder<V> fluentValidatorBuilder);
     }
 

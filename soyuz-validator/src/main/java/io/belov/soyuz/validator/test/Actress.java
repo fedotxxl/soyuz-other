@@ -37,7 +37,7 @@ class Actress {
     static FluentValidator.Data<Actress> getValidator() {
         Object tagValidator = null;
         Object tagTranslationChain = FluentValidator.chain().object(TagTranslation.class).notNull().validator(tagTranslationValidator);
-        FluentValidator.Data<TagTranslation> tagTranslationValidator = FluentValidator.of(TagTranslation.class).build();
+        FluentValidator.Data<TagTranslation> tagTranslationValidator = TagTranslation.getValidator();
 
         return FluentValidator.of(Actress.class)
                 .failFast()
