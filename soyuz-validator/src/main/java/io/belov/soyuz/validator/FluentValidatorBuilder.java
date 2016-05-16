@@ -3,6 +3,7 @@ package io.belov.soyuz.validator;
 import sun.util.resources.cldr.ss.CalendarData_ss_SZ;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,6 +30,14 @@ public class FluentValidatorBuilder<T> {
 
     public StringBuilder<T, String> string(String property) {
         return new StringBuilder<>(this, property);
+    }
+
+    public CollectionBuilder<T, Object> collection(String property) {
+        return new CollectionBuilder<>(this, property);
+    }
+
+    public <V> CollectionBuilder<T, V> collection(String property, Class<V> clazz) {
+        return new CollectionBuilder<>(this, property);
     }
 
     public IntBuilder<T> i(String property) {
@@ -111,6 +120,43 @@ public class FluentValidatorBuilder<T> {
         }
     }
 
+    public static class CollectionBuilder<P, V> {
+        private FluentValidatorBuilder<P> builder;
+        private String property;
+        private CollectionData data;
+
+        public CollectionBuilder(FluentValidatorBuilder<P> builder, String property) {
+            this.builder = builder;
+            this.property = property;
+            this.data = new CollectionData();
+        }
+
+        public FluentValidatorBuilder<P> b() {
+            return builder.addValidationData(this);
+        }
+
+        public CollectionBuilder<P, V> notEmpty() {
+            data.notEmpty();
+            return this;
+        }
+
+        public CollectionBuilder<P, V> min(int min) {
+            data.min(min);
+            return this;
+        }
+
+        public CollectionBuilder<P, V> max(int max) {
+            data.max(max);
+            return this;
+        }
+
+        public CollectionBuilder<P, V> validator(FluentValidator.Data<V> validator) {
+            data.validator(validator);
+            return this;
+        }
+
+    }
+
     public static class ObjectBuilder<P, V> {
         private FluentValidatorBuilder<P> builder;
         private String property;
@@ -188,6 +234,27 @@ public class FluentValidatorBuilder<T> {
 
         public StringData notEmpty() {
             this.notEmpty = true;
+            return this;
+        }
+    }
+
+    public static class CollectionData extends ObjectData {
+        private boolean notEmpty;
+        private Integer min;
+        private Integer max;
+
+        public CollectionData notEmpty() {
+            this.notEmpty = true;
+            return this;
+        }
+
+        public CollectionData min(int min) {
+            this.min = min;
+            return this;
+        }
+
+        public CollectionData max(int max) {
+            this.max = max;
             return this;
         }
     }
