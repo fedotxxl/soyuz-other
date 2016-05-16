@@ -41,7 +41,7 @@ class Actress {
 
         return FluentValidator.of(Actress.class)
                 .failFast()
-                .object("en", TagTranslation.class).validator(tagTranslationValidator).b()
+                .object("en", TagTranslation.class).validator(tagTranslationValidator).message("a.en.translation.wrong").b()
                 .object("ja", TagTranslation.class).validator(tagTranslationValidator).b()
                 .string("blogUrl").url().notEmpty().b()
                 .collection("tags", Tag.class).notEmpty().min(0).max(5).validator(Tag.getValidator()).b()

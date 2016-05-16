@@ -2,6 +2,7 @@ package io.belov.soyuz.validator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by fbelov on 5/10/16.
@@ -115,6 +116,11 @@ public class FluentValidatorBuilder<T> {
             data.notEmpty();
             return this;
         }
+
+        public StringBuilder<P, V> matches(Pattern pattern) {
+            data.matches(pattern);
+            return this;
+        }
     }
 
     public static class CollectionBuilder<P, V> {
@@ -188,9 +194,23 @@ public class FluentValidatorBuilder<T> {
             data.custom(customValidatorWithBuilder);
             return this;
         }
+
+        public ObjectBuilder<P, V> when(When<P, V> when) {
+            data.when(when);
+            return this;
+        }
+
+        public ObjectBuilder<P, V> message(String message) {
+            data.message(message);
+            return this;
+        }
     }
 
     public static interface CustomValidator {
+    }
+
+    public interface When<P, V> {
+        boolean when(P object, V propertyValue);
     }
 
     public static interface CustomValidatorSimple<P, V> extends CustomValidator {
@@ -223,6 +243,7 @@ public class FluentValidatorBuilder<T> {
     public static class StringData extends ObjectData {
         private boolean url;
         private boolean notEmpty;
+        private Pattern matches;
 
         public StringData url() {
             this.url = true;
@@ -231,6 +252,11 @@ public class FluentValidatorBuilder<T> {
 
         public StringData notEmpty() {
             this.notEmpty = true;
+            return this;
+        }
+
+        public StringData matches(Pattern pattern) {
+            this.matches = pattern;
             return this;
         }
     }
@@ -258,8 +284,10 @@ public class FluentValidatorBuilder<T> {
 
     public static class ObjectData<T> implements ValidationData {
         private boolean notNull;
+        private When when;
         private FluentValidator.Data<T> validator;
         private List<CustomValidator> customValidators = new ArrayList<>();
+        private String message;
 
         public ObjectData notNull() {
             notNull = true;
@@ -273,6 +301,16 @@ public class FluentValidatorBuilder<T> {
 
         public ObjectData custom(CustomValidator customValidator) {
             customValidators.add(customValidator);
+            return this;
+        }
+
+        public ObjectData when(When when) {
+            this.when = when;
+            return this;
+        }
+
+        public ObjectData message(String message) {
+            this.message = message;
             return this;
         }
     }

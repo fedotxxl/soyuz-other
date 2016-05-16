@@ -8,12 +8,7 @@ import java.util.List;
  */
 public class FluentValidator<T> {
 
-    //https://github.com/neoremind/fluent-validator
-    //https://blog.aaronshaw.net/2014/02/03/simple-java-dsl-with-fluent-interface/
-    //http://demeranville.com/csharp-fluent-validation-why-we-are-using-it/
     //https://github.com/JeremySkinner/FluentValidation
-    //https://github.com/Jameskami/J8Validate
-    //https://github.com/mat013/validation
 
     public static <T> FluentValidatorBuilder<T> of(Class<T> clazz) {
         return new FluentValidatorBuilder<>();

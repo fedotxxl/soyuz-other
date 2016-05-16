@@ -13,7 +13,11 @@ class Tag {
     public static FluentValidator.Data<Tag> getValidator() {
         return FluentValidator.of(Tag.class)
                 .object("en", TagTranslation.class).notNull().validator(TagTranslation.getValidator()).b()
-                .object("ja", TagTranslation.class).notNull().validator(TagTranslation.getValidator()).b()
+                .object("ja", TagTranslation.class).notNull().validator(TagTranslation.getValidator())
+                .when((o, v) -> {
+                    return o != null;
+                })
+                .b()
                 .build();
     }
 
