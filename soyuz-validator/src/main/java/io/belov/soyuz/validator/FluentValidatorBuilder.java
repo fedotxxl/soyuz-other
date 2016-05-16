@@ -1,9 +1,6 @@
 package io.belov.soyuz.validator;
 
-import sun.util.resources.cldr.ss.CalendarData_ss_SZ;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -48,7 +45,7 @@ public class FluentValidatorBuilder<T> {
         return new FluentValidator.Data<T>(validationDatas);
     }
 
-    private FluentValidatorBuilder<T> addValidationData(ValidationData validationData) {
+    private FluentValidatorBuilder<T> addValidationData(String property, ValidationData validationData) {
         validationDatas.add(validationData);
         return this;
     }
@@ -70,26 +67,26 @@ public class FluentValidatorBuilder<T> {
     public static class IntBuilder<T> {
         private FluentValidatorBuilder<T> builder;
         private String property;
-        private IntData intData;
+        private IntData data;
 
         public IntBuilder(FluentValidatorBuilder<T> builder, String property) {
             this.builder = builder;
             this.property = property;
-            this.intData = new IntData();
+            this.data = new IntData();
         }
 
         public IntBuilder<T> min(int min) {
-            intData.min(min);
+            data.min(min);
             return this;
         }
 
         public IntBuilder<T> max(int max) {
-            intData.max(max);
+            data.max(max);
             return this;
         }
 
         public FluentValidatorBuilder<T> b() {
-            return builder.addValidationData(this);
+            return builder.addValidationData(property, data);
         }
     }
 
@@ -106,7 +103,7 @@ public class FluentValidatorBuilder<T> {
         }
 
         public FluentValidatorBuilder<P> b() {
-            return builder.addValidationData(this);
+            return builder.addValidationData(property, data);
         }
 
         public StringBuilder<P, V> url() {
@@ -132,7 +129,7 @@ public class FluentValidatorBuilder<T> {
         }
 
         public FluentValidatorBuilder<P> b() {
-            return builder.addValidationData(this);
+            return builder.addValidationData(property, data);
         }
 
         public CollectionBuilder<P, V> notEmpty() {
@@ -169,7 +166,7 @@ public class FluentValidatorBuilder<T> {
         }
 
         public FluentValidatorBuilder<P> b() {
-            return builder.addValidationData(this);
+            return builder.addValidationData(property, data);
         }
 
         public ObjectBuilder<P, V> notNull() {
@@ -259,7 +256,7 @@ public class FluentValidatorBuilder<T> {
         }
     }
 
-    public static class ObjectData implements ValidationData {
+    public static class ObjectData<T> implements ValidationData {
         private boolean notNull;
         private FluentValidator.Data<T> validator;
         private List<CustomValidator> customValidators = new ArrayList<>();

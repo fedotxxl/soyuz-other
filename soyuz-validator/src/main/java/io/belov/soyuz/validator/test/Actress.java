@@ -34,7 +34,7 @@ class Actress {
 //            .list("tagTranslation").validator(tagTranslationValidator).back()
 //            .build();
 
-    static FluentValidator.Data<Actress> getValidator() {
+    public static FluentValidator.Data<Actress> getValidator() {
         Object tagValidator = null;
         Object tagTranslationChain = FluentValidator.chain().object(TagTranslation.class).notNull().validator(tagTranslationValidator);
         FluentValidator.Data<TagTranslation> tagTranslationValidator = TagTranslation.getValidator();
