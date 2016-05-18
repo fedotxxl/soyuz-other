@@ -1,7 +1,13 @@
 package io.belov.soyuz.validator;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -51,19 +57,19 @@ public class FluentValidatorBuilder<T> {
         return this;
     }
 
-    public static class ChainBuilder {
-        public ObjectData<Object, ObjectData> object() {
-            return new ObjectData<>();
-        }
-
-        public <V> ObjectData<Object, ObjectData> object(Class<V> clazz) {
-
-        }
-
-        public StringData<StringData> string() {
-            return new StringData<>();
-        }
-    }
+//    public static class ChainBuilder {
+//        public ObjectData<Object, ObjectData> object() {
+//            return new ObjectData<>();
+//        }
+//
+//        public <V> ObjectData<Object, ObjectData> object(Class<V> clazz) {
+//
+//        }
+//
+//        public StringData<StringData> string() {
+//            return new StringData<>();
+//        }
+//    }
 
     public static class IntBuilder<T> {
         private FluentValidatorBuilder<T> builder;
@@ -108,17 +114,22 @@ public class FluentValidatorBuilder<T> {
         }
 
         public StringBuilder<P, V> url() {
-            data.url();
+            data.setUrl(true);
+            return this;
+        }
+
+        public StringBuilder<P, V> mail() {
+            data.setMail(true);
             return this;
         }
 
         public StringBuilder<P, V> notEmpty() {
-            data.notEmpty();
+            data.setNotEmpty(true);
             return this;
         }
 
         public StringBuilder<P, V> matches(Pattern pattern) {
-            data.matches(pattern);
+            data.setMatches(pattern);
             return this;
         }
     }
@@ -154,21 +165,20 @@ public class FluentValidatorBuilder<T> {
         }
 
         public CollectionBuilder<P, V> validator(FluentValidator.Data<V> validator) {
-            data.validator(validator);
+            data.setValidator(validator);
             return this;
         }
 
     }
 
-    public static class ObjectBuilder<P, V> {
+    public static class ObjectBuilder<P, V> extends BaseBuilder<P, V, ObjectBuilder<P, V>, ObjectData<V>> {
         private FluentValidatorBuilder<P> builder;
         private String property;
-        private ObjectData data;
 
         public ObjectBuilder(FluentValidatorBuilder<P> builder, String property) {
+            super(new ObjectData());
             this.builder = builder;
             this.property = property;
-            this.data = new ObjectData();
         }
 
         public FluentValidatorBuilder<P> b() {
@@ -179,38 +189,83 @@ public class FluentValidatorBuilder<T> {
             data.notNull();
             return this;
         }
+    }
 
-        public ObjectBuilder<P, V> validator(FluentValidator.Data<V> validator) {
-            data.validator(validator);
-            return this;
+    private static class BaseBuilder<P, V, BuilderClass, DataClass extends BaseData<V>> {
+
+        protected DataClass data;
+
+        public BaseBuilder(DataClass data) {
+            this.data = data;
         }
 
-        public ObjectBuilder<P, V> custom(CustomValidatorSimple<P, V> customValidator) {
-            data.custom(customValidator);
-            return this;
+        public BuilderClass eq(V value) {
+            data.setEq(value);
+
+            return _this();
         }
 
-        public ObjectBuilder<P, V> custom(CustomValidatorWithBuilder<P, V> customValidatorWithBuilder) {
-            data.custom(customValidatorWithBuilder);
-            return this;
+        public BuilderClass eq(Function<V, Boolean> eqFunction) {
+            data.setEqFunction(eqFunction);
+
+            return _this();
         }
 
-        public ObjectBuilder<P, V> when(When<P, V> when) {
-            data.when(when);
-            return this;
+        public BuilderClass notEq(V value) {
+            data.setNotEq(value);
+
+            return _this();
         }
 
-        public ObjectBuilder<P, V> message(String message) {
-            data.message(message);
-            return this;
+        public BuilderClass notEq(Function<V, Boolean> eqFunction) {
+            data.setNotEqFunction(eqFunction);
+
+            return _this();
+        }
+
+        public BuilderClass when(BiFunction<P, V, Boolean> when) {
+            data.setWhen(when);
+
+            return _this();
+        }
+
+        public BuilderClass unless(BiFunction<P, V, Boolean> unless) {
+            data.setUnless(unless);
+
+            return _this();
+        }
+
+
+        public BuilderClass validator(FluentValidator.Data<V> validator) {
+            data.setValidator(validator);
+
+            return _this();
+        }
+
+        public BuilderClass custom(CustomValidatorSimple<P, V> customValidator) {
+            data.addCustom(customValidator);
+
+            return _this();
+        }
+
+        public BuilderClass custom(CustomValidatorWithBuilder<P, V> customValidatorWithBuilder) {
+            data.addCustom(customValidatorWithBuilder);
+
+            return _this();
+        }
+
+        public BuilderClass message(String message) {
+            data.setMessage(message);
+
+            return _this();
+        }
+
+        private BuilderClass _this() {
+            return (BuilderClass) this;
         }
     }
 
     public static interface CustomValidator {
-    }
-
-    public interface When<P, V> {
-        boolean when(P object, V propertyValue);
     }
 
     public static interface CustomValidatorSimple<P, V> extends CustomValidator {
@@ -240,25 +295,13 @@ public class FluentValidatorBuilder<T> {
         }
     }
 
+    @Setter
+    @Getter
     public static class StringData extends ObjectData {
         private boolean url;
+        private boolean mail;
         private boolean notEmpty;
         private Pattern matches;
-
-        public StringData url() {
-            this.url = true;
-            return this;
-        }
-
-        public StringData notEmpty() {
-            this.notEmpty = true;
-            return this;
-        }
-
-        public StringData matches(Pattern pattern) {
-            this.matches = pattern;
-            return this;
-        }
     }
 
     public static class CollectionData extends ObjectData {
@@ -282,36 +325,32 @@ public class FluentValidatorBuilder<T> {
         }
     }
 
-    public static class ObjectData<T> implements ValidationData {
+    @Data
+    public static class ObjectData<T> extends BaseData<T> {
         private boolean notNull;
-        private When when;
-        private FluentValidator.Data<T> validator;
-        private List<CustomValidator> customValidators = new ArrayList<>();
-        private String message;
+
 
         public ObjectData notNull() {
             notNull = true;
             return this;
         }
+    }
 
-        public ObjectData validator(FluentValidator.Data<T> validator) {
-            this.validator = validator;
-            return this;
-        }
+    @Getter
+    @Setter
+    public static class BaseData<V> implements ValidationData {
+        private V eq;
+        private Function<V, Boolean> eqFunction;
+        private V notEq;
+        private Function<V, Boolean> notEqFunction;
+        private BiFunction when;
+        private BiFunction unless;
+        private FluentValidator.Data<V> validator;
+        private final List<CustomValidator> customValidators = new ArrayList<>();
+        private String message;
 
-        public ObjectData custom(CustomValidator customValidator) {
+        public void addCustom(CustomValidator customValidator) {
             customValidators.add(customValidator);
-            return this;
-        }
-
-        public ObjectData when(When when) {
-            this.when = when;
-            return this;
-        }
-
-        public ObjectData message(String message) {
-            this.message = message;
-            return this;
         }
     }
 

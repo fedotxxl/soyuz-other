@@ -36,13 +36,14 @@ class Actress {
 
     public static FluentValidator.Data<Actress> getValidator() {
         Object tagValidator = null;
-        Object tagTranslationChain = FluentValidator.chain().object(TagTranslation.class).notNull().validator(tagTranslationValidator);
+//        Object tagTranslationChain = FluentValidator.chain().object(TagTranslation.class).notNull().validator(tagTranslationValidator);
+        TagTranslation jaTranslation = null;
         FluentValidator.Data<TagTranslation> tagTranslationValidator = TagTranslation.getValidator();
 
         return FluentValidator.of(Actress.class)
                 .failFast()
                 .object("en", TagTranslation.class).validator(tagTranslationValidator).message("a.en.translation.wrong").b()
-                .object("ja", TagTranslation.class).validator(tagTranslationValidator).b()
+                .object("ja", TagTranslation.class).eq(jaTranslation).validator(tagTranslationValidator).b()
                 .string("blogUrl").url().notEmpty().b()
                 .collection("tags", Tag.class).notEmpty().min(0).max(5).validator(Tag.getValidator()).b()
                 .object("sizes", Actress.Sizes.class).notNull().custom((o, value, validator) ->  {
