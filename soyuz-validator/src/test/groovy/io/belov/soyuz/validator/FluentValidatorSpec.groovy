@@ -1,6 +1,6 @@
 package io.belov.soyuz.validator
 
-import io.belov.soyuz.validator.domain.Actress
+import io.belov.soyuz.validator.test.Actress
 import spock.lang.Specification
 
 /**
@@ -8,32 +8,20 @@ import spock.lang.Specification
  */
 class FluentValidatorSpec extends Specification {
 
-    private static final FluentValidator<Actress> actressValidator = Actress.validator
+    private static final FluentValidator.Data<Actress> actressValidator = Actress.validator
 
-    def "should fail over"() {
+    def "should mix property names"() {
         when:
-        def actress = incorrectActress
-        def answer = actressValidator.validate(actress)
+        def validator = FluentValidator.of("actress.sizes", Actress.Sizes)
+                .i("height").min(4).max(5).b()
+                .i("breast").min(1).b()
+                .i("waist").min(1).max(999).b()
+                .build()
 
         then:
-        assert answer.hasErrors()
-        assert !answer.isOk()
-        assert answer.errors.size == 6
-    }
+        println(validator.validationData)
 
-    def "should fail fast"() {
-        when:
-        def actress = incorrectActress
-        def answer = actressValidator.failFast().validate(actress)
-
-        then:
-        assert answer.hasErrors()
-        assert !answer.isOk()
-        assert answer.errors.size == 1
-    }
-
-    private getIncorrectActress() {
-
+        assert validator.validationData
     }
 
 }

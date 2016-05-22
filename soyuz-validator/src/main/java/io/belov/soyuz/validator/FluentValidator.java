@@ -16,6 +16,10 @@ public class FluentValidator<T> {
         return new FluentValidatorBuilder<>();
     }
 
+    public static <T> FluentValidatorBuilder<T> of(String property, Class<T> clazz) {
+        return new FluentValidatorBuilder<>(property);
+    }
+
 //    public static FluentValidatorBuilder.ChainBuilder chain() {
 //        return new FluentValidatorBuilder.ChainBuilder();
 //    }

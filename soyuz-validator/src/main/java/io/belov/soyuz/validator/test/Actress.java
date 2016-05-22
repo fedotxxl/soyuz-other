@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Created by fbelov on 06.05.16.
  */
-class Actress {
+public class Actress {
 
     private TagTranslation en;
     private TagTranslation ja;
