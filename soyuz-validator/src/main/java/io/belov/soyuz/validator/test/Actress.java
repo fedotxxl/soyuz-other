@@ -42,6 +42,10 @@ class Actress {
 
         return FluentValidator.of(Actress.class)
                 .failFast()
+                .notNull()
+                .custom((object, propertyValue, fluentValidatorBuilder) -> {
+                    return FluentValidator.Result.success();
+                })
                 .object("en", TagTranslation.class).validator(tagTranslationValidator).message("a.en.translation.wrong").b()
                 .object("ja", TagTranslation.class).eq(jaTranslation).validator(tagTranslationValidator).b()
                 .string("blogUrl").url().notEmpty().b()
