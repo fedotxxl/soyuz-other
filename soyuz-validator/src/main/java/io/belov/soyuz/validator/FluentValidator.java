@@ -1,6 +1,6 @@
 package io.belov.soyuz.validator;
 
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +64,14 @@ public class FluentValidator<T> {
             return new Result(new ArrayList<>());
         }
 
+        public static <V> Result failure(String code, V value) {
+            return failure(null, code, value);
+        }
+
+        public static <V> Result failure(String property, String code, V value) {
+            return failure(new Error<>(property, code, null, value));
+        }
+
         public static Result failure(Error error) {
             List<Error> answer = new ArrayList<>();
 
@@ -77,10 +85,21 @@ public class FluentValidator<T> {
         }
     }
 
-    public static class Error {
+    @Getter
+    @EqualsAndHashCode
+    @ToString
+    public static class Error<V> {
         private String property;
         private String code;
         private String message;
+        private V value;
+
+        public Error(String property, String code, String message, V value) {
+            this.property = property;
+            this.code = code;
+            this.message = message;
+            this.value = value;
+        }
     }
 
 //    public static void main(String[] args) {

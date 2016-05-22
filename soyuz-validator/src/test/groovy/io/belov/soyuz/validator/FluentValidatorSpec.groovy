@@ -24,4 +24,16 @@ class FluentValidatorSpec extends Specification {
         assert validator.validationData
     }
 
+    def "eq (simple)"() {
+        when:
+        def validator = FluentValidator.of(String).eq("hello world").build()
+
+        then:
+        assert validator.validate("hello") == FluentValidator.Result.failure("notEq", "hello world")
+        assert validator.validate("hello world") == FluentValidator.Result.success()
+    }
+
+    def "eq (function)"() {
+
+    }
 }
