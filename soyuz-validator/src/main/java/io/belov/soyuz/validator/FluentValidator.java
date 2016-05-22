@@ -1,5 +1,7 @@
 package io.belov.soyuz.validator;
 
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +20,16 @@ public class FluentValidator<T> {
 //        return new FluentValidatorBuilder.ChainBuilder();
 //    }
 
+    @ToString
     public static class Data<T> {
-        private List<FluentValidatorObjects.FluentValidatorValidationData> validationDatas = new ArrayList<>();
+        private List<FluentValidatorBuilder.ValidationDataWithProperties> validationData = new ArrayList<>();
 
-        public Data(List<FluentValidatorObjects.FluentValidatorValidationData> validationDatas) {
-            this.validationDatas = validationDatas;
+        public Data(List<FluentValidatorBuilder.ValidationDataWithProperties> validationData) {
+            this.validationData = validationData;
+        }
+
+        public List<FluentValidatorBuilder.ValidationDataWithProperties> getValidationData() {
+            return validationData;
         }
 
         public FluentValidator.Result validate(T o) {

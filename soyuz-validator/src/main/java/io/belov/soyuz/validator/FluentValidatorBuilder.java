@@ -1,5 +1,7 @@
 package io.belov.soyuz.validator;
 
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -9,10 +11,17 @@ import java.util.regex.Pattern;
  */
 public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilder<T, T, FluentValidatorBuilder<T>, FluentValidatorObjects.RootData<T>> {
 
-    private List<FluentValidatorObjects.FluentValidatorValidationData> validationDatas = new ArrayList<>();
+    private String rootProperty;
+    private List<ValidationDataWithProperties> validationDatas = new ArrayList<>();
 
     public FluentValidatorBuilder() {
+        this(null);
+    }
+
+    public FluentValidatorBuilder(String rootProperty) {
         super(new FluentValidatorObjects.RootData<T>());
+
+        this.rootProperty = rootProperty;
     }
 
     public FluentValidatorBuilder<T> failFast() {
@@ -26,36 +35,44 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     }
 
     public ObjectBuilder<T, Object> object(String property) {
-        return new ObjectBuilder<>(this, property);
+        return new ObjectBuilder<>(this, getFullProperty(property));
     }
 
     public <V> ObjectBuilder<T, V> object(String property, Class<V> clazz) {
-        return new ObjectBuilder<>(this, property);
+        return new ObjectBuilder<>(this, getFullProperty(property));
     }
 
     public StringBuilder<T, String> string(String property) {
-        return new StringBuilder<>(this, property);
+        return new StringBuilder<>(this, getFullProperty(property));
     }
 
     public CollectionBuilder<T, Object> collection(String property) {
-        return new CollectionBuilder<>(this, property);
+        return new CollectionBuilder<>(this, getFullProperty(property));
     }
 
     public <V> CollectionBuilder<T, V> collection(String property, Class<V> clazz) {
-        return new CollectionBuilder<>(this, property);
+        return new CollectionBuilder<>(this, getFullProperty(property));
     }
 
     public IntBuilder<T> i(String property) {
-        return new IntBuilder<>(this, property);
+        return new IntBuilder<>(this, getFullProperty(property));
     }
 
     public FluentValidator.Data<T> build() {
         return new FluentValidator.Data<T>(validationDatas);
     }
 
-    private FluentValidatorBuilder<T> addFluentValidatorValidationData(String property, FluentValidatorObjects.FluentValidatorValidationData FluentValidatorValidationData) {
-        validationDatas.add(FluentValidatorValidationData);
+    private FluentValidatorBuilder<T> addFluentValidatorValidationData(String property, FluentValidatorObjects.FluentValidatorValidationData validationData) {
+        validationDatas.add(new ValidationDataWithProperties(property, validationData));
         return this;
+    }
+
+    private String getFullProperty(String property) {
+        if (rootProperty == null) {
+            return property;
+        } else {
+            return rootProperty + "." + property;
+        }
     }
 
 //    public static class ChainBuilder {
@@ -192,4 +209,22 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         }
     }
 
+    @ToString
+    public static class ValidationDataWithProperties {
+        private String property;
+        private FluentValidatorObjects.FluentValidatorValidationData data;
+
+        public ValidationDataWithProperties(String property, FluentValidatorObjects.FluentValidatorValidationData data) {
+            this.property = property;
+            this.data = data;
+        }
+
+        public String getProperty() {
+            return property;
+        }
+
+        public FluentValidatorObjects.FluentValidatorValidationData getData() {
+            return data;
+        }
+    }
 }
