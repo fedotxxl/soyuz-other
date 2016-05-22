@@ -24,25 +24,25 @@ public class FluentValidatorObjects {
         }
 
         public BuilderClass eq(V value) {
-            data.setEq(value);
+            data.addRule(new FluentValidatorRule.Base.Eq<>(value));
 
             return _this();
         }
 
         public BuilderClass eq(Function<V, Boolean> eqFunction) {
-            data.setEqFunction(eqFunction);
+            data.addRule(new FluentValidatorRule.Base.EqFunction<>(eqFunction));
 
             return _this();
         }
 
         public BuilderClass notEq(V value) {
-            data.setNotEq(value);
+            data.addRule(new FluentValidatorRule.Base.NotEq<>(value));
 
             return _this();
         }
 
-        public BuilderClass notEq(Function<V, Boolean> eqFunction) {
-            data.setNotEqFunction(eqFunction);
+        public BuilderClass notEq(Function<V, Boolean> notEqFunction) {
+            data.addRule(new FluentValidatorRule.Base.NotEqFunction<>(notEqFunction));
 
             return _this();
         }
@@ -112,15 +112,22 @@ public class FluentValidatorObjects {
     @Getter
     @Setter
     public static class BaseData<V> implements FluentValidatorValidationData {
-        private V eq;
-        private Function<V, Boolean> eqFunction;
-        private V notEq;
-        private Function<V, Boolean> notEqFunction;
+
+        private List<FluentValidatorRule<V>> rules = new ArrayList<>();
+
+//        private V eq;
+//        private Function<V, Boolean> eqFunction;
+//        private V notEq;
+//        private Function<V, Boolean> notEqFunction;
         private BiFunction when;
         private BiFunction unless;
         private FluentValidator.Data<V> validator;
         private final List<CustomValidator> customValidators = new ArrayList<>();
         private String message;
+
+        public void addRule(FluentValidatorRule<V> rule) {
+            rules.add(rule);
+        }
 
         public void addCustom(CustomValidator FluentValidatorCustom) {
             customValidators.add(FluentValidatorCustom);
