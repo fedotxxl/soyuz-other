@@ -1,5 +1,9 @@
 package io.belov.soyuz.validator;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.function.Function;
 
 /**
@@ -7,10 +11,27 @@ import java.util.function.Function;
  */
 public interface FluentValidatorRule<V> {
 
-    <R, P> FluentValidator.Error validate(R rootObject, P parentObject, V value);
+    <R, P> Error validate(R rootObject, V value);
+
+    abstract class AbstractRule<V> implements FluentValidatorRule<V> {
+
+        public <R, P> Error validate(R rootObject, V value) {
+            if (!isValid(rootObject, value)) {
+                return new Error(getCode(), value);
+            } else {
+                return null;
+            }
+        }
+
+        protected abstract String getCode();
+
+        protected abstract <R, P> boolean isValid(R rootObject, V value);
+    }
+
 
     static interface Base {
-        class Eq<V> implements FluentValidatorRule<V> {
+
+        class Eq<V> extends AbstractRule<V> {
 
             private V value;
 
@@ -19,12 +40,17 @@ public interface FluentValidatorRule<V> {
             }
 
             @Override
-            public <R, P> FluentValidator.Error validate(R rootObject, P parentObject, V value) {
-                return null;
+            protected String getCode() {
+                return "notEq";
+            }
+
+            @Override
+            protected <R, P> boolean isValid(R rootObject, V value) {
+                return value != null && value.equals(this.value);
             }
         }
 
-        class EqFunction<V> implements FluentValidatorRule<V> {
+        class EqFunction<V> extends AbstractRule<V> {
 
             private Function<V, Boolean> eqFunction;
 
@@ -33,8 +59,13 @@ public interface FluentValidatorRule<V> {
             }
 
             @Override
-            public <R, P> FluentValidator.Error validate(R rootObject, P parentObject, V value) {
-                return null;
+            protected String getCode() {
+                return "notEq";
+            }
+
+            @Override
+            protected <R, P> boolean isValid(R rootObject, V value) {
+                return eqFunction.apply(value);
             }
         }
 
@@ -47,7 +78,7 @@ public interface FluentValidatorRule<V> {
             }
 
             @Override
-            public <R, P> FluentValidator.Error validate(R rootObject, P parentObject, V value) {
+            public <R, P> Error validate(R rootObject, V value) {
                 return null;
             }
         }
@@ -61,9 +92,22 @@ public interface FluentValidatorRule<V> {
             }
 
             @Override
-            public <R, P> FluentValidator.Error validate(R rootObject, P parentObject, V value) {
+            public <R, P> Error validate(R rootObject, V value) {
                 return null;
             }
         }
-     }
+    }
+
+    @Getter
+    @EqualsAndHashCode
+    @ToString
+    class Error<V> {
+        private String code;
+        private V value;
+
+        public Error(String code, V value) {
+            this.code = code;
+            this.value = value;
+        }
+    }
 }

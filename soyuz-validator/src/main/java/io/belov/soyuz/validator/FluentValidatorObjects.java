@@ -106,12 +106,15 @@ public class FluentValidatorObjects {
     /**
      * Created by fbelov on 22.05.16.
      */
-    public static interface FluentValidatorValidationData {
+    public static interface FluentValidatorValidationData<V> {
+
+        <R, P> FluentValidatorRule.Error validate(R rootObject, V value);
+
     }
 
     @Getter
     @Setter
-    public static class BaseData<V> implements FluentValidatorValidationData {
+    public static class BaseData<V> implements FluentValidatorValidationData<V> {
 
         private List<FluentValidatorRule<V>> rules = new ArrayList<>();
 
@@ -132,6 +135,22 @@ public class FluentValidatorObjects {
         public void addCustom(CustomValidator FluentValidatorCustom) {
             customValidators.add(FluentValidatorCustom);
         }
+
+        @Override
+        public <R, P> FluentValidatorRule.Error validate(R rootObject, V value) {
+            //todo when
+            //todo unless
+
+            for (FluentValidatorRule<V> rule : rules) {
+                FluentValidatorRule.Error error = rule.validate(rootObject, value);
+
+                if (error != null) {
+                    return error;
+                }
+            }
+
+            return null;
+        }
     }
 
     @Data
@@ -150,7 +169,7 @@ public class FluentValidatorObjects {
         }
     }
 
-    public static class IntData implements FluentValidatorValidationData {
+    public static class IntData implements FluentValidatorValidationData<Integer> {
         private Integer min;
         private Integer max;
 
@@ -162,6 +181,11 @@ public class FluentValidatorObjects {
         public IntData max(int max) {
             this.max = max;
             return this;
+        }
+
+        @Override
+        public <R, P> FluentValidatorRule.Error validate(R rootObject, Integer value) {
+            return null;
         }
     }
 

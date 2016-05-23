@@ -1,7 +1,9 @@
 package io.belov.soyuz.validator;
 
 import lombok.*;
+import org.apache.commons.beanutils.BeanUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +39,33 @@ public class FluentValidator<T> {
         }
 
         public FluentValidator.Result validate(T o) {
-            return null;
+            List<Error> errors = new ArrayList<>();
+
+            for (FluentValidatorBuilder.ValidationDataWithProperties validationDataWithProperties : validationData) {
+                String property = validationDataWithProperties.getProperty();
+                Object value = getPropertyValue(o, property);
+
+                FluentValidatorRule.Error error = validationDataWithProperties.getData().validate(o, value);
+
+                if (error != null) {
+                    errors.add(new Error(property, error.getCode(), null, value));
+                }
+            }
+
+            return FluentValidator.Result.failure(errors);
+        }
+
+        private Object getPropertyValue(T o, String property) {
+            try {
+                return (property == null) ? o : BeanUtils.getNestedProperty(o, property);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
+    @ToString
+    @EqualsAndHashCode
     public static class Result {
         private List<Error> errors;
 

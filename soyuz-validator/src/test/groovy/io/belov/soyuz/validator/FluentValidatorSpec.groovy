@@ -3,6 +3,8 @@ package io.belov.soyuz.validator
 import io.belov.soyuz.validator.test.Actress
 import spock.lang.Specification
 
+import java.util.function.Function
+
 /**
  * Created by fbelov on 06.05.16.
  */
@@ -29,11 +31,17 @@ class FluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(String).eq("hello world").build()
 
         then:
-        assert validator.validate("hello") == FluentValidator.Result.failure("notEq", "hello world")
+        assert validator.validate("hello") == FluentValidator.Result.failure("notEq", "hello")
         assert validator.validate("hello world") == FluentValidator.Result.success()
     }
 
     def "eq (function)"() {
+        when:
+        def validator = FluentValidator.of(String).eq({ it == "hello" || it == "world" } as Function).build()
 
+        then:
+        assert validator.validate("hello") == FluentValidator.Result.success()
+        assert validator.validate("world") == FluentValidator.Result.success()
+        assert validator.validate("hello world") == FluentValidator.Result.failure("notEq", "hello world")
     }
 }

@@ -2,6 +2,7 @@ package io.belov.soyuz.validator;
 
 import lombok.ToString;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilder<T, T, FluentValidatorBuilder<T>, FluentValidatorObjects.RootData<T>> {
 
     private String rootProperty;
-    private List<ValidationDataWithProperties> validationDatas = new ArrayList<>();
+    private List<ValidationDataWithProperties> validationData = new ArrayList<>();
 
     public FluentValidatorBuilder() {
         this(null);
@@ -59,11 +60,14 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     }
 
     public FluentValidator.Data<T> build() {
-        return new FluentValidator.Data<T>(validationDatas);
+        validationData.add(new ValidationDataWithProperties(null, data));
+
+        return new FluentValidator.Data<T>(validationData);
     }
 
     private FluentValidatorBuilder<T> addFluentValidatorValidationData(String property, FluentValidatorObjects.FluentValidatorValidationData validationData) {
-        validationDatas.add(new ValidationDataWithProperties(property, validationData));
+        this.validationData.add(new ValidationDataWithProperties(property, validationData));
+
         return this;
     }
 
@@ -219,6 +223,7 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             this.data = data;
         }
 
+        @Nullable
         public String getProperty() {
             return property;
         }

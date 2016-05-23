@@ -76,6 +76,7 @@ allprojects {
                                 "io.prometheus:simpleclient_pushgateway:0.0.10"
                         ],
                         commons   : [
+                                bean       : "commons-beanutils:commons-beanutils:1.9.2",
                                 io         : "commons-io:commons-io:2.4",
                                 lang       : "org.apache.commons:commons-lang3:3.3.2",
                                 codec      : "commons-codec:commons-codec:1.10",
