@@ -188,7 +188,7 @@ public class FluentValidatorObjects {
         }
     }
 
-    public static class IntData implements FluentValidatorValidationData<Integer> {
+    public static class IntData extends BaseData<Integer> {
         private Integer min;
         private Integer max;
 
@@ -200,11 +200,6 @@ public class FluentValidatorObjects {
         public IntData max(int max) {
             this.max = max;
             return this;
-        }
-
-        @Override
-        public <R, P> FluentValidatorRule.Error validate(R rootObject, Integer value) {
-            return null;
         }
     }
 

@@ -5,8 +5,6 @@ import lombok.ToString;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -28,7 +26,11 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     }
 
     public FluentValidatorBuilder<T> failFast() {
-        data.setFailFast(true);
+        return failFast(true);
+    }
+
+    public FluentValidatorBuilder<T> failFast(boolean failFast) {
+        data.setFailFast(failFast);
         return this;
     }
 
@@ -95,30 +97,22 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 //        }
 //    }
 
-    public static class IntBuilder<T> {
-        private FluentValidatorBuilder<T> builder;
-        private String property;
-        private FluentValidatorObjects.IntData data;
+    public static class IntBuilder<P> extends AbstractBuilder<P, Integer, IntBuilder<P>, FluentValidatorObjects.IntData> {
 
-        public IntBuilder(FluentValidatorBuilder<T> builder, String property) {
-            this.builder = builder;
-            this.property = property;
-            this.data = new FluentValidatorObjects.IntData();
+        public IntBuilder(FluentValidatorBuilder<P> builder, String property) {
+            super(builder, new FluentValidatorObjects.IntData(), property);
         }
 
-        public IntBuilder<T> min(int min) {
+        public IntBuilder<P> min(int min) {
             data.min(min);
             return this;
         }
 
-        public IntBuilder<T> max(int max) {
+        public IntBuilder<P> max(int max) {
             data.max(max);
             return this;
         }
 
-        public FluentValidatorBuilder<T> b() {
-            return builder.addFluentValidatorValidationData(property, data);
-        }
     }
 
 
@@ -126,10 +120,6 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 
         public StringBuilder(FluentValidatorBuilder<P> builder, String property) {
             super(builder, new FluentValidatorObjects.StringData(), property);
-        }
-
-        public FluentValidatorBuilder<P> b() {
-            return builder.addFluentValidatorValidationData(property, data);
         }
 
         public StringBuilder<P> url() {
