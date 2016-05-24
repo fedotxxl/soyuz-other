@@ -194,7 +194,6 @@ public class FluentValidatorObjects {
     public static class StringData extends ObjectData {
         private boolean url;
         private boolean mail;
-        private boolean notEmpty;
         private Pattern matches;
     }
 

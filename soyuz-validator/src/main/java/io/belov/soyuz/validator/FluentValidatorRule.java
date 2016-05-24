@@ -28,8 +28,21 @@ public interface FluentValidatorRule<V> {
         protected abstract <R, P> boolean isValid(R rootObject, V value);
     }
 
+    interface Str {
+        class NotEmpty extends AbstractRule<String> {
+            @Override
+            protected String getCode() {
+                return "notEmpty";
+            }
 
-    static interface Base {
+            @Override
+            protected <R, P> boolean isValid(R rootObject, String value) {
+                return value != null && value.length() > 0;
+            }
+        }
+    }
+
+    interface Base {
 
         class Eq<V> extends AbstractRule<V> {
 

@@ -120,14 +120,11 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     }
 
 
-    public static class StringBuilder<P, V> {
-        private FluentValidatorBuilder<P> builder;
-        private String property;
+    public static class StringBuilder<P, V> extends ObjectBuilder<P, V> {
         private FluentValidatorObjects.StringData data;
 
         public StringBuilder(FluentValidatorBuilder<P> builder, String property) {
-            this.builder = builder;
-            this.property = property;
+            super(builder, property);
             this.data = new FluentValidatorObjects.StringData();
         }
 
@@ -146,7 +143,8 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         }
 
         public StringBuilder<P, V> notEmpty() {
-            data.setNotEmpty(true);
+            data.addRule(new FluentValidatorRule.Str.NotEmpty());
+
             return this;
         }
 
@@ -194,8 +192,8 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     }
 
     public static class ObjectBuilder<P, V> extends FluentValidatorObjects.BaseBuilder<P, V, ObjectBuilder<P, V>, FluentValidatorObjects.ObjectData<V>> {
-        private FluentValidatorBuilder<P> builder;
-        private String property;
+        protected FluentValidatorBuilder<P> builder;
+        protected String property;
 
         public ObjectBuilder(FluentValidatorBuilder<P> builder, String property) {
             super(new FluentValidatorObjects.ObjectData());
