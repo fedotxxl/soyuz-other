@@ -42,6 +42,20 @@ public interface FluentValidatorRule<V> {
         }
     }
 
+    interface Obj {
+        class NotNull<V> extends AbstractRule<V> {
+            @Override
+            protected String getCode() {
+                return "notNull";
+            }
+
+            @Override
+            protected <R, P> boolean isValid(R rootObject, V value) {
+                return value != null;
+            }
+        }
+    }
+
     interface Base {
 
         class Eq<V> extends AbstractRule<V> {

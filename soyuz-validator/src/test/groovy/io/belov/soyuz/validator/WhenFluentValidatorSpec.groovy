@@ -15,7 +15,7 @@ class WhenFluentValidatorSpec extends Specification {
         then:
         assert validator.validate(new Car(power: 50)) == FluentValidator.Result.success() //skip by when
         assert validator.validate(new Car(title: "Lada", power: 150)) == FluentValidator.Result.success() //correct title
-        assert validator.validate(new Car(power: 150)) == FluentValidator.Result.success()
+        assert validator.validate(new Car(power: 150)) == FluentValidator.Result.failure("title", "notEmpty", null)
     }
 
     static class Car {

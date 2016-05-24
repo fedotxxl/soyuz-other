@@ -48,7 +48,13 @@ public class FluentValidatorObjects {
         }
 
         public BuilderClass when(BiFunction<P, V, Boolean> when) {
-            data.setWhen(when);
+            data.addWhen(when);
+
+            return _this();
+        }
+
+        public BuilderClass when(Function<P, Boolean> when) {
+            data.addWhen(when);
 
             return _this();
         }
@@ -84,7 +90,7 @@ public class FluentValidatorObjects {
             return _this();
         }
 
-        private BuilderClass _this() {
+        protected BuilderClass _this() {
             return (BuilderClass) this;
         }
     }
@@ -122,11 +128,19 @@ public class FluentValidatorObjects {
 //        private Function<V, Boolean> eqFunction;
 //        private V notEq;
 //        private Function<V, Boolean> notEqFunction;
-        private BiFunction when;
+        private List<BiFunction> when = new ArrayList<>();
         private BiFunction unless;
         private FluentValidator.Data<V> validator;
         private final List<CustomValidator> customValidators = new ArrayList<>();
         private String message;
+
+        public void addWhen(BiFunction<?, V, Boolean> when) {
+            this.when.add(when);
+        }
+
+        public <P> void addWhen(Function<P, Boolean> when) {
+            this.when.add((p, v) -> when.apply((P) p));
+        }
 
         public void addRule(FluentValidatorRule<V> rule) {
             rules.add(rule);
@@ -138,7 +152,12 @@ public class FluentValidatorObjects {
 
         @Override
         public <R, P> FluentValidatorRule.Error validate(R rootObject, V value) {
-            //todo when
+            for (BiFunction<R, V, Boolean> whenItem : when) {
+                if (!whenItem.apply(rootObject, value)) {
+                    return null;
+                }
+            }
+
             //todo unless
 
             for (FluentValidatorRule<V> rule : rules) {
@@ -191,7 +210,7 @@ public class FluentValidatorObjects {
 
     @Setter
     @Getter
-    public static class StringData extends ObjectData {
+    public static class StringData extends ObjectData<String> {
         private boolean url;
         private boolean mail;
         private Pattern matches;

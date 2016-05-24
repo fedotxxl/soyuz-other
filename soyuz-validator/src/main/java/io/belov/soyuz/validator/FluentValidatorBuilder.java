@@ -5,6 +5,8 @@ import lombok.ToString;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -43,7 +45,7 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         return new ObjectBuilder<>(this, getFullProperty(property));
     }
 
-    public StringBuilder<T, String> string(String property) {
+    public StringBuilder<T> string(String property) {
         return new StringBuilder<>(this, getFullProperty(property));
     }
 
@@ -120,35 +122,33 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     }
 
 
-    public static class StringBuilder<P, V> extends ObjectBuilder<P, V> {
-        private FluentValidatorObjects.StringData data;
+    public static class StringBuilder<P> extends AbstractObjectBuilder<P, String, StringBuilder<P>, FluentValidatorObjects.StringData> {
 
         public StringBuilder(FluentValidatorBuilder<P> builder, String property) {
-            super(builder, property);
-            this.data = new FluentValidatorObjects.StringData();
+            super(builder, new FluentValidatorObjects.StringData(), property);
         }
 
         public FluentValidatorBuilder<P> b() {
             return builder.addFluentValidatorValidationData(property, data);
         }
 
-        public StringBuilder<P, V> url() {
+        public StringBuilder<P> url() {
             data.setUrl(true);
             return this;
         }
 
-        public StringBuilder<P, V> mail() {
+        public StringBuilder<P> mail() {
             data.setMail(true);
             return this;
         }
 
-        public StringBuilder<P, V> notEmpty() {
+        public StringBuilder<P> notEmpty() {
             data.addRule(new FluentValidatorRule.Str.NotEmpty());
 
             return this;
         }
 
-        public StringBuilder<P, V> matches(Pattern pattern) {
+        public StringBuilder<P> matches(Pattern pattern) {
             data.setMatches(pattern);
             return this;
         }
@@ -191,12 +191,31 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 
     }
 
-    public static class ObjectBuilder<P, V> extends FluentValidatorObjects.BaseBuilder<P, V, ObjectBuilder<P, V>, FluentValidatorObjects.ObjectData<V>> {
+    public static class ObjectBuilder<P, V> extends AbstractObjectBuilder<P, V, ObjectBuilder<P, V>, FluentValidatorObjects.ObjectData<V>> {
+        public ObjectBuilder(FluentValidatorBuilder<P> builder, String property) {
+            super(builder, new FluentValidatorObjects.ObjectData<V>(), property);
+        }
+    }
+
+    private static abstract class AbstractObjectBuilder<P, V, BuilderClass, DataClass extends FluentValidatorObjects.BaseData<V>> extends AbstractBuilder<P, V, BuilderClass, DataClass> {
+        public AbstractObjectBuilder(FluentValidatorBuilder<P> builder, DataClass data, String property) {
+            super(builder, data, property);
+        }
+
+        public BuilderClass notNull() {
+            data.addRule(new FluentValidatorRule.Obj.NotNull<V>());
+
+            return _this();
+        }
+    }
+
+    private static abstract class AbstractBuilder<P, V, BuilderClass, DataClass extends FluentValidatorObjects.BaseData<V>> extends FluentValidatorObjects.BaseBuilder<P, V, BuilderClass, DataClass> {
+
         protected FluentValidatorBuilder<P> builder;
         protected String property;
 
-        public ObjectBuilder(FluentValidatorBuilder<P> builder, String property) {
-            super(new FluentValidatorObjects.ObjectData());
+        public AbstractBuilder(FluentValidatorBuilder<P> builder, DataClass data, String property) {
+            super(data);
             this.builder = builder;
             this.property = property;
         }
@@ -205,10 +224,6 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             return builder.addFluentValidatorValidationData(property, data);
         }
 
-        public ObjectBuilder<P, V> notNull() {
-            data.notNull();
-            return this;
-        }
     }
 
     @ToString
