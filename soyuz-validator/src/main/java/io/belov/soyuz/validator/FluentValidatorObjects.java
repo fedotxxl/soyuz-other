@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class FluentValidatorObjects {
 
-    public static class BaseBuilder<P, V, BuilderClass, DataClass extends BaseData<V>> {
+    public static class BaseBuilder<R, V, BuilderClass, DataClass extends BaseData<R, V>> {
 
         protected DataClass data;
 
@@ -47,19 +47,19 @@ public class FluentValidatorObjects {
             return _this();
         }
 
-        public BuilderClass when(BiFunction<P, V, Boolean> when) {
+        public BuilderClass when(BiFunction<R, V, Boolean> when) {
             data.addWhen(when);
 
             return _this();
         }
 
-        public BuilderClass when(Function<P, Boolean> when) {
+        public BuilderClass when(Function<R, Boolean> when) {
             data.addWhen(when);
 
             return _this();
         }
 
-        public BuilderClass unless(BiFunction<P, V, Boolean> unless) {
+        public BuilderClass unless(BiFunction<R, V, Boolean> unless) {
             data.setUnless(unless);
 
             return _this();
@@ -72,14 +72,14 @@ public class FluentValidatorObjects {
             return _this();
         }
 
-        public BuilderClass custom(CustomValidator.Simple<P, V> FluentValidatorCustom) {
-            data.addCustom(FluentValidatorCustom);
+        public BuilderClass custom(CustomValidator.Simple<R, V> fluentValidatorCustom) {
+            data.addRule(new FluentValidatorRule.Base.Custom<>(fluentValidatorCustom));
 
             return _this();
         }
 
-        public BuilderClass custom(CustomValidator.WithBuilder<P, V> customValidatorWithBuilder) {
-            data.addCustom(customValidatorWithBuilder);
+        public BuilderClass custom(CustomValidator.WithBuilder<R, V> customValidatorWithBuilder) {
+            data.addRule(new FluentValidatorRule.Base.Custom<>(customValidatorWithBuilder));
 
             return _this();
         }
@@ -112,17 +112,17 @@ public class FluentValidatorObjects {
     /**
      * Created by fbelov on 22.05.16.
      */
-    public static interface FluentValidatorValidationData<V> {
+    public static interface FluentValidatorValidationData<R, V> {
 
-        <R, P> FluentValidatorRule.Error validate(R rootObject, V value);
+        FluentValidator.Result validate(R rootObject, String property, V value);
 
     }
 
     @Getter
     @Setter
-    public static class BaseData<V> implements FluentValidatorValidationData<V> {
+    public static class BaseData<R, V> implements FluentValidatorValidationData<R, V> {
 
-        private List<FluentValidatorRule<V>> rules = new ArrayList<>();
+        private List<FluentValidatorRule<R, V>> rules = new ArrayList<>();
 
 //        private V eq;
 //        private Function<V, Boolean> eqFunction;
@@ -142,7 +142,7 @@ public class FluentValidatorObjects {
             this.when.add((p, v) -> when.apply((P) p));
         }
 
-        public void addRule(FluentValidatorRule<V> rule) {
+        public void addRule(FluentValidatorRule<R, V> rule) {
             rules.add(rule);
         }
 
@@ -151,7 +151,7 @@ public class FluentValidatorObjects {
         }
 
         @Override
-        public <R, P> FluentValidatorRule.Error validate(R rootObject, V value) {
+        public FluentValidator.Result validate(R rootObject, String property, V value) {
             for (BiFunction<R, V, Boolean> whenItem : when) {
                 if (!whenItem.apply(rootObject, value)) {
                     return null;
@@ -160,11 +160,11 @@ public class FluentValidatorObjects {
 
             //todo unless
 
-            for (FluentValidatorRule<V> rule : rules) {
-                FluentValidatorRule.Error error = rule.validate(rootObject, value);
+            for (FluentValidatorRule<R, V> rule : rules) {
+                FluentValidator.Result result = rule.validate(rootObject, property, value);
 
-                if (error != null) {
-                    return error;
+                if (result != null && result.hasErrors()) {
+                    return result;
                 }
             }
 
@@ -173,12 +173,12 @@ public class FluentValidatorObjects {
     }
 
     @Data
-    public static class RootData<T> extends ObjectData<T> {
+    public static class RootData<R, V> extends ObjectData<R, V> {
         private boolean failFast;
     }
 
     @Data
-    public static class ObjectData<T> extends BaseData<T> {
+    public static class ObjectData<R, V> extends BaseData<R, V> {
         private boolean notNull;
 
 
@@ -188,7 +188,7 @@ public class FluentValidatorObjects {
         }
     }
 
-    public static class IntData extends BaseData<Integer> {
+    public static class IntData<R> extends BaseData<R, Integer> {
         private Integer min;
         private Integer max;
 
@@ -205,7 +205,7 @@ public class FluentValidatorObjects {
 
     @Setter
     @Getter
-    public static class StringData extends ObjectData<String> {
+    public static class StringData<R> extends ObjectData<R, String> {
         private boolean url;
         private boolean mail;
         private Pattern matches;

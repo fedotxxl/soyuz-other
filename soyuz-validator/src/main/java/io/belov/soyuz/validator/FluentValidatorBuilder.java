@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * Created by fbelov on 5/10/16.
  */
-public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilder<T, T, FluentValidatorBuilder<T>, FluentValidatorObjects.RootData<T>> {
+public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilder<T, T, FluentValidatorBuilder<T>, FluentValidatorObjects.RootData<T, T>> {
 
     private String rootProperty;
     private List<ValidationDataWithProperties> validationData = new ArrayList<>();
@@ -20,7 +20,7 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     }
 
     public FluentValidatorBuilder(String rootProperty) {
-        super(new FluentValidatorObjects.RootData<T>());
+        super(new FluentValidatorObjects.RootData<T, T>());
 
         this.rootProperty = rootProperty;
     }
@@ -97,18 +97,18 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 //        }
 //    }
 
-    public static class IntBuilder<P> extends AbstractBuilder<P, Integer, IntBuilder<P>, FluentValidatorObjects.IntData> {
+    public static class IntBuilder<R> extends AbstractBuilder<R, Integer, IntBuilder<R>, FluentValidatorObjects.IntData<R>> {
 
-        public IntBuilder(FluentValidatorBuilder<P> builder, String property) {
+        public IntBuilder(FluentValidatorBuilder<R> builder, String property) {
             super(builder, new FluentValidatorObjects.IntData(), property);
         }
 
-        public IntBuilder<P> min(int min) {
+        public IntBuilder<R> min(int min) {
             data.min(min);
             return this;
         }
 
-        public IntBuilder<P> max(int max) {
+        public IntBuilder<R> max(int max) {
             data.max(max);
             return this;
         }
@@ -116,29 +116,29 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     }
 
 
-    public static class StringBuilder<P> extends AbstractObjectBuilder<P, String, StringBuilder<P>, FluentValidatorObjects.StringData> {
+    public static class StringBuilder<R> extends AbstractObjectBuilder<R, String, StringBuilder<R>, FluentValidatorObjects.StringData<R>> {
 
-        public StringBuilder(FluentValidatorBuilder<P> builder, String property) {
+        public StringBuilder(FluentValidatorBuilder<R> builder, String property) {
             super(builder, new FluentValidatorObjects.StringData(), property);
         }
 
-        public StringBuilder<P> url() {
+        public StringBuilder<R> url() {
             data.setUrl(true);
             return this;
         }
 
-        public StringBuilder<P> mail() {
+        public StringBuilder<R> mail() {
             data.setMail(true);
             return this;
         }
 
-        public StringBuilder<P> notEmpty() {
+        public StringBuilder<R> notEmpty() {
             data.addRule(new FluentValidatorRule.Str.NotEmpty());
 
             return this;
         }
 
-        public StringBuilder<P> matches(Pattern pattern) {
+        public StringBuilder<R> matches(Pattern pattern) {
             data.setMatches(pattern);
             return this;
         }
@@ -181,36 +181,36 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 
     }
 
-    public static class ObjectBuilder<P, V> extends AbstractObjectBuilder<P, V, ObjectBuilder<P, V>, FluentValidatorObjects.ObjectData<V>> {
-        public ObjectBuilder(FluentValidatorBuilder<P> builder, String property) {
-            super(builder, new FluentValidatorObjects.ObjectData<V>(), property);
+    public static class ObjectBuilder<R, V> extends AbstractObjectBuilder<R, V, ObjectBuilder<R, V>, FluentValidatorObjects.ObjectData<R, V>> {
+        public ObjectBuilder(FluentValidatorBuilder<R> builder, String property) {
+            super(builder, new FluentValidatorObjects.ObjectData<R, V>(), property);
         }
     }
 
-    private static abstract class AbstractObjectBuilder<P, V, BuilderClass, DataClass extends FluentValidatorObjects.BaseData<V>> extends AbstractBuilder<P, V, BuilderClass, DataClass> {
-        public AbstractObjectBuilder(FluentValidatorBuilder<P> builder, DataClass data, String property) {
+    private static abstract class AbstractObjectBuilder<R, V, BuilderClass, DataClass extends FluentValidatorObjects.BaseData<R, V>> extends AbstractBuilder<R, V, BuilderClass, DataClass> {
+        public AbstractObjectBuilder(FluentValidatorBuilder<R> builder, DataClass data, String property) {
             super(builder, data, property);
         }
 
         public BuilderClass notNull() {
-            data.addRule(new FluentValidatorRule.Obj.NotNull<V>());
+            data.addRule(new FluentValidatorRule.Obj.NotNull<R, V>());
 
             return _this();
         }
     }
 
-    private static abstract class AbstractBuilder<P, V, BuilderClass, DataClass extends FluentValidatorObjects.BaseData<V>> extends FluentValidatorObjects.BaseBuilder<P, V, BuilderClass, DataClass> {
+    private static abstract class AbstractBuilder<R, V, BuilderClass, DataClass extends FluentValidatorObjects.BaseData<R, V>> extends FluentValidatorObjects.BaseBuilder<R, V, BuilderClass, DataClass> {
 
-        protected FluentValidatorBuilder<P> builder;
+        protected FluentValidatorBuilder<R> builder;
         protected String property;
 
-        public AbstractBuilder(FluentValidatorBuilder<P> builder, DataClass data, String property) {
+        public AbstractBuilder(FluentValidatorBuilder<R> builder, DataClass data, String property) {
             super(data);
             this.builder = builder;
             this.property = property;
         }
 
-        public FluentValidatorBuilder<P> b() {
+        public FluentValidatorBuilder<R> b() {
             return builder.addFluentValidatorValidationData(property, data);
         }
 

@@ -9,15 +9,15 @@ import java.util.function.Function;
 /**
  * Created by fbelov on 22.05.16.
  */
-public interface FluentValidatorRule<V> {
+public interface FluentValidatorRule<R, V> {
 
-    <R, P> Error validate(R rootObject, V value);
+    FluentValidator.Result validate(R rootObject, String property, V value);
 
-    abstract class AbstractRule<V> implements FluentValidatorRule<V> {
+    abstract class AbstractRule<R, V> implements FluentValidatorRule<R, V> {
 
-        public <R, P> Error validate(R rootObject, V value) {
+        public FluentValidator.Result validate(R rootObject, String property, V value) {
             if (!isValid(rootObject, value)) {
-                return new Error(getCode(), value);
+                return FluentValidator.Result.failure(property, getCode(), value);
             } else {
                 return null;
             }
@@ -25,32 +25,32 @@ public interface FluentValidatorRule<V> {
 
         protected abstract String getCode();
 
-        protected abstract <R, P> boolean isValid(R rootObject, V value);
+        protected abstract boolean isValid(R rootObject, V value);
     }
 
     interface Str {
-        class NotEmpty extends AbstractRule<String> {
+        class NotEmpty<R> extends AbstractRule<R, String> {
             @Override
             protected String getCode() {
                 return "notEmpty";
             }
 
             @Override
-            protected <R, P> boolean isValid(R rootObject, String value) {
+            protected boolean isValid(R rootObject, String value) {
                 return value != null && value.length() > 0;
             }
         }
     }
 
     interface Obj {
-        class NotNull<V> extends AbstractRule<V> {
+        class NotNull<R, V> extends AbstractRule<R, V> {
             @Override
             protected String getCode() {
                 return "notNull";
             }
 
             @Override
-            protected <R, P> boolean isValid(R rootObject, V value) {
+            protected boolean isValid(R rootObject, V value) {
                 return value != null;
             }
         }
@@ -58,7 +58,7 @@ public interface FluentValidatorRule<V> {
 
     interface Base {
 
-        class Eq<V> extends AbstractRule<V> {
+        class Eq<R, V> extends AbstractRule<R, V> {
 
             private V value;
 
@@ -72,12 +72,12 @@ public interface FluentValidatorRule<V> {
             }
 
             @Override
-            protected <R, P> boolean isValid(R rootObject, V value) {
+            protected boolean isValid(R rootObject, V value) {
                 return value != null && value.equals(this.value);
             }
         }
 
-        class EqFunction<V> extends AbstractRule<V> {
+        class EqFunction<R, V> extends AbstractRule<R, V> {
 
             private Function<V, Boolean> eqFunction;
 
@@ -91,12 +91,12 @@ public interface FluentValidatorRule<V> {
             }
 
             @Override
-            protected <R, P> boolean isValid(R rootObject, V value) {
+            protected boolean isValid(R rootObject, V value) {
                 return eqFunction.apply(value);
             }
         }
 
-        class NotEq<V> implements FluentValidatorRule<V> {
+        class NotEq<R, V> implements FluentValidatorRule<R, V> {
 
             private V value;
 
@@ -105,12 +105,12 @@ public interface FluentValidatorRule<V> {
             }
 
             @Override
-            public <R, P> Error validate(R rootObject, V value) {
+            public FluentValidator.Result validate(R rootObject, String property, V value) {
                 return null;
             }
         }
 
-        class NotEqFunction<V> implements FluentValidatorRule<V> {
+        class NotEqFunction<R, V> implements FluentValidatorRule<R, V> {
 
             private Function<V, Boolean> notEqFunction;
 
@@ -119,7 +119,32 @@ public interface FluentValidatorRule<V> {
             }
 
             @Override
-            public <R, P> Error validate(R rootObject, V value) {
+            public FluentValidator.Result validate(R rootObject, String property, V value) {
+                return null;
+            }
+        }
+
+        class Custom<R, V> implements FluentValidatorRule<R, V> {
+
+            private FluentValidatorObjects.CustomValidator.Simple<R, V> customSimple;
+            private FluentValidatorObjects.CustomValidator.WithBuilder<R, V> customWithBuilder;
+
+            public Custom(FluentValidatorObjects.CustomValidator.Simple<R, V> customSimple) {
+                this.customSimple = customSimple;
+            }
+
+            public Custom(FluentValidatorObjects.CustomValidator.WithBuilder<R, V> customWithBuilder) {
+                this.customWithBuilder = customWithBuilder;
+            }
+
+            @Override
+            public FluentValidator.Result validate(R rootObject, String property, V value) {
+                if (customSimple != null) {
+                    return customSimple.validate(rootObject, value);    
+                } else if (customWithBuilder != null) {
+                    return customWithBuilder.validate(rootObject, value, new FluentValidatorBuilder<>());    
+                }
+                
                 return null;
             }
         }

@@ -2,6 +2,8 @@ package io.belov.soyuz.validator;
 
 import lombok.*;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import java.util.List;
  * Created by fbelov on 28.04.16.
  */
 public class FluentValidator<T> {
+
+    private static final PropertyUtilsBean PROPERTY_UTILS_BEAN = BeanUtilsBean.getInstance().getPropertyUtils();
 
     //https://github.com/JeremySkinner/FluentValidation
 
@@ -45,10 +49,10 @@ public class FluentValidator<T> {
                 String property = validationDataWithProperties.getProperty();
                 Object value = getPropertyValue(o, property);
 
-                FluentValidatorRule.Error error = validationDataWithProperties.getData().validate(o, value);
+                FluentValidator.Result result = validationDataWithProperties.getData().validate(o, property, value);
 
-                if (error != null) {
-                    errors.add(new Error(property, error.getCode(), null, value));
+                if (result != null) {
+                    errors.addAll(result.getErrors());
                 }
             }
 
@@ -57,7 +61,7 @@ public class FluentValidator<T> {
 
         private Object getPropertyValue(T o, String property) {
             try {
-                return (property == null) ? o : BeanUtils.getNestedProperty(o, property);
+                return (property == null) ? o : PROPERTY_UTILS_BEAN.getNestedProperty(o, property);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
