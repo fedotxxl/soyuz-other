@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.PropertyUtilsBean;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,6 +72,8 @@ public class FluentValidator<T> {
     @ToString
     @EqualsAndHashCode
     public static class Result {
+        private static final Result SUCCESS = new Result(Collections.unmodifiableList(new ArrayList<>()));
+
         private List<Error> errors;
 
         private Result(List<Error> errors) {
@@ -90,7 +93,7 @@ public class FluentValidator<T> {
         }
 
         public static Result success() {
-            return new Result(new ArrayList<>());
+            return SUCCESS;
         }
 
         public static <V> Result failure(String code, V value) {
