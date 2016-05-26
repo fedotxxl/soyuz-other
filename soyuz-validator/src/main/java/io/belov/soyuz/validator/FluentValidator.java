@@ -123,6 +123,10 @@ public class FluentValidator<T> {
         private String message;
         private V value;
 
+        public Error(String property, String code, V value) {
+            this(property, code, null, value);
+        }
+
         public Error(String property, String code, String message, V value) {
             this.property = property;
             this.code = code;

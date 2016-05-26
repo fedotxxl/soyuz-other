@@ -104,12 +104,12 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         }
 
         public IntBuilder<R> min(int min) {
-            data.min(min);
+            data.addRule(new FluentValidatorRule.Int.Min<>(min));
             return this;
         }
 
         public IntBuilder<R> max(int max) {
-            data.max(max);
+            data.addRule(new FluentValidatorRule.Int.Max<>(max));
             return this;
         }
 

@@ -14,7 +14,7 @@ class FailFastFluentValidatorSpec extends Specification {
         def car
         def result
         def checked = new AtomicBoolean()
-        def validator = getValidator(false)
+        def validator = getValidator(false, checked)
 
         when:
         checked.set(false)
@@ -37,19 +37,21 @@ class FailFastFluentValidatorSpec extends Specification {
         when:
         checked.set(false)
         car = new Car(power: 90)
-        result = getValidator(true).validate(car)
+        result = getValidator(true, checked).validate(car)
 
         then:
         assert result == FluentValidator.Result.failure("title", "notEmpty", null)
         assert checked.get() == false
     }
 
-    private getValidator(failFast) {
+    private getValidator(boolean failFast, AtomicBoolean powerChecked) {
         return FluentValidator.of(Car)
                 .failFast(failFast)
                 .string("title").notEmpty().b()
                 .i("power").custom(
                 { car, power ->
+                    powerChecked.set(true)
+
                     if (power > 100) {
                         return FluentValidator.Result.success()
                     } else {

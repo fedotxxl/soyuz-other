@@ -42,6 +42,44 @@ public interface FluentValidatorRule<R, V> {
         }
     }
 
+    interface Int {
+        class Min<R> extends AbstractRule<R, Integer> {
+            private int min;
+
+            public Min(int min) {
+                this.min = min;
+            }
+
+            @Override
+            protected String getCode() {
+                return "min";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Integer value) {
+                return value != null && value > min;
+            }
+        }
+
+        class Max<R> extends AbstractRule<R, Integer> {
+            private int max;
+
+            public Max(int max) {
+                this.max = max;
+            }
+
+            @Override
+            protected String getCode() {
+                return "max";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Integer value) {
+                return value != null && value < max;
+            }
+        }
+    }
+
     interface Obj {
         class NotNull<R, V> extends AbstractRule<R, V> {
             @Override
@@ -146,6 +184,26 @@ public interface FluentValidatorRule<R, V> {
                 }
                 
                 return null;
+            }
+        }
+
+        class Validator<R, V> implements FluentValidatorRule<R, V> {
+
+            private FluentValidator.Data<V> validator;
+
+            public Validator(FluentValidator.Data<V> validator) {
+                this.validator = validator;
+            }
+
+            @Override
+            public FluentValidator.Result validate(R rootObject, String property, V value) {
+                FluentValidator.Result result = validator.validate(value);
+
+                if (result.isOk()) {
+                    return result;
+                } else {
+                    return FluentValidator.Result.failure(FluentValidatorObjects.ErrorUtils.addParentProperty(result.getErrors(), property));
+                }
             }
         }
     }

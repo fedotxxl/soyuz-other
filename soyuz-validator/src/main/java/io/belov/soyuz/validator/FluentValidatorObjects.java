@@ -67,7 +67,7 @@ public class FluentValidatorObjects {
 
 
         public BuilderClass validator(FluentValidator.Data<V> validator) {
-            data.setValidator(validator);
+            data.addRule(new FluentValidatorRule.Base.Validator<>(validator));
 
             return _this();
         }
@@ -189,18 +189,7 @@ public class FluentValidatorObjects {
     }
 
     public static class IntData<R> extends BaseData<R, Integer> {
-        private Integer min;
-        private Integer max;
 
-        public IntData min(int min) {
-            this.min = min;
-            return this;
-        }
-
-        public IntData max(int max) {
-            this.max = max;
-            return this;
-        }
     }
 
     @Setter
@@ -230,5 +219,36 @@ public class FluentValidatorObjects {
             this.max = max;
             return this;
         }
+    }
+
+    public static class PropertyUtils {
+
+        public static String mix(String parent, String child) {
+            return parent + "." + child;
+        }
+
+    }
+
+    public static class ErrorUtils {
+
+        public static List<FluentValidator.Error> addParentProperty(List<FluentValidator.Error> errors, String parentProperty) {
+            List<FluentValidator.Error> answer = new ArrayList<>(errors.size());
+
+            for (FluentValidator.Error error : errors) {
+                answer.add(addParentProperty(error, parentProperty));
+            }
+
+            return answer;
+        }
+
+        public static FluentValidator.Error addParentProperty(FluentValidator.Error error, String parentProperty) {
+            return new FluentValidator.Error(
+                    PropertyUtils.mix(parentProperty, error.getProperty()),
+                    error.getCode(),
+                    error.getMessage(),
+                    error.getValue()
+            );
+        }
+
     }
 }
