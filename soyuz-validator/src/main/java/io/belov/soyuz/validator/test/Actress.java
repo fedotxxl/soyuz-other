@@ -49,7 +49,7 @@ public class Actress {
                 .object("en", TagTranslation.class).validator(tagTranslationValidator).message("a.en.translation.wrong").b()
                 .object("ja", TagTranslation.class).eq(jaTranslation).validator(tagTranslationValidator).b()
                 .string("blogUrl").url().notEmpty().b()
-                .collection("tags", Tag.class).notEmpty().min(0).max(5).validator(Tag.getValidator()).b()
+                .collection("tags", Tag.class).notEmpty().min(0).max(5).itemValidator(Tag.getValidator()).b()
                 .object("sizes", Actress.Sizes.class).notNull().custom((o, value, validator) ->  {
                     return validator
                             .i("height").min(4).max(5).b()

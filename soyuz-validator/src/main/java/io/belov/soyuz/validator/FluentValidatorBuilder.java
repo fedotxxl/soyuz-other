@@ -4,6 +4,7 @@ import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -119,7 +120,7 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     public static class StringBuilder<R> extends AbstractObjectBuilder<R, String, StringBuilder<R>, FluentValidatorObjects.StringData<R>> {
 
         public StringBuilder(FluentValidatorBuilder<R> builder, String property) {
-            super(builder, new FluentValidatorObjects.StringData(), property);
+            super(builder, new FluentValidatorObjects.StringData<>(), property);
         }
 
         public StringBuilder<R> url() {
@@ -144,46 +145,40 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         }
     }
 
-    public static class CollectionBuilder<P, V> {
-        private FluentValidatorBuilder<P> builder;
-        private String property;
-        private FluentValidatorObjects.CollectionData data;
+    public static class CollectionBuilder<R, V> extends AbstractObjectBuilder<R, Collection<V>, CollectionBuilder<R, V>, FluentValidatorObjects.CollectionData<R, Collection<V>>> {
 
-        public CollectionBuilder(FluentValidatorBuilder<P> builder, String property) {
-            this.builder = builder;
-            this.property = property;
-            this.data = new FluentValidatorObjects.CollectionData();
+        public CollectionBuilder(FluentValidatorBuilder<R> builder, String property) {
+            super(builder, new FluentValidatorObjects.CollectionData<>(), property);
         }
 
-        public FluentValidatorBuilder<P> b() {
-            return builder.addFluentValidatorValidationData(property, data);
-        }
+        public CollectionBuilder<R, V> notEmpty() {
+            data.addRule(new FluentValidatorRule.Coll.NotEmpty<>());
 
-        public CollectionBuilder<P, V> notEmpty() {
-            data.notEmpty();
             return this;
         }
 
-        public CollectionBuilder<P, V> min(int min) {
-            data.min(min);
+        public CollectionBuilder<R, V> min(int min) {
+            data.addRule(new FluentValidatorRule.Coll.Min<>(min));
+
             return this;
         }
 
-        public CollectionBuilder<P, V> max(int max) {
-            data.max(max);
+        public CollectionBuilder<R, V> max(int max) {
+            data.addRule(new FluentValidatorRule.Coll.Max<>(max));
+
             return this;
         }
 
-        public CollectionBuilder<P, V> validator(FluentValidator.Data<V> validator) {
-            data.setValidator(validator);
-            return this;
-        }
+        public CollectionBuilder<R, V> itemValidator(FluentValidator.Data<V> validator) {
+            data.addRule(new FluentValidatorRule.Coll.ItemValidator<>(validator));
 
+            return _this();
+        }
     }
 
     public static class ObjectBuilder<R, V> extends AbstractObjectBuilder<R, V, ObjectBuilder<R, V>, FluentValidatorObjects.ObjectData<R, V>> {
         public ObjectBuilder(FluentValidatorBuilder<R> builder, String property) {
-            super(builder, new FluentValidatorObjects.ObjectData<R, V>(), property);
+            super(builder, new FluentValidatorObjects.ObjectData<>(), property);
         }
     }
 

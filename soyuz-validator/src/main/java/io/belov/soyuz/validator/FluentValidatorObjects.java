@@ -200,25 +200,8 @@ public class FluentValidatorObjects {
         private Pattern matches;
     }
 
-    public static class CollectionData extends ObjectData {
-        private boolean notEmpty;
-        private Integer min;
-        private Integer max;
+    public static class CollectionData<R, V> extends ObjectData<R, V> {
 
-        public CollectionData notEmpty() {
-            this.notEmpty = true;
-            return this;
-        }
-
-        public CollectionData min(int min) {
-            this.min = min;
-            return this;
-        }
-
-        public CollectionData max(int max) {
-            this.max = max;
-            return this;
-        }
     }
 
     public static class PropertyUtils {

@@ -4,6 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.nio.file.FileVisitResult;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -90,6 +94,89 @@ public interface FluentValidatorRule<R, V> {
             @Override
             protected boolean isValid(R rootObject, V value) {
                 return value != null;
+            }
+        }
+    }
+
+    interface Coll {
+        class NotEmpty<R, V> extends AbstractRule<R, Collection<V>> {
+
+            @Override
+            protected String getCode() {
+                return "notEmpty";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Collection<V> value) {
+                return value != null && !value.isEmpty();
+            }
+        }
+
+        class Min<R, V> extends AbstractRule<R, Collection<V>> {
+            private int min;
+
+            public Min(int min) {
+                this.min = min;
+            }
+
+            @Override
+            protected String getCode() {
+                return "min";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Collection<V> value) {
+                return value != null && value.size() > min;
+            }
+        }
+
+        class Max<R, V> extends AbstractRule<R, Collection<V>> {
+            private int max;
+
+            public Max(int max) {
+                this.max = max;
+            }
+
+            @Override
+            protected String getCode() {
+                return "max";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Collection<V> value) {
+                return value == null || value.size() < max;
+            }
+        }
+
+        class ItemValidator<R, V> implements FluentValidatorRule<R, Collection<V>> {
+
+            private FluentValidator.Data<V> validator;
+
+            public ItemValidator(FluentValidator.Data<V> validator) {
+                this.validator = validator;
+            }
+
+            @Override
+            public FluentValidator.Result validate(R rootObject, String property, Collection<V> value) {
+                if (value == null) {
+                    return FluentValidator.Result.success();
+                } else {
+                    List<FluentValidator.Error> errors = new ArrayList<>();
+
+                    for (V item : value) {
+                        FluentValidator.Result result = validator.validate(item);
+
+                        if (result.hasErrors()) {
+                            errors.addAll(FluentValidatorObjects.ErrorUtils.addParentProperty(result.getErrors(), property));
+                        }
+                    }
+
+                    if (errors.isEmpty()) {
+                        return FluentValidator.Result.success();
+                    } else {
+                        return FluentValidator.Result.failure(errors);
+                    }
+                }
             }
         }
     }
