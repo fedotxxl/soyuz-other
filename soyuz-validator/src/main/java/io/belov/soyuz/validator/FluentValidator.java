@@ -5,6 +5,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,11 +98,19 @@ public class FluentValidator<T> {
         }
 
         public static <V> Result failure(String code, V value) {
-            return failure(null, code, value);
+            return failure(code, value, null);
+        }
+
+        public static <V> Result failure(String code, V value, Object[] args) {
+            return failure(null, code, value, args);
         }
 
         public static <V> Result failure(String property, String code, V value) {
-            return failure(new Error<>(property, code, null, value));
+            return failure(property, code, value, null);
+        }
+
+        public static <V> Result failure(String property, String code, V value, Object[] args) {
+            return failure(new Error<>(property, code, null, value, args));
         }
 
         public static Result failure(Error error) {
@@ -139,15 +148,27 @@ public class FluentValidator<T> {
         private String message;
         private V value;
 
+        @Nullable
+        private Object[] args;
+
         public Error(String property, String code, V value) {
-            this(property, code, null, value);
+            this(property, code, null, value, null);
+        }
+
+        public Error(String property, String code, V value, Object[] args) {
+            this(property, code, null, value, args);
         }
 
         public Error(String property, String code, String message, V value) {
+            this(property, code, message, value, null);
+        }
+
+        public Error(String property, String code, String message, V value, Object[] args) {
             this.property = property;
             this.code = code;
             this.message = message;
             this.value = value;
+            this.args = args;
         }
     }
 
