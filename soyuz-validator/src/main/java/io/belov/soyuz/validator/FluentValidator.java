@@ -115,6 +115,19 @@ public class FluentValidator<T> {
         public static Result failure(List<Error> errors) {
             return new Result(errors);
         }
+
+        public void ifHasErrorsThrowAnException() {
+            if (hasErrors()) {
+                throw new ValidationException(errors);
+            }
+        }
+    }
+
+    @AllArgsConstructor
+    @Getter
+    @ToString
+    public static class ValidationException extends RuntimeException {
+        private List<Error> errors;
     }
 
     @Getter
