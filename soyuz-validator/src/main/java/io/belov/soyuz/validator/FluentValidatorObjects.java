@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -100,12 +102,12 @@ public class FluentValidatorObjects {
      */
     public static interface CustomValidator {
 
-        public static interface Simple<P, V> extends CustomValidator {
-            FluentValidator.Result validate(P object, V propertyValue);
+        interface Simple<P, V> extends CustomValidator {
+            FvCustomValidatorResult validate(P object, V propertyValue);
         }
 
-        public static interface WithBuilder<P, V> extends CustomValidator {
-            FluentValidator.Result validate(P object, V propertyValue, FluentValidatorBuilder<V> fluentValidatorBuilder);
+        interface WithBuilder<P, V> extends CustomValidator {
+            FvCustomValidatorResult validate(P object, V propertyValue, FluentValidatorBuilder<V> fluentValidatorBuilder);
         }
     }
 
@@ -207,7 +209,13 @@ public class FluentValidatorObjects {
     public static class PropertyUtils {
 
         public static String mix(String parent, String child) {
-            return parent + "." + child;
+            if (parent == null) {
+                return child;
+            } else if (child == null) {
+                return parent;
+            } else {
+                return parent + "." + child;
+            }
         }
 
     }

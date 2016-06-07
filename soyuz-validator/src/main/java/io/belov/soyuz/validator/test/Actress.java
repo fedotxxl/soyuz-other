@@ -2,6 +2,7 @@ package io.belov.soyuz.validator.test;
 
 import io.belov.soyuz.validator.FluentValidator;
 import io.belov.soyuz.validator.FluentValidatorBuilder;
+import io.belov.soyuz.validator.FvCustomValidatorResult;
 
 import java.util.Set;
 
@@ -44,19 +45,21 @@ public class Actress {
                 .failFast()
                 .notNull()
                 .custom((object, propertyValue, fluentValidatorBuilder) -> {
-                    return FluentValidator.Result.success();
+                    return FvCustomValidatorResult.success();
                 })
                 .object("en", TagTranslation.class).validator(tagTranslationValidator).message("a.en.translation.wrong").b()
                 .object("ja", TagTranslation.class).eq(jaTranslation).validator(tagTranslationValidator).b()
                 .string("blogUrl").url().notEmpty().b()
                 .collection("tags", Tag.class).notEmpty().min(0).max(5).itemValidator(Tag.getValidator()).b()
-                .object("sizes", Actress.Sizes.class).notNull().custom((o, value, validator) ->  {
-                    return validator
-                            .i("height").min(4).max(5).b()
-                            .i("breast").min(1).b()
-                            .i("waist").min(1).max(999).b()
-                            .build()
-                            .validate(value);
+                .object("sizes", Actress.Sizes.class).notNull().custom((o, value, validator) -> {
+                    return FvCustomValidatorResult.from(
+                            validator
+                                    .i("height").min(4).max(5).b()
+                                    .i("breast").min(1).b()
+                                    .i("waist").min(1).max(999).b()
+                                    .build()
+                                    .validate(value)
+                    );
                 }).b()
                 .build();
     }

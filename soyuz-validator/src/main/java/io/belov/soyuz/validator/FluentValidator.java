@@ -61,7 +61,13 @@ public class FluentValidator<T> {
 
         private Object getPropertyValue(R o, String property) {
             try {
-                return (property == null) ? o : PROPERTY_UTILS_BEAN.getNestedProperty(o, property);
+                if (o == null) {
+                    return null;
+                } else if (property == null) {
+                    return o;
+                } else {
+                    return PROPERTY_UTILS_BEAN.getNestedProperty(o, property);
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

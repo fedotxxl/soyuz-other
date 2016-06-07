@@ -9,9 +9,9 @@ class CustomFluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(Car).i("power").custom(
                 { c, power ->
                     if (power > 100) {
-                        return FluentValidator.Result.success(c)
+                        return FvCustomValidatorResult.success()
                     } else {
-                        return FluentValidator.Result.failure(c, "power", "min", power)
+                        return FvCustomValidatorResult.failure("min")
                     }
                 } as FluentValidatorObjects.CustomValidator.Simple).b().build()
 
@@ -19,21 +19,62 @@ class CustomFluentValidatorSpec extends Specification {
         assert validator.validate(car) == result(car)
 
         where:
-        car | result
+        car                 | result
         new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
-                new Car(power: 90) | { c -> FluentValidator.Result.failure(c, "power", "min", 90) }
+        new Car(power: 90)  | { c -> FluentValidator.Result.failure(c, "power", "min", 90) }
+    }
+
+    def "collection"() {
+        when:
+        def validator = FluentValidator.of(Car).collection("wheels").custom({ c, wheels ->
+            if (wheels.size() != 4) {
+                return FvCustomValidatorResult.failure("wrongNumber")
+            } else {
+                return FvCustomValidatorResult.success()
+            }
+        } as FluentValidatorObjects.CustomValidator.Simple).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                                                                   | result
+        new Car(wheels: [new Wheel(), new Wheel(), new Wheel(), new Wheel()]) | { c -> FluentValidator.Result.success(c) }
+        new Car(wheels: [new Wheel()])                                        | { c -> FluentValidator.Result.failure(c, "wheels", "wrongNumber", c.wheels) }
+    }
+
+    def "deep"() {
+        when:
+        def validator = FluentValidator.of(Car).collection("engine").custom({ c, engine, validator ->
+            return FvCustomValidatorResult.from(
+                    validator
+                            .string("title").notEmpty().b()
+                            .build()
+                            .validate(engine)
+            )
+        } as FluentValidatorObjects.CustomValidator.WithBuilder).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                                       | result
+        new Car()                                 | { c -> FluentValidator.Result.failure(c, "engine.title", "notEmpty", null) }
+        new Car(engine: new Engine(title: "bmw")) | { c -> FluentValidator.Result.success(c) }
     }
 
     static class Car {
-        private String title
-        private int power
+        String title
+        int power
+        Engine engine
+        List<Wheel> wheels
+    }
 
-        int getPower() {
-            return power
-        }
+    static class Wheel {
+        String position
+    }
 
-        String getTitle() {
-            return title
-        }
+    static class Engine {
+        String title
     }
 }

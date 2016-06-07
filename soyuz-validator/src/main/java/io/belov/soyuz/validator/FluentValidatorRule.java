@@ -264,13 +264,39 @@ public interface FluentValidatorRule<R, V> {
 
             @Override
             public FluentValidator.Result validate(R rootObject, String property, V value) {
+                FvCustomValidatorResult result = null;
+
                 if (customSimple != null) {
-                    return customSimple.validate(rootObject, value);    
+                    result = customSimple.validate(rootObject, value);
                 } else if (customWithBuilder != null) {
-                    return customWithBuilder.validate(rootObject, value, new FluentValidatorBuilder<>());    
+                    result = customWithBuilder.validate(rootObject, value, new FluentValidatorBuilder<>());
                 }
-                
-                return null;
+
+                if (result == null) {
+                    return null;
+                } else {
+                    return toFvResult(result, rootObject, property, value);
+                }
+            }
+
+            private FluentValidator.Result toFvResult(FvCustomValidatorResult result, R rootObject, String property, V value) {
+                if (result.isOk()) {
+                    return FluentValidator.Result.success(rootObject);
+                } else {
+                    List<FvCustomValidatorError> errorsSource = result.getErrors();
+                    List<FluentValidator.Error> errors = new ArrayList<>(errorsSource.size());
+
+                    for (FvCustomValidatorError e : errorsSource) {
+                        errors.add(new FluentValidator.Error(
+                                FluentValidatorObjects.PropertyUtils.mix(property, e.getProperty()),
+                                e.getCode(),
+                                (e.hasProperty()) ? e.getValue() : value,
+                                e.getArgs()
+                        ));
+                    }
+
+                    return FluentValidator.Result.failure(rootObject, errors);
+                }
             }
         }
 
