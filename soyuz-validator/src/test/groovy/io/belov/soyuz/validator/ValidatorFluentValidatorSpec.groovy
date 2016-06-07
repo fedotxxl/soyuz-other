@@ -16,24 +16,34 @@ class ValidatorFluentValidatorSpec extends Specification {
                 .object("engine", CarEngine).notNull().validator(engineValidator).b()
                 .build()
 
+
         then:
-        assert carValidator.validate(new Car()) == FluentValidator.Result.failure(
-                [
-                        new FluentValidator.Error("title", "notEmpty", null),
-                        new FluentValidator.Error("engine", "notNull", null)
-                ]
-        )
+        assert carValidator.validate(car) == result(car)
 
-        assert carValidator.validate(new Car(title: "", engine: new CarEngine())) == FluentValidator.Result.failure(
-                [
-                        new FluentValidator.Error("title", "notEmpty", ""),
-                        new FluentValidator.Error("engine.title", "notEmpty", null),
-                        new FluentValidator.Error("engine.power", "min", 0)
+        where:
+        car                                                                    | result
+        new Car()                                                              | { c ->
+            FluentValidator.Result.failure(
+                    c,
+                    [
+                            new FluentValidator.Error("title", "notEmpty", null),
+                            new FluentValidator.Error("engine", "notNull", null)
+                    ]
+            )
+        }
 
-                ]
-        )
+        new Car(title: "", engine: new CarEngine())                            | { c ->
+            FluentValidator.Result.failure(
+                    c,
+                    [
+                            new FluentValidator.Error("title", "notEmpty", ""),
+                            new FluentValidator.Error("engine.title", "notEmpty", null),
+                            new FluentValidator.Error("engine.power", "min", 0)
 
-        assert carValidator.validate(new Car(title: "Lada", engine: new CarEngine(title: "v8", power: 113))) == FluentValidator.Result.success()
+                    ])
+        }
+
+        new Car(title: "Lada", engine: new CarEngine(title: "v8", power: 113)) | { c -> FluentValidator.Result.success(c) }
     }
 
     static class Car {

@@ -1,12 +1,10 @@
 package io.belov.soyuz.validator;
 
 import lombok.*;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +31,7 @@ public class FluentValidator<T> {
 //    }
 
     @ToString
-    public static class Data<T> {
+    public static class Data<R> {
         private List<FluentValidatorBuilder.ValidationDataWithProperties> validationData = new ArrayList<>();
 
         public Data(List<FluentValidatorBuilder.ValidationDataWithProperties> validationData) {
@@ -44,24 +42,24 @@ public class FluentValidator<T> {
             return validationData;
         }
 
-        public FluentValidator.Result validate(T o) {
+        public FluentValidator.Result validate(R rootObject) {
             List<Error> errors = new ArrayList<>();
 
             for (FluentValidatorBuilder.ValidationDataWithProperties validationDataWithProperties : validationData) {
                 String property = validationDataWithProperties.getProperty();
-                Object value = getPropertyValue(o, property);
+                Object value = getPropertyValue(rootObject, property);
 
-                FluentValidator.Result result = validationDataWithProperties.getData().validate(o, property, value);
+                FluentValidator.Result result = validationDataWithProperties.getData().validate(rootObject, property, value);
 
                 if (result != null) {
                     errors.addAll(result.getErrors());
                 }
             }
 
-            return FluentValidator.Result.failure(errors);
+            return FluentValidator.Result.failure(rootObject, errors);
         }
 
-        private Object getPropertyValue(T o, String property) {
+        private Object getPropertyValue(R o, String property) {
             try {
                 return (property == null) ? o : PROPERTY_UTILS_BEAN.getNestedProperty(o, property);
             } catch (Exception e) {
@@ -72,12 +70,14 @@ public class FluentValidator<T> {
 
     @ToString
     @EqualsAndHashCode
-    public static class Result {
-        private static final Result SUCCESS = new Result(Collections.unmodifiableList(new ArrayList<>()));
+    public static class Result<R> {
+        private static final Result SUCCESS = new Result(null, Collections.unmodifiableList(new ArrayList<>()));
 
+        private R rootObject;
         private List<Error> errors;
 
-        private Result(List<Error> errors) {
+        private Result(R rootObject, List<Error> errors) {
+            this.rootObject = rootObject;
             this.errors = errors;
         }
 
@@ -89,6 +89,10 @@ public class FluentValidator<T> {
             return !errors.isEmpty();
         }
 
+        public R getRootObject() {
+            return rootObject;
+        }
+
         public List<Error> getErrors() {
             return errors;
         }
@@ -97,37 +101,41 @@ public class FluentValidator<T> {
             return SUCCESS;
         }
 
-        public static <V> Result failure(String code, V value) {
-            return failure(code, value, null);
+        public static <R> Result<R> success(R rootObject) {
+            return new Result<>(rootObject, new ArrayList<>());
         }
 
-        public static <V> Result failure(String code, V value, Object[] args) {
-            return failure(null, code, value, args);
+        public static <R, V> Result<R> failure(R rootObject, String code, V value) {
+            return failure(rootObject, code, value, null);
         }
 
-        public static <V> Result failure(String property, String code, V value) {
-            return failure(property, code, value, null);
+        public static <R, V> Result<R> failure(R rootObject, String code, V value, Object[] args) {
+            return failure(rootObject, null, code, value, args);
         }
 
-        public static <V> Result failure(String property, String code, V value, Object[] args) {
-            return failure(new Error<>(property, code, value, args));
+        public static <R, V> Result<R> failure(R rootObject, String property, String code, V value) {
+            return failure(rootObject, property, code, value, null);
         }
 
-        public static Result failure(Error error) {
+        public static <R, V> Result<R> failure(R rootObject, String property, String code, V value, Object[] args) {
+            return failure(rootObject, new Error<>(property, code, value, args));
+        }
+
+        public static <R> Result<R> failure(R rootObject, Error error) {
             List<Error> answer = new ArrayList<>();
 
             answer.add(error);
 
-            return new Result(answer);
+            return new Result<>(rootObject, answer);
         }
 
-        public static Result failure(List<Error> errors) {
-            return new Result(errors);
+        public static <R> Result<R> failure(R rootObject, List<Error> errors) {
+            return new Result<>(rootObject, errors);
         }
 
         public void ifHasErrorsThrowAnException() {
             if (hasErrors()) {
-                throw new ValidationException(errors);
+                throw new ValidationException(rootObject, errors);
             }
         }
     }
@@ -136,6 +144,7 @@ public class FluentValidator<T> {
     @Getter
     @ToString
     public static class ValidationException extends RuntimeException {
+        private Object rootObject;
         private List<Error> errors;
     }
 

@@ -21,7 +21,7 @@ public interface FluentValidatorRule<R, V> {
 
         public FluentValidator.Result validate(R rootObject, String property, V value) {
             if (!isValid(rootObject, value)) {
-                return FluentValidator.Result.failure(property, getCode(), value);
+                return FluentValidator.Result.failure(rootObject, property, getCode(), value);
             } else {
                 return null;
             }
@@ -174,7 +174,7 @@ public interface FluentValidatorRule<R, V> {
                     if (errors.isEmpty()) {
                         return FluentValidator.Result.success();
                     } else {
-                        return FluentValidator.Result.failure(errors);
+                        return FluentValidator.Result.failure(rootObject, errors);
                     }
                 }
             }
@@ -289,7 +289,7 @@ public interface FluentValidatorRule<R, V> {
                 if (result.isOk()) {
                     return result;
                 } else {
-                    return FluentValidator.Result.failure(FluentValidatorObjects.ErrorUtils.addParentProperty(result.getErrors(), property));
+                    return FluentValidator.Result.failure(rootObject, FluentValidatorObjects.ErrorUtils.addParentProperty(result.getErrors(), property));
                 }
             }
         }

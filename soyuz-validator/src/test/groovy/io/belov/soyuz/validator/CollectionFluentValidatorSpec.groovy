@@ -11,9 +11,13 @@ class CollectionFluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(Team).collection("members").notEmpty().b().build()
 
         then:
-        assert validator.validate(new Team()) == FluentValidator.Result.failure("members", "notEmpty", null)
-        assert validator.validate(new Team(members: [] as Set)) == FluentValidator.Result.failure("members", "notEmpty", [] as Set)
-        assert validator.validate(new Team(members: [new Member(name: "filya")])) == FluentValidator.Result.success()
+        assert validator.validate(team) == result(team)
+
+        where:
+        team                                           | result
+        new Team()                                     | { t -> FluentValidator.Result.failure(t, "members", "notEmpty", null) }
+        new Team(members: [] as Set)                   | { t -> FluentValidator.Result.failure(t, "members", "notEmpty", [] as Set) }
+        new Team(members: [new Member(name: "filya")]) | { t -> FluentValidator.Result.success(t) }
     }
 
     def "min"() {
@@ -21,40 +25,48 @@ class CollectionFluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(Team).collection("members").min(2).b().build()
 
         then:
-        assert validator.validate(new Team()) == FluentValidator.Result.failure("members", "min", null)
-        assert validator.validate(new Team(members: [new Member(name: "filya")] as Set)) == FluentValidator.Result.failure("members", "min", [new Member(name: "filya")] as Set)
-        assert validator.validate(new Team(members: [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set)) == FluentValidator.Result.success()
+        assert validator.validate(team) == result(team)
+
+        where:
+        team                                                                                                         | result
+        new Team()                                                                                                   | { t -> FluentValidator.Result.failure(t, "members", "min", null) }
+        new Team(members: [new Member(name: "filya")] as Set)                                                        | { t -> FluentValidator.Result.failure(t, "members", "min", [new Member(name: "filya")] as Set) }
+        new Team(members: [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set) | { t -> FluentValidator.Result.success(t) }
     }
 
     def "max"() {
-        when:
+        setup:
         def validator = FluentValidator.of(Team).collection("members").max(2).b().build()
 
-        then:
-        assert validator.validate(new Team()) == FluentValidator.Result.success()
-        assert validator.validate(new Team(members: [new Member(name: "filya")] as Set)) == FluentValidator.Result.success()
-
         when:
-        def members = [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set
+        def team = new Team(members: members)
 
         then:
-        assert validator.validate(new Team(members: members)) == FluentValidator.Result.failure("members", "max", members)
+        assert validator.validate(team) == result(team, members)
+
+        where:
+        members                                                                                   | result
+        null                                                                                      | { t, m -> FluentValidator.Result.success(t) }
+        [new Member(name: "filya")] as Set                                                        | { t, m -> FluentValidator.Result.success(t) }
+        [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set | { t, m -> FluentValidator.Result.failure(t, "members", "max", m) }
     }
 
     def "itemValidator"() {
-        when:
+        setup:
         def memberValidator = FluentValidator.of(Member).string("name").notEmpty().b().build()
         def validator = FluentValidator.of(Team).collection("members").itemValidator(memberValidator).b().build()
 
-        then:
-        assert validator.validate(new Team()) == FluentValidator.Result.success()
-        assert validator.validate(new Team(members: [new Member(name: "filya")] as Set)) == FluentValidator.Result.success()
-
         when:
-        def member = new Member(name: "")
+        def team = new Team(members: members)
 
         then:
-        assert validator.validate(new Team(members: [member] as Set)) == FluentValidator.Result.failure("members.name", "notEmpty", "") //todo think about value?
+        assert validator.validate(team) == result(team, members)
+
+        where:
+        members                            | result
+        null                               | { t, m -> FluentValidator.Result.success(t) }
+        [new Member(name: "filya")] as Set | { t, m -> FluentValidator.Result.success(t) }
+        [new Member(name: "")] as Set      | { t, m -> FluentValidator.Result.failure(t, "members.name", "notEmpty", "") } //todo think about value?
     }
 
     @EqualsAndHashCode

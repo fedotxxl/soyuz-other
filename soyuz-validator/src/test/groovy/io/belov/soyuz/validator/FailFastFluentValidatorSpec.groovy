@@ -22,7 +22,7 @@ class FailFastFluentValidatorSpec extends Specification {
         result = validator.validate(car)
 
         then:
-        assert result == FluentValidator.Result.success()
+        assert result == FluentValidator.Result.success(car)
         assert checked.get() == true
 
         when:
@@ -31,7 +31,7 @@ class FailFastFluentValidatorSpec extends Specification {
         result = validator.validate(car)
 
         then:
-        assert result == FluentValidator.Result.failure([new FluentValidator.Error("title", "notEmpty", null, null), new FluentValidator.Error("power", "min", null, 90)])
+        assert result == FluentValidator.Result.failure(car, [new FluentValidator.Error("title", "notEmpty", null), new FluentValidator.Error("power", "min", 90)])
         assert checked.get() == true
 
         when:
@@ -40,7 +40,7 @@ class FailFastFluentValidatorSpec extends Specification {
         result = getValidator(true, checked).validate(car)
 
         then:
-        assert result == FluentValidator.Result.failure("title", "notEmpty", null)
+        assert result == FluentValidator.Result.failure(car, "title", "notEmpty", null)
         assert checked.get() == false
     }
 
@@ -53,9 +53,9 @@ class FailFastFluentValidatorSpec extends Specification {
                     powerChecked.set(true)
 
                     if (power > 100) {
-                        return FluentValidator.Result.success()
+                        return FluentValidator.Result.success(car)
                     } else {
-                        return FluentValidator.Result.failure("power", "min", power)
+                        return FluentValidator.Result.failure(car, "power", "min", power)
                     }
                 } as FluentValidatorObjects.CustomValidator.Simple).b()
                 .build()

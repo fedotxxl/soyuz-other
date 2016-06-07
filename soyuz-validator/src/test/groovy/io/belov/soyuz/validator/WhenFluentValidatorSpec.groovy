@@ -9,13 +9,17 @@ class WhenFluentValidatorSpec extends Specification {
     def "when (simple)"() {
         when:
         def validator = FluentValidator.of(Car)
-                .string("title").notEmpty().when({ car, title -> car.power > 100 } as BiFunction).b()
+                .string("title").notEmpty().when({ c, title -> c.power > 100 } as BiFunction).b()
                 .build()
 
         then:
-        assert validator.validate(new Car(power: 50)) == FluentValidator.Result.success() //skip by when
-        assert validator.validate(new Car(title: "Lada", power: 150)) == FluentValidator.Result.success() //correct title
-        assert validator.validate(new Car(power: 150)) == FluentValidator.Result.failure("title", "notEmpty", null)
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                                | result
+        new Car(power: 50)                 | { c -> FluentValidator.Result.success(c) } //skip by when
+        new Car(title: "Lada", power: 150) | { c -> FluentValidator.Result.success(c) } //correct title
+        new Car(power: 150)                | { c -> FluentValidator.Result.failure(c, "title", "notEmpty", null) }
     }
 
     static class Car {

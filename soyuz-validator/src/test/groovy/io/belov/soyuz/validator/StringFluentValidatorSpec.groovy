@@ -1,4 +1,5 @@
 package io.belov.soyuz.validator
+
 import spock.lang.Specification
 
 class StringFluentValidatorSpec extends Specification {
@@ -8,9 +9,13 @@ class StringFluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(Car).string("title").notEmpty().b().build()
 
         then:
-        assert validator.validate(new Car()) == FluentValidator.Result.failure("title", "notEmpty", null)
-        assert validator.validate(new Car(title: "")) == FluentValidator.Result.failure("title", "notEmpty", "")
-        assert validator.validate(new Car(title: "Lada")) == FluentValidator.Result.success()
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                    | result
+        new Car()              | { c -> FluentValidator.Result.failure(c, "title", "notEmpty", null) }
+        new Car(title: "")     | { c -> FluentValidator.Result.failure(c, "title", "notEmpty", "") }
+        new Car(title: "Lada") | { c -> FluentValidator.Result.success(c) }
     }
 
     static class Car {

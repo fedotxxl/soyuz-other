@@ -31,8 +31,8 @@ class FluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(String).eq("hello world").build()
 
         then:
-        assert validator.validate("hello") == FluentValidator.Result.failure("notEq", "hello")
-        assert validator.validate("hello world") == FluentValidator.Result.success()
+        assert validator.validate("hello") == FluentValidator.Result.failure("hello", "notEq", "hello")
+        assert validator.validate("hello world") == FluentValidator.Result.success("hello world")
     }
 
     def "eq (function)"() {
@@ -40,8 +40,8 @@ class FluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(String).eq({ it == "hello" || it == "world" } as Function).build()
 
         then:
-        assert validator.validate("hello") == FluentValidator.Result.success()
-        assert validator.validate("world") == FluentValidator.Result.success()
-        assert validator.validate("hello world") == FluentValidator.Result.failure("notEq", "hello world")
+        assert validator.validate("hello") == FluentValidator.Result.success("hello")
+        assert validator.validate("world") == FluentValidator.Result.success("world")
+        assert validator.validate("hello world") == FluentValidator.Result.failure("hello world", "notEq", "hello world")
     }
 }

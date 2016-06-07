@@ -7,17 +7,21 @@ class CustomFluentValidatorSpec extends Specification {
     def "simple"() {
         when:
         def validator = FluentValidator.of(Car).i("power").custom(
-                { car, power ->
+                { c, power ->
                     if (power > 100) {
-                        return FluentValidator.Result.success()
+                        return FluentValidator.Result.success(c)
                     } else {
-                        return FluentValidator.Result.failure("power", "min", power)
+                        return FluentValidator.Result.failure(c, "power", "min", power)
                     }
                 } as FluentValidatorObjects.CustomValidator.Simple).b().build()
 
         then:
-        assert validator.validate(new Car(power: 150)) == FluentValidator.Result.success()
-        assert validator.validate(new Car(power: 90)) == FluentValidator.Result.failure("power", "min", 90)
+        assert validator.validate(car) == result(car)
+
+        where:
+        car | result
+        new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
+                new Car(power: 90) | { c -> FluentValidator.Result.failure(c, "power", "min", 90) }
     }
 
     static class Car {

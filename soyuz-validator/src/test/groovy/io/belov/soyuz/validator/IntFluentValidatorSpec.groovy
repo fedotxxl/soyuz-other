@@ -1,4 +1,5 @@
 package io.belov.soyuz.validator
+
 import spock.lang.Specification
 
 class IntFluentValidatorSpec extends Specification {
@@ -8,8 +9,12 @@ class IntFluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(Car).i("power").min(1).b().build()
 
         then:
-        assert validator.validate(new Car()) == FluentValidator.Result.failure("power", "min", 0)
-        assert validator.validate(new Car(power: 150)) == FluentValidator.Result.success()
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                 | result
+        new Car()           | { c -> FluentValidator.Result.failure(c, "power", "min", 0) }
+        new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
     }
 
     def "max"() {
@@ -17,8 +22,12 @@ class IntFluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(Car).i("power").max(999).b().build()
 
         then:
-        assert validator.validate(new Car(power: 1500)) == FluentValidator.Result.failure("power", "max", 1500)
-        assert validator.validate(new Car(power: 150)) == FluentValidator.Result.success()
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                  | result
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "max", 1500) }
+        new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
     }
 
     def "min+max"() {
@@ -26,9 +35,13 @@ class IntFluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(Car).i("power").min(1).max(999).b().build()
 
         then:
-        assert validator.validate(new Car(power: -1)) == FluentValidator.Result.failure("power", "min", -1)
-        assert validator.validate(new Car(power: 1500)) == FluentValidator.Result.failure("power", "max", 1500)
-        assert validator.validate(new Car(power: 150)) == FluentValidator.Result.success()
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                  | result
+        new Car(power: -1)   | { c -> FluentValidator.Result.failure(c, "power", "min", -1) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "max", 1500) }
+        new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
     }
 
     static class Car {
