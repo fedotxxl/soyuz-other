@@ -166,6 +166,14 @@ public class FluentValidator<T> {
             this.value = value;
             this.args = args;
         }
+
+        public boolean hasProperty() {
+            return property != null && property.length() > 0;
+        }
+
+        public boolean hasArgs() {
+            return args != null;
+        }
     }
 
 //    public static void main(String[] args) {
