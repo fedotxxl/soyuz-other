@@ -110,7 +110,7 @@ public class FluentValidator<T> {
         }
 
         public static <V> Result failure(String property, String code, V value, Object[] args) {
-            return failure(new Error<>(property, code, null, value, args));
+            return failure(new Error<>(property, code, value, args));
         }
 
         public static Result failure(Error error) {
@@ -143,30 +143,26 @@ public class FluentValidator<T> {
     @EqualsAndHashCode
     @ToString
     public static class Error<V> {
-        private String property;
+
         private String code;
-        private String message;
         private V value;
 
         @Nullable
+        private String property;
+        @Nullable
         private Object[] args;
 
+        public Error(String code, V value) {
+            this(null, code, value);
+        }
+
         public Error(String property, String code, V value) {
-            this(property, code, null, value, null);
+            this(property, code, value, null);
         }
 
         public Error(String property, String code, V value, Object[] args) {
-            this(property, code, null, value, args);
-        }
-
-        public Error(String property, String code, String message, V value) {
-            this(property, code, message, value, null);
-        }
-
-        public Error(String property, String code, String message, V value, Object[] args) {
             this.property = property;
             this.code = code;
-            this.message = message;
             this.value = value;
             this.args = args;
         }

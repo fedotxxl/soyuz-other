@@ -228,8 +228,8 @@ public class FluentValidatorObjects {
             return new FluentValidator.Error(
                     PropertyUtils.mix(parentProperty, error.getProperty()),
                     error.getCode(),
-                    error.getMessage(),
-                    error.getValue()
+                    error.getValue(),
+                    error.getArgs()
             );
         }
 
