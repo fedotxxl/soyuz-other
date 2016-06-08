@@ -97,7 +97,11 @@ public class FvMessageResolverFromPropertiesFile implements FvMessageResolverI {
                 property = "common";
             }
 
-            answer.add(property + "." + code);
+            String propertyWithCode = property + "." + code;
+
+            answer.add(rootObject.getClass().getCanonicalName() + "." + propertyWithCode);
+            answer.add(rootObject.getClass().getSimpleName() + "." + propertyWithCode);
+            answer.add(propertyWithCode);
             answer.add(code);
 
             return answer;
