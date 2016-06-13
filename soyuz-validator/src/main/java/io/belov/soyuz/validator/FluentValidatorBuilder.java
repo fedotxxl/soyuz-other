@@ -134,6 +134,7 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         }
 
         public StringBuilder<R> filePath() {
+            //http://stackoverflow.com/questions/893977/java-how-to-find-out-whether-a-file-name-is-valid
             //todo
             return this;
         }
