@@ -133,6 +133,11 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             return this;
         }
 
+        public StringBuilder<R> filePath() {
+            //todo
+            return this;
+        }
+
         public StringBuilder<R> notEmpty() {
             data.addRule(new FluentValidatorRule.Str.NotEmpty());
 
