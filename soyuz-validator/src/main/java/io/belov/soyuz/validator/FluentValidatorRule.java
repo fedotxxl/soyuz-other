@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.nio.file.FileVisitResult;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -125,11 +122,13 @@ public interface FluentValidatorRule<R, V> {
     }
 
     interface D {
-        class Before<R> extends AbstractRule<R, Date> {
-            private Supplier<Date> dateSupplier;
+        class Before<R, V> extends AbstractRule<R, V> {
+            private Supplier<V> dateSupplier;
+            private Comparator<V> comparator;
 
-            public Before(Supplier<Date> dateSupplier) {
+            public Before(Supplier<V> dateSupplier, Comparator<V> comparator) {
                 this.dateSupplier = dateSupplier;
+                this.comparator = comparator;
             }
 
             @Override
@@ -138,16 +137,18 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            protected boolean isValid(R rootObject, Date value) {
-                return value == null || value.getTime() < dateSupplier.get().getTime();
+            protected boolean isValid(R rootObject, V value) {
+                return value == null || comparator.compare(value, dateSupplier.get()) < 0;
             }
         }
 
-        class After<R> extends AbstractRule<R, Date> {
-            private Supplier<Date> dateSupplier;
+        class After<R, V> extends AbstractRule<R, V> {
+            private Supplier<V> dateSupplier;
+            private Comparator<V> comparator;
 
-            public After(Supplier<Date> dateSupplier) {
+            public After(Supplier<V> dateSupplier, Comparator<V> comparator) {
                 this.dateSupplier = dateSupplier;
+                this.comparator = comparator;
             }
 
             @Override
@@ -156,18 +157,20 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            protected boolean isValid(R rootObject, Date value) {
-                return value == null || value.getTime() > dateSupplier.get().getTime();
+            protected boolean isValid(R rootObject, V value) {
+                return value == null || comparator.compare(value, dateSupplier.get()) > 0;
             }
         }
 
-        class Between<R> extends AbstractRule<R, Date> {
-            private Supplier<Date> afterSupplier;
-            private Supplier<Date> beforeSupplier;
+        class Between<R, V> extends AbstractRule<R, V> {
+            private Supplier<V> afterSupplier;
+            private Supplier<V> beforeSupplier;
+            private Comparator<V> comparator;
 
-            public Between(Supplier<Date> afterSupplier, Supplier<Date> beforeSupplier) {
+            public Between(Supplier<V> afterSupplier, Supplier<V> beforeSupplier, Comparator<V> comparator) {
                 this.afterSupplier = afterSupplier;
                 this.beforeSupplier = beforeSupplier;
+                this.comparator = comparator;
             }
 
             @Override
@@ -176,13 +179,11 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            protected boolean isValid(R rootObject, Date value) {
+            protected boolean isValid(R rootObject, V value) {
                 if (value == null) {
                     return true;
                 } else {
-                    long time = value.getTime();
-
-                    return time > afterSupplier.get().getTime() && time < beforeSupplier.get().getTime();
+                    return comparator.compare(value, afterSupplier.get()) > 0 && comparator.compare(value, beforeSupplier.get()) < 0;
                 }
             }
         }

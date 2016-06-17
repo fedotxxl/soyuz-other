@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.Nullable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -208,6 +209,10 @@ public class FluentValidatorObjects {
     }
 
     public static class DateData<R> extends ObjectData<R, Date> {
+
+    }
+
+    public static class LocalDateData<R> extends ObjectData<R, LocalDate> {
 
     }
 

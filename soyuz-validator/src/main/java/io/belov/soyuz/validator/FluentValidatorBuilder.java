@@ -3,10 +3,8 @@ package io.belov.soyuz.validator;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -56,6 +54,10 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 
     public DateBuilder<T> date(String property) {
         return new DateBuilder<>(this, getFullProperty(property));
+    }
+
+    public LocalDateBuilder<T> localDate(String property) {
+        return new LocalDateBuilder<>(this, getFullProperty(property));
     }
 
     public CollectionBuilder<T, Object> collection(String property) {
@@ -176,40 +178,57 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         }
     }
 
-    public static class DateBuilder<R> extends AbstractObjectBuilder<R, Date, DateBuilder<R>, FluentValidatorObjects.DateData<R>> {
 
+    public static class DateBuilder<R> extends AbstractDateBuilder<R, Date, DateBuilder<R>, FluentValidatorObjects.DateData<R>> {
         public DateBuilder(FluentValidatorBuilder<R> builder, String property) {
-            super(builder, new FluentValidatorObjects.DateData<>(), property);
+            super(builder, new FluentValidatorObjects.DateData<>(), property, getComparableComparator());
+        }
+    }
+
+    public static class LocalDateBuilder<R> extends AbstractDateBuilder<R, LocalDate, LocalDateBuilder<R>, FluentValidatorObjects.LocalDateData<R>> {
+        public LocalDateBuilder(FluentValidatorBuilder<R> builder, String property) {
+            super(builder, new FluentValidatorObjects.LocalDateData<>(), property, getComparableComparator());
+        }
+    }
+
+    public static abstract class AbstractDateBuilder<R, V, BuilderClass, DataClass extends FluentValidatorObjects.BaseData<R, V>> extends AbstractObjectBuilder<R, V, BuilderClass, DataClass> {
+
+        private Comparator<V> comparator;
+
+        public AbstractDateBuilder(FluentValidatorBuilder<R> builder, DataClass data, String property, Comparator<V> comparator) {
+            super(builder, data, property);
+
+            this.comparator = comparator;
         }
 
-        public DateBuilder<R> before(Date date) {
+        public BuilderClass before(V date) {
             return before(() -> date);
         }
 
-        public DateBuilder<R> before(Supplier<Date> dateSupplier) {
-            data.addRule(new FluentValidatorRule.D.Before<>(dateSupplier));
+        public BuilderClass before(Supplier<V> dateSupplier) {
+            data.addRule(new FluentValidatorRule.D.Before<>(dateSupplier, comparator));
 
-            return this;
+            return _this();
         }
 
-        public DateBuilder<R> after(Date date) {
+        public BuilderClass after(V date) {
             return after(() -> date);
         }
 
-        public DateBuilder<R> after(Supplier<Date> dateSupplier) {
-            data.addRule(new FluentValidatorRule.D.After<>(dateSupplier));
+        public BuilderClass after(Supplier<V> dateSupplier) {
+            data.addRule(new FluentValidatorRule.D.After<>(dateSupplier, comparator));
 
-            return this;
+            return _this();
         }
 
-        public DateBuilder<R> between(Date after, Date before) {
+        public BuilderClass between(V after, V before) {
             return between(() -> after, () -> before);
         }
 
-        public DateBuilder<R> between(Supplier<Date> afterSupplier, Supplier<Date> beforeSupplier) {
-            data.addRule(new FluentValidatorRule.D.Between<>(afterSupplier, beforeSupplier));
+        public BuilderClass between(Supplier<V> afterSupplier, Supplier<V> beforeSupplier) {
+            data.addRule(new FluentValidatorRule.D.Between<>(afterSupplier, beforeSupplier, comparator));
 
-            return this;
+            return _this();
         }
     }
 
@@ -296,6 +315,18 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             return builder.addFluentValidatorValidationData(property, data);
         }
 
+    }
+
+    private static <V extends Comparable> Comparator<V> getComparableComparator() {
+        return (o1, o2) -> {
+            if (o1 == null) {
+                return -1;
+            } else if (o2 == null) {
+                return 1;
+            } else {
+                return o1.compareTo(o2);
+            }
+        };
     }
 
     @ToString
