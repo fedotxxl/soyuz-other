@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -200,6 +201,10 @@ public class FluentValidatorObjects {
         private boolean url;
         private boolean mail;
         private Pattern matches;
+    }
+
+    public static class DateData<R> extends ObjectData<R, Date> {
+
     }
 
     public static class CollectionData<R, V> extends ObjectData<R, V> {

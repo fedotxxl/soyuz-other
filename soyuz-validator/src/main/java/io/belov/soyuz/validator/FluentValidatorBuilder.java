@@ -5,7 +5,10 @@ import lombok.ToString;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -50,6 +53,10 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 
     public StringBuilder<T> string(String property) {
         return new StringBuilder<>(this, getFullProperty(property));
+    }
+
+    public DateBuilder<T> date(String property) {
+        return new DateBuilder<>(this, getFullProperty(property));
     }
 
     public CollectionBuilder<T, Object> collection(String property) {
@@ -147,6 +154,43 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 
         public StringBuilder<R> matches(Pattern pattern) {
             data.setMatches(pattern);
+            return this;
+        }
+    }
+
+    public static class DateBuilder<R> extends AbstractObjectBuilder<R, Date, DateBuilder<R>, FluentValidatorObjects.DateData<R>> {
+
+        public DateBuilder(FluentValidatorBuilder<R> builder, String property) {
+            super(builder, new FluentValidatorObjects.DateData<>(), property);
+        }
+
+        public DateBuilder<R> before(Date date) {
+            return before(() -> date);
+        }
+
+        public DateBuilder<R> before(Supplier<Date> dateSupplier) {
+            data.addRule(new FluentValidatorRule.D.Before<>(dateSupplier));
+
+            return this;
+        }
+
+        public DateBuilder<R> after(Date date) {
+            return after(() -> date);
+        }
+
+        public DateBuilder<R> after(Supplier<Date> dateSupplier) {
+            data.addRule(new FluentValidatorRule.D.After<>(dateSupplier));
+
+            return this;
+        }
+
+        public DateBuilder<R> between(Date after, Date before) {
+            return between(() -> after, () -> before);
+        }
+
+        public DateBuilder<R> between(Supplier<Date> afterSupplier, Supplier<Date> beforeSupplier) {
+            data.addRule(new FluentValidatorRule.D.Between<>(afterSupplier, beforeSupplier));
+
             return this;
         }
     }

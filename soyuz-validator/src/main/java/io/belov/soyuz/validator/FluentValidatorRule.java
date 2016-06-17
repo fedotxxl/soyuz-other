@@ -7,8 +7,10 @@ import lombok.ToString;
 import java.nio.file.FileVisitResult;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by fbelov on 22.05.16.
@@ -80,6 +82,70 @@ public interface FluentValidatorRule<R, V> {
             @Override
             protected boolean isValid(R rootObject, Integer value) {
                 return value != null && value < max;
+            }
+        }
+    }
+
+    interface D {
+        class Before<R> extends AbstractRule<R, Date> {
+            private Supplier<Date> dateSupplier;
+
+            public Before(Supplier<Date> dateSupplier) {
+                this.dateSupplier = dateSupplier;
+            }
+
+            @Override
+            protected String getCode() {
+                return "before";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Date value) {
+                return value == null || value.getTime() < dateSupplier.get().getTime();
+            }
+        }
+
+        class After<R> extends AbstractRule<R, Date> {
+            private Supplier<Date> dateSupplier;
+
+            public After(Supplier<Date> dateSupplier) {
+                this.dateSupplier = dateSupplier;
+            }
+
+            @Override
+            protected String getCode() {
+                return "after";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Date value) {
+                return value == null || value.getTime() > dateSupplier.get().getTime();
+            }
+        }
+
+        class Between<R> extends AbstractRule<R, Date> {
+            private Supplier<Date> afterSupplier;
+            private Supplier<Date> beforeSupplier;
+
+            public Between(Supplier<Date> afterSupplier, Supplier<Date> beforeSupplier) {
+                this.afterSupplier = afterSupplier;
+                this.beforeSupplier = beforeSupplier;
+            }
+
+            @Override
+            protected String getCode() {
+                return "between";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Date value) {
+                if (value == null) {
+                    return true;
+                } else {
+                    long time = value.getTime();
+
+                    return time > afterSupplier.get().getTime() && time < beforeSupplier.get().getTime();
+                }
             }
         }
     }
