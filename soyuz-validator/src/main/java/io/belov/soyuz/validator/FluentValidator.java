@@ -160,8 +160,8 @@ public class FluentValidator<T> {
     public static class Error<V> {
 
         private String code;
+        @Nullable
         private V value;
-
         @Nullable
         private String property;
         @Nullable
@@ -188,6 +188,10 @@ public class FluentValidator<T> {
 
         public boolean hasArgs() {
             return args != null;
+        }
+
+        public boolean hasValue() {
+            return value != null;
         }
     }
 

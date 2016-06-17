@@ -53,25 +53,13 @@ public class FvMessageResolverFromPropertiesFile implements FvMessageResolverI {
 
     @Nullable
     public <R, V> String getMessage(R rootObject, FluentValidator.Error<V> error) {
-        Object[] argsWithValue;
-        V value = error.getValue();
-        Object[] args = error.getArgs();
         List<String> propertyNames = propertyNameResolver.getPropertyNames(rootObject, error);
-
-        if (args != null && args.length > 0) {
-            argsWithValue = new Object[args.length + 1];
-            argsWithValue[0] = value;
-
-            System.arraycopy(args, 0, argsWithValue, 1, args.length);
-        } else {
-            argsWithValue = new Object[]{value};
-        }
 
         for (String propertyName : propertyNames) {
             String message = properties.getProperty(propertyName);
 
             if (message != null) {
-                return MessageFormat.format(message, argsWithValue);
+                return formatMessage(message, error);
             }
         }
 
@@ -80,6 +68,10 @@ public class FvMessageResolverFromPropertiesFile implements FvMessageResolverI {
         } else {
             return null;
         }
+    }
+
+    private <V> String formatMessage(String message, FluentValidator.Error<V> error) {
+        return MessageFormat.format(message.replace("{:property}", (error.hasProperty()) ? error.getProperty() : "").replace("{:value}", (error.hasValue()) ? error.getValue().toString() : ""), error.getArgs());
     }
 
     public interface PropertyNameResolver {
