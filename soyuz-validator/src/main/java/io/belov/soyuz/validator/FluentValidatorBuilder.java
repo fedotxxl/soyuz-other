@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -67,8 +66,16 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         return new CollectionBuilder<>(this, getFullProperty(property));
     }
 
-    public IntBuilder<T> i(String property) {
-        return new IntBuilder<>(this, getFullProperty(property));
+    public PrimitiveIntBuilder<T> i(String property) {
+        return new PrimitiveIntBuilder<>(this, getFullProperty(property));
+    }
+
+    public IntegerBuilder<T> integer(String property) {
+        return new IntegerBuilder<>(this, getFullProperty(property));
+    }
+
+    public LongBuilder<T> long_(String property) {
+        return new LongBuilder<>(this, getFullProperty(property));
     }
 
     public FluentValidator.Data<T> build() {
@@ -105,24 +112,35 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 //        }
 //    }
 
-    public static class IntBuilder<R> extends AbstractBuilder<R, Integer, IntBuilder<R>, FluentValidatorObjects.IntData<R>> {
+    public static class PrimitiveIntBuilder<R> extends AbstractBuilder<R, Integer, PrimitiveIntBuilder<R>, FluentValidatorObjects.IntData<R>> {
 
-        public IntBuilder(FluentValidatorBuilder<R> builder, String property) {
+        public PrimitiveIntBuilder(FluentValidatorBuilder<R> builder, String property) {
             super(builder, new FluentValidatorObjects.IntData(), property);
         }
 
-        public IntBuilder<R> min(int min) {
+        public PrimitiveIntBuilder<R> min(int min) {
             data.addRule(new FluentValidatorRule.Int.Min<>(min));
             return this;
         }
 
-        public IntBuilder<R> max(int max) {
+        public PrimitiveIntBuilder<R> max(int max) {
             data.addRule(new FluentValidatorRule.Int.Max<>(max));
             return this;
         }
 
     }
 
+    public static class IntegerBuilder<R> extends AbstractNumberBuilder<R, Integer, IntegerBuilder<R>, FluentValidatorObjects.NumberData<R, Integer>> {
+        public IntegerBuilder(FluentValidatorBuilder<R> builder, String property) {
+            super(builder, new FluentValidatorObjects.NumberData<R, Integer>(), property);
+        }
+    }
+
+    public static class LongBuilder<R> extends AbstractNumberBuilder<R, Long, IntegerBuilder<R>, FluentValidatorObjects.NumberData<R, Long>> {
+        public LongBuilder(FluentValidatorBuilder<R> builder, String property) {
+            super(builder, new FluentValidatorObjects.NumberData<R, Long>(), property);
+        }
+    }
 
     public static class StringBuilder<R> extends AbstractObjectBuilder<R, String, StringBuilder<R>, FluentValidatorObjects.StringData<R>> {
 
@@ -229,6 +247,25 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
     public static class ObjectBuilder<R, V> extends AbstractObjectBuilder<R, V, ObjectBuilder<R, V>, FluentValidatorObjects.ObjectData<R, V>> {
         public ObjectBuilder(FluentValidatorBuilder<R> builder, String property) {
             super(builder, new FluentValidatorObjects.ObjectData<>(), property);
+        }
+    }
+
+    private static class AbstractNumberBuilder<R, V extends Number & Comparable<V>, BuilderClass, DataClass extends FluentValidatorObjects.BaseData<R, V>> extends AbstractObjectBuilder<R, V, BuilderClass, DataClass> {
+
+        public AbstractNumberBuilder(FluentValidatorBuilder<R> builder, DataClass data, String property) {
+            super(builder, data, property);
+        }
+
+        public BuilderClass min(V min) {
+            data.addRule(new FluentValidatorRule.N.Min<>(min));
+
+            return _this();
+        }
+
+        public BuilderClass max(V max) {
+            data.addRule(new FluentValidatorRule.N.Max<>(max));
+
+            return _this();
         }
     }
 

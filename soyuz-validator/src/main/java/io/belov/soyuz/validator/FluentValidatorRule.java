@@ -86,6 +86,44 @@ public interface FluentValidatorRule<R, V> {
         }
     }
 
+    interface N {
+        class Min<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
+            private V min;
+
+            public Min(V min) {
+                this.min = min;
+            }
+
+            @Override
+            protected String getCode() {
+                return "min";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, V value) {
+                return value == null || value.compareTo(min) > 0;
+            }
+        }
+
+        class Max<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
+            private V max;
+
+            public Max(V max) {
+                this.max = max;
+            }
+
+            @Override
+            protected String getCode() {
+                return "max";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, V value) {
+                return value == null || value.compareTo(max) < 0;
+            }
+        }
+    }
+
     interface D {
         class Before<R> extends AbstractRule<R, Date> {
             private Supplier<Date> dateSupplier;

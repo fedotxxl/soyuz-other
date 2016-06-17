@@ -195,6 +195,10 @@ public class FluentValidatorObjects {
 
     }
 
+    public static class NumberData<R, V extends Number & Comparable<V>> extends BaseData<R, V> {
+
+    }
+
     @Setter
     @Getter
     public static class StringData<R> extends ObjectData<R, String> {
