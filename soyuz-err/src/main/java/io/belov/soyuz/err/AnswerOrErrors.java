@@ -37,9 +37,25 @@ public class AnswerOrErrors<T> {
         return this;
     }
 
+    public AnswerOrErrors<T> ifOk(Runnable runnable) {
+        if (runnable != null && isOk()) {
+            runnable.run();
+        }
+
+        return this;
+    }
+
     public AnswerOrErrors<T> ifHasErrors(Consumer<AnswerOrErrors<T>> consumer) {
         if (consumer != null && hasErrors()) {
             consumer.accept(this);
+        }
+
+        return this;
+    }
+
+    public AnswerOrErrors<T> ifHasErrors(Runnable runnable) {
+        if (runnable != null && hasErrors()) {
+            runnable.run();
         }
 
         return this;
