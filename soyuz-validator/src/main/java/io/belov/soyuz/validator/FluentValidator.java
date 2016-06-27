@@ -42,7 +42,7 @@ public class FluentValidator<T> {
             return validationData;
         }
 
-        public FluentValidator.Result validate(R rootObject) {
+        public FluentValidator.Result<R> validate(R rootObject) {
             List<Error> errors = new ArrayList<>();
 
             for (FluentValidatorBuilder.ValidationDataWithProperties validationDataWithProperties : validationData) {

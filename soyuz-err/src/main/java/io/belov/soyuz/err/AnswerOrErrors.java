@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 /**
  * Created by fbelov on 31.05.16.
@@ -28,6 +29,40 @@ public class AnswerOrErrors<T> {
         this.errors = errors;
     }
 
+    public AnswerOrErrors<T> ifOk(Consumer<AnswerOrErrors<T>> consumer) {
+        if (consumer != null && isOk()) {
+            consumer.accept(this);
+        }
+
+        return this;
+    }
+
+    public AnswerOrErrors<T> ifHasErrors(Consumer<AnswerOrErrors<T>> consumer) {
+        if (consumer != null && hasErrors()) {
+            consumer.accept(this);
+        }
+
+        return this;
+    }
+
+    public boolean isOk() {
+        return !hasErrors();
+    }
+
+    public boolean hasErrors() {
+        return errors != null && errors.hasErrors();
+    }
+
+    @Nullable
+    public T getAnswer() {
+        return answer;
+    }
+
+    @Nullable
+    public Errors getErrors() {
+        return errors;
+    }
+
     public static <T> AnswerOrErrors<T> ok() {
         return new AnswerOrErrors<>((T) null);
     }
@@ -50,23 +85,5 @@ public class AnswerOrErrors<T> {
 
     public static <T> AnswerOrErrors<T> failure(Err... errors) {
         return new AnswerOrErrors<>(Errors.reject(errors));
-    }
-
-    public boolean isOk() {
-        return !hasErrors();
-    }
-
-    public boolean hasErrors() {
-        return errors != null && errors.hasErrors();
-    }
-
-    @Nullable
-    public T getAnswer() {
-        return answer;
-    }
-
-    @Nullable
-    public Errors getErrors() {
-        return errors;
     }
 }
