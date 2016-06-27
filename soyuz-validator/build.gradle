@@ -1,9 +1,8 @@
 apply plugin: "groovy"
 
-version "1.12"
+version "1.13"
 
 dependencies {
-    compile project(":soyuz-err")
     compile cl.utils.commons.bean
     compile cl.utils.jsr305
     provided cl.utils.lombok

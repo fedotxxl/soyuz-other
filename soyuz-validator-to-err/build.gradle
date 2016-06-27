@@ -1,0 +1,8 @@
+apply plugin: "groovy"
+
+version "1.0"
+
+dependencies {
+    compile project(":soyuz-err")
+    compile project(":soyuz-validator")
+}

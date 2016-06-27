@@ -1,1 +1,7 @@
-include (["concurrent", "crypto", "err", "jongo", "log", "mail", "metrics-prometheus", "queue", "queue-domain", "template", "validator"].collect { ":soyuz-${it}"} as String[])
+include(
+        [
+                "concurrent", "crypto", "err", "jongo", "log",
+                "mail", "metrics-prometheus", "queue", "queue-domain", "template",
+                "validator", "validator-to-err"
+        ]
+                .collect { ":soyuz-${it}" } as String[])

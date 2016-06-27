@@ -28,28 +28,28 @@ public class AnswerOrErrors<T> {
         this.errors = errors;
     }
 
-    public static <K> AnswerOrErrors<K> ok() {
-        return new AnswerOrErrors<>((K) null);
+    public static <T> AnswerOrErrors<T> ok() {
+        return new AnswerOrErrors<>((T) null);
     }
 
-    public static <K> AnswerOrErrors<K> ok(K object) {
+    public static <T> AnswerOrErrors<T> ok(T object) {
         return new AnswerOrErrors<>(object);
     }
 
-    public static <K> AnswerOrErrors<K> failure(K object, Errors errors) {
+    public static <T> AnswerOrErrors<T> failure(T object, Errors errors) {
         return new AnswerOrErrors<>(object, errors);
     }
 
-    public static <K> AnswerOrErrors<K> failure(K object, Err... errors) {
+    public static <T> AnswerOrErrors<T> failure(T object, Err... errors) {
         return new AnswerOrErrors<>(object, Errors.reject(errors));
     }
 
-    public static AnswerOrErrors failure(Errors errors) {
-        return new AnswerOrErrors(errors);
+    public static <T> AnswerOrErrors<T> failure(Errors errors) {
+        return new AnswerOrErrors<>(errors);
     }
 
-    public static AnswerOrErrors failure(Err... errors) {
-        return new AnswerOrErrors(Errors.reject(errors));
+    public static <T> AnswerOrErrors<T> failure(Err... errors) {
+        return new AnswerOrErrors<>(Errors.reject(errors));
     }
 
     public boolean isOk() {
