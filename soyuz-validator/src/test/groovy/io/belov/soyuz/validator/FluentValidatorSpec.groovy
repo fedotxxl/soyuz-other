@@ -10,7 +10,7 @@ import java.util.function.Function
  */
 class FluentValidatorSpec extends Specification {
 
-    private static final FluentValidator.Data<Actress> actressValidator = Actress.validator
+    private static final FluentValidator<Actress> actressValidator = Actress.validator
 
     def "should mix property names"() {
         when:

@@ -18,7 +18,7 @@ class TagTranslation {
         return value;
     }
 
-    public static FluentValidator.Data<TagTranslation> getValidator() {
+    public static FluentValidator<TagTranslation> getValidator() {
         return FluentValidator.of(TagTranslation.class)
                 .string("lang").notEmpty().b()
                 .string("value").notEmpty().b()

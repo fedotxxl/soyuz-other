@@ -70,7 +70,7 @@ public class FluentValidatorObjects {
         }
 
 
-        public BuilderClass validator(FluentValidator.Data<V> validator) {
+        public BuilderClass validator(FluentValidator<V> validator) {
             data.addRule(new FluentValidatorRule.Base.Validator<>(validator));
 
             return _this();
@@ -134,7 +134,7 @@ public class FluentValidatorObjects {
 //        private Function<V, Boolean> notEqFunction;
         private List<BiFunction> when = new ArrayList<>();
         private BiFunction unless;
-        private FluentValidator.Data<V> validator;
+        private FluentValidator<V> validator;
         private final List<CustomValidator> customValidators = new ArrayList<>();
         private String message;
 

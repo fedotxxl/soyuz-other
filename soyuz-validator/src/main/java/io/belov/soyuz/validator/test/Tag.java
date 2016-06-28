@@ -10,7 +10,7 @@ class Tag {
     private TagTranslation en;
     private TagTranslation ja;
 
-    public static FluentValidator.Data<Tag> getValidator() {
+    public static FluentValidator<Tag> getValidator() {
         return FluentValidator.of(Tag.class)
                 .object("en", TagTranslation.class).notNull().validator(TagTranslation.getValidator()).b()
                 .object("ja", TagTranslation.class).notNull().validator(TagTranslation.getValidator())

@@ -255,9 +255,9 @@ public interface FluentValidatorRule<R, V> {
 
         class ItemValidator<R, V> implements FluentValidatorRule<R, Collection<V>> {
 
-            private FluentValidator.Data<V> validator;
+            private FluentValidator<V> validator;
 
-            public ItemValidator(FluentValidator.Data<V> validator) {
+            public ItemValidator(FluentValidator<V> validator) {
                 this.validator = validator;
             }
 
@@ -407,9 +407,9 @@ public interface FluentValidatorRule<R, V> {
 
         class Validator<R, V> implements FluentValidatorRule<R, V> {
 
-            private FluentValidator.Data<V> validator;
+            private FluentValidator<V> validator;
 
-            public Validator(FluentValidator.Data<V> validator) {
+            public Validator(FluentValidator<V> validator) {
                 this.validator = validator;
             }
 

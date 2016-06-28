@@ -80,7 +80,7 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         return new LongBuilder<>(this, getFullProperty(property));
     }
 
-    public FluentValidator.Data<T> build() {
+    public FluentValidator<T> build() {
         validationData.add(new ValidationDataWithProperties(null, data));
 
         return new FluentValidator.Data<T>(validationData);
@@ -256,7 +256,7 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             return this;
         }
 
-        public CollectionBuilder<R, V> itemValidator(FluentValidator.Data<V> validator) {
+        public CollectionBuilder<R, V> itemValidator(FluentValidator<V> validator) {
             data.addRule(new FluentValidatorRule.Coll.ItemValidator<>(validator));
 
             return _this();
