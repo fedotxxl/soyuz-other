@@ -12,17 +12,17 @@ import java.util.List;
 /**
  * Created by fbelov on 28.04.16.
  */
-public class FluentValidator<T> {
-
-    private static final PropertyUtilsBean PROPERTY_UTILS_BEAN = BeanUtilsBean.getInstance().getPropertyUtils();
+public interface FluentValidator<T> {
 
     //https://github.com/JeremySkinner/FluentValidation
 
-    public static <T> FluentValidatorBuilder<T> of(Class<T> clazz) {
+    FluentValidator.Result<T> validate(T rootObject);
+
+    static <T> FluentValidatorBuilder<T> of(Class<T> clazz) {
         return new FluentValidatorBuilder<>();
     }
 
-    public static <T> FluentValidatorBuilder<T> of(String property, Class<T> clazz) {
+    static <T> FluentValidatorBuilder<T> of(String property, Class<T> clazz) {
         return new FluentValidatorBuilder<>(property);
     }
 
@@ -31,7 +31,9 @@ public class FluentValidator<T> {
 //    }
 
     @ToString
-    public static class Data<R> {
+    class Data<R> implements FluentValidator<R> {
+        private static final PropertyUtilsBean PROPERTY_UTILS_BEAN = BeanUtilsBean.getInstance().getPropertyUtils();
+
         private List<FluentValidatorBuilder.ValidationDataWithProperties> validationData = new ArrayList<>();
 
         public Data(List<FluentValidatorBuilder.ValidationDataWithProperties> validationData) {
