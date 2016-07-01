@@ -5,6 +5,8 @@ import lombok.ToString;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by fbelov on 31.05.16.
@@ -45,6 +47,22 @@ public class AnswerOrErrors<T> {
         return this;
     }
 
+    public AnswerOrErrors<T> ifOk(Supplier<AnswerOrErrors<T>> supplier) {
+        if (supplier != null && isOk()) {
+            return supplier.get();
+        } else {
+            return this;
+        }
+    }
+
+    public AnswerOrErrors<T> ifOk(Function<AnswerOrErrors<T>, AnswerOrErrors<T>> func) {
+        if (func != null && isOk()) {
+            return func.apply(this);
+        } else {
+            return this;
+        }
+    }
+
     public AnswerOrErrors<T> ifHasErrors(Consumer<AnswerOrErrors<T>> consumer) {
         if (consumer != null && hasErrors()) {
             consumer.accept(this);
@@ -59,6 +77,22 @@ public class AnswerOrErrors<T> {
         }
 
         return this;
+    }
+
+    public AnswerOrErrors<T> ifHasErrors(Supplier<AnswerOrErrors<T>> supplier) {
+        if (supplier != null && hasErrors()) {
+            return supplier.get();
+        } else {
+            return this;
+        }
+    }
+
+    public AnswerOrErrors<T> ifHasErrors(Function<AnswerOrErrors<T>, AnswerOrErrors<T>> func) {
+        if (func != null && hasErrors()) {
+            return func.apply(this);
+        } else {
+            return this;
+        }
     }
 
     public boolean isOk() {
