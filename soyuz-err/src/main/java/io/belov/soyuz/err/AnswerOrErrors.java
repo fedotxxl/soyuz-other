@@ -1,9 +1,20 @@
 package io.belov.soyuz.err;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -13,6 +24,7 @@ import java.util.function.Supplier;
  */
 @EqualsAndHashCode
 @ToString
+@JsonSerialize(using = AnswerOrErrors.Serializer.class)
 public class AnswerOrErrors<T> {
 
     private T answer;
@@ -126,7 +138,11 @@ public class AnswerOrErrors<T> {
     }
 
     public static <T> AnswerOrErrors<T> failure(T object, Err... errors) {
-        return new AnswerOrErrors<>(object, Errors.reject(errors));
+        if (object instanceof Err) {
+            return new AnswerOrErrors<>(null, Errors.reject((Err) object));
+        } else {
+            return new AnswerOrErrors<>(object, Errors.reject(errors));
+        }
     }
 
     public static <T> AnswerOrErrors<T> failure(Errors errors) {
@@ -135,5 +151,42 @@ public class AnswerOrErrors<T> {
 
     public static <T> AnswerOrErrors<T> failure(Err... errors) {
         return new AnswerOrErrors<>(Errors.reject(errors));
+    }
+
+    protected static class Serializer extends JsonSerializer<AnswerOrErrors> {
+
+        @Override
+        public void serialize(AnswerOrErrors value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+            Map a = new HashMap();
+
+            a.put("answer", value.getAnswer());
+            a.put("ok", value.isOk());
+
+            if (!value.hasErrors()) {
+                a.put("errors", null);
+            } else {
+                a.put("errors", value.errors.get());
+            }
+
+            jgen.writeObject(a);
+        }
+
+    }
+
+    @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Deserializer<T> {
+
+        private T answer;
+        private List<Err> errors;
+
+        public AnswerOrErrors<T> toAnswerOrErrors() {
+            if (errors != null && errors.size() > 0) {
+                return new AnswerOrErrors<T>(answer, Errors.reject(errors));
+            } else {
+                return AnswerOrErrors.ok(answer);
+            }
+        }
+
     }
 }

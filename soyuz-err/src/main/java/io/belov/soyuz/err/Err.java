@@ -1,5 +1,6 @@
 package io.belov.soyuz.err;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,8 +25,12 @@ public class Err<V> {
     @Nullable
     private Object[] args;
 
+    @JsonIgnore
     public boolean isGlobal() {
         return field == null;
+    }
+
+    private Err() {
     }
 
     private Err(String field, String code, String message, V value, Object[] args) {
