@@ -1,5 +1,7 @@
 package io.belov.soyuz.err;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -30,6 +32,7 @@ public class Errors implements Iterable<Err> {
         return this;
     }
 
+    @JsonIgnore
     public boolean isOk() {
         return !hasErrors();
     }
@@ -38,6 +41,7 @@ public class Errors implements Iterable<Err> {
         return !errors.isEmpty();
     }
 
+    @JsonProperty("errors")
     public List<Err> get() {
         return errors;
     }

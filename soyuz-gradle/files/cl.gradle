@@ -98,7 +98,10 @@ allprojects {
                         closure  : "com.google.javascript:closure-compiler:v20150609"
                 ],
                 json         : [
-                        jackson: "com.fasterxml.jackson.core:jackson-databind:2.4.4"
+                        jackson: [
+                                core: "com.fasterxml.jackson.core:jackson-databind:2.4.4",
+                                annotations: "com.fasterxml.jackson.core:jackson-annotations:2.6.3"
+                        ]
                 ],
                 rabbit       : "com.rabbitmq:amqp-client:3.5.6",
                 jersey       : [
