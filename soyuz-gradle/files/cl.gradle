@@ -83,7 +83,8 @@ allprojects {
                                 codec      : "commons-codec:commons-codec:1.10",
                                 collections: "org.apache.commons:commons-collections4:4.0",
                                 pool       : "org.apache.commons:commons-pool2:2.4.2",
-                                exec       : "org.apache.commons:commons-exec:1.3"
+                                exec       : "org.apache.commons:commons-exec:1.3",
+                                validator  : "commons-validator:commons-validator:1.4.0"
                         ],
                         url       : [
                                 builder: "io.mikael:urlbuilder:2.0.7"
