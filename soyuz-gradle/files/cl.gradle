@@ -65,7 +65,7 @@ allprojects {
                                 template        : "io.belov:soyuz-template:1.0",
                                 validator       : "io.belov:soyuz-validator:1.0",
                         ],
-                        lombok    : "org.projectlombok:lombok:1.16.8",
+                        lombok    : "org.projectlombok:lombok:1.16.10",
                         ua        : "net.sf.uadetector:uadetector-resources:2014.10",
                         metrics   : "io.dropwizard.metrics:metrics-core:3.1.2",
                         mustache  : "com.github.spullara.mustache.java:compiler:0.9.1",
