@@ -118,6 +118,11 @@ public interface FluentValidatorRule<R, V> {
             protected boolean isValid(R rootObject, V value) {
                 return value == null || value.compareTo(min) > 0;
             }
+
+            @Override
+            public Object[] getErrorArgs() {
+                return new Object[]{min};
+            }
         }
 
         class Max<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
@@ -135,6 +140,11 @@ public interface FluentValidatorRule<R, V> {
             @Override
             protected boolean isValid(R rootObject, V value) {
                 return value == null || value.compareTo(max) < 0;
+            }
+
+            @Override
+            public Object[] getErrorArgs() {
+                return new Object[]{max};
             }
         }
     }
