@@ -4,8 +4,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.nio.file.FileVisitResult;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -20,10 +23,15 @@ public interface FluentValidatorRule<R, V> {
 
         public FluentValidator.Result validate(R rootObject, String property, V value) {
             if (!isValid(rootObject, value)) {
-                return FluentValidator.Result.failure(rootObject, property, getCode(), value);
+                return FluentValidator.Result.failure(rootObject, property, getCode(), value, getErrorArgs());
             } else {
                 return null;
             }
+        }
+
+        @Nullable
+        public Object[] getErrorArgs() {
+            return null;
         }
 
         protected abstract String getCode();
@@ -62,6 +70,11 @@ public interface FluentValidatorRule<R, V> {
             protected boolean isValid(R rootObject, Integer value) {
                 return value != null && value > min;
             }
+
+            @Override
+            public Object[] getErrorArgs() {
+                return new Object[]{min};
+            }
         }
 
         class Max<R> extends AbstractRule<R, Integer> {
@@ -79,6 +92,11 @@ public interface FluentValidatorRule<R, V> {
             @Override
             protected boolean isValid(R rootObject, Integer value) {
                 return value != null && value < max;
+            }
+
+            @Override
+            public Object[] getErrorArgs() {
+                return new Object[]{max};
             }
         }
     }
