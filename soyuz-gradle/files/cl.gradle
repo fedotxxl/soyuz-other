@@ -107,6 +107,8 @@ allprojects {
                 ],
                 rabbit       : "com.rabbitmq:amqp-client:3.5.6",
                 jersey       : [
+                        api   : "javax.ws.rs:javax.ws.rs-api:2.0.1",
+                        core  : "org.glassfish.jersey.core:jersey-common:$jerseyVersion",
                         client: [
                                 "org.glassfish.jersey.core:jersey-client:$jerseyVersion",
                                 "org.glassfish.jersey.ext.rx:jersey-rx-client-java8:$jerseyVersion",
