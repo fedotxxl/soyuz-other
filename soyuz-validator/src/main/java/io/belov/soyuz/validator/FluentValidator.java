@@ -130,11 +130,7 @@ public interface FluentValidator<T> {
         }
 
         public static <R> Result<R> failure(R rootObject, Error error) {
-            List<Error> answer = new ArrayList<>();
-
-            answer.add(error);
-
-            return new Result<>(rootObject, answer);
+            return new Result<>(rootObject, FvUtils.to.list(error));
         }
 
         public static <R> Result<R> failure(R rootObject, List<Error> errors) {
@@ -153,7 +149,15 @@ public interface FluentValidator<T> {
     @ToString
     public static class ValidationException extends RuntimeException {
         private Object rootObject;
-        private List<Error> errors;
+        private List<Error> errors; //todo replace with Errors
+
+        public ValidationException(Object rootObject, Error error) {
+            this(rootObject, FvUtils.to.list(error));
+        }
+
+        //todo better constructor
+        //throw new FluentValidator.ValidationException(dvd, to.list(new FluentValidator.Error<>(result.getFailureReason().toString(), dvd)));
+
     }
 
     @Getter
