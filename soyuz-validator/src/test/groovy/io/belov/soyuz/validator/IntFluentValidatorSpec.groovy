@@ -13,7 +13,7 @@ class IntFluentValidatorSpec extends Specification {
 
         where:
         car                 | result
-        new Car()           | { c -> FluentValidator.Result.failure(c, "power", "min", 0) }
+        new Car()           | { c -> FluentValidator.Result.failure(c, "power", "min", 0, [1] as Object[]) }
         new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
     }
 
@@ -26,7 +26,7 @@ class IntFluentValidatorSpec extends Specification {
 
         where:
         car                  | result
-        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "max", 1500) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "max", 1500, [999] as Object[]) }
         new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
     }
 
@@ -39,8 +39,8 @@ class IntFluentValidatorSpec extends Specification {
 
         where:
         car                  | result
-        new Car(power: -1)   | { c -> FluentValidator.Result.failure(c, "power", "min", -1) }
-        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "max", 1500) }
+        new Car(power: -1)   | { c -> FluentValidator.Result.failure(c, "power", "min", -1, [1] as Object[]) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "max", 1500, [999] as Object[]) }
         new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
     }
 

@@ -16,10 +16,11 @@ allprojects {
                                 "org.slf4j:jul-to-slf4j:1.7.12"
                         ],
                         logback   : [
-                                "ch.qos.logback:logback-classic:1.1.3",
+                                "ch.qos.logback:logback-classic:1.1.7",
                                 "org.codehaus.janino:janino:2.7.8"
                         ],
-                        logentries: "com.logentries:logentries-appender:1.1.30"
+                        logentries: "com.logentries:logentries-appender:1.1.35",
+                        sentry: "com.getsentry.raven:raven-logback:7.8.0"
                 ],
                 mongo        : [
                         driver: "org.mongodb:mongo-java-driver:2.13.0",
@@ -66,11 +67,11 @@ allprojects {
                                 template        : "io.belov:soyuz-template:1.0",
                                 validator       : "io.belov:soyuz-validator:1.0",
                         ],
-                        lombok    : "org.projectlombok:lombok:1.16.8",
+                        lombok    : "org.projectlombok:lombok:1.16.10",
                         ua        : "net.sf.uadetector:uadetector-resources:2014.10",
                         metrics   : "io.dropwizard.metrics:metrics-core:3.1.2",
                         mustache  : "com.github.spullara.mustache.java:compiler:0.9.1",
-                        handlebars: "com.github.jknack:handlebars.java:4.0.5",
+                        handlebars: "com.github.jknack:handlebars:4.0.5",
                         humanize  : "com.github.mfornos:humanize-slim:1.2.2",
                         jsch      : "com.jcraft:jsch:0.1.53",
                         prometheus: [
@@ -107,6 +108,8 @@ allprojects {
                 ],
                 rabbit       : "com.rabbitmq:amqp-client:3.5.6",
                 jersey       : [
+                        api   : "javax.ws.rs:javax.ws.rs-api:2.0.1",
+                        core  : "org.glassfish.jersey.core:jersey-common:$jerseyVersion",
                         client: [
                                 "org.glassfish.jersey.core:jersey-client:$jerseyVersion",
                                 "org.glassfish.jersey.ext.rx:jersey-rx-client-java8:$jerseyVersion",

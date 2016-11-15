@@ -1,0 +1,10 @@
+apply plugin: "groovy"
+
+version "1.1"
+
+dependencies {
+    compile project(":soyuz-validator")
+    compile cl.jersey.api
+
+    provided cl.utils.lombok
+}
