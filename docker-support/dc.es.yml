@@ -2,6 +2,7 @@
 es:
   container_name: support-es
   image: fbelov/elasticsearch
+  restart: always
   ports:
    - "9200:9200"
    - "9300:9300"

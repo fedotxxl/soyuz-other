@@ -2,6 +2,7 @@
 mongo:
   container_name: support-mongo
   image: fbelov/mongo-dev
+  restart: always
   ports:
    - "27017:27017"
   volumes:

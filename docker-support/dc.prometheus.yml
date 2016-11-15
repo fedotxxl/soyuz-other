@@ -2,12 +2,14 @@
 prometheus-pg:
   container_name: support-prometheus-pg
   image: prom/pushgateway
+  restart: always
   ports:
     - "9091:9091"
 
 prometheus:
   container_name: support-prometheus
   image: prom/prometheus
+  restart: always
   links:
     - prometheus-pg
   ports:

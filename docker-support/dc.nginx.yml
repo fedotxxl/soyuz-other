@@ -2,6 +2,7 @@
 nginx:
   container_name: support-nginx
   image: fbelov/nginx-dev
+  restart: always
   net: host
   volumes:
    - /job:/job

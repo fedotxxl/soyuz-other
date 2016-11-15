@@ -3,6 +3,7 @@
 cadvisor:
   container_name: support-cadvisor
   image: "google/cadvisor"
+  restart: always
   volumes:
     - "/:/rootfs:ro"
     - "/var/run:/var/run:rw"
