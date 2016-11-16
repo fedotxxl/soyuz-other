@@ -10,19 +10,29 @@ import java.util.function.Function;
  * Created by fbelov on 06.07.16.
  */
 public class func {
+
+    public static <T> T consume(T object, Consumer<T> consumer) {
+        consumer.accept(object);
+
+        return object;
+    }
     
     public static <T> T checkAndConsume(T object, Consumer<T> consumer) {
         if (check(object)) {
-            consumer.accept(object);
+            consume(object, consumer);
         }
 
         return object;
     }
 
+    public static <T, R> R apply(T object, Function<T, R> consumer) {
+        return consumer.apply(object);
+    }
+
     @Nullable
     public static <T, R> R checkAndApply(T object, Function<T, R> consumer) {
         if (check(object)) {
-            return consumer.apply(object);
+            return apply(object, consumer);
         } else {
             return null;
         }
