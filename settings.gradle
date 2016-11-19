@@ -1,6 +1,6 @@
 include(
         [
-                "concurrent", "crypto", "err", "func", "jongo", "log",
+                "concurrent", "crypto", "err", "exec", "func", "jongo", "log",
                 "mail", "metrics-prometheus", "queue", "queue-domain", "template",
                 "validator", "validator-spring", "validator-jax-rs", "validator-to-err"
         ]

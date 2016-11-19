@@ -1,0 +1,9 @@
+version "1.0"
+
+dependencies {
+    compile cl.log.api
+    compile cl.utils.lombok
+    compile cl.utils.guava
+    compile cl.utils.soyuz.base
+    compile cl.utils.commons.exec
+}
