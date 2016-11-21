@@ -55,7 +55,7 @@ allprojects {
                         guava     : "com.google.guava:guava:18.0",
                         soyuz     : [
                                 base            : "io.belov:soyuz-utils:1.28",
-                                bus             : "io.belov:soyuz-bus:1.0",
+                                bus             : "io.belov:soyuz-bus:1.1",
                                 concurrent      : "io.belov:soyuz-concurrent:1.1",
                                 exec            : "io.belov:soyuz-exec:1.0",
                                 func            : "io.belov:soyuz-func:1.2",
