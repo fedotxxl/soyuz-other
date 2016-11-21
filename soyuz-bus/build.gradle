@@ -1,0 +1,7 @@
+version = "1.0"
+
+dependencies {
+    compile cl.spring.core
+    compile cl.utils.soyuz.log
+    compile cl.utils.guava
+}
