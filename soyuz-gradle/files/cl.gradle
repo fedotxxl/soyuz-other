@@ -57,7 +57,7 @@ allprojects {
                                 base            : "io.belov:soyuz-utils:1.28",
                                 concurrent      : "io.belov:soyuz-concurrent:1.1",
                                 exec            : "io.belov:soyuz-exec:1.0",
-                                func            : "io.belov:soyuz-func:1.0",
+                                func            : "io.belov:soyuz-func:1.2",
                                 isTo            : "io.belov.soyuz:soyuz-is-to:1.42",
                                 jongo           : "io.belov:soyuz-jongo:1.1",
                                 log             : "io.belov:soyuz-log:1.1",
