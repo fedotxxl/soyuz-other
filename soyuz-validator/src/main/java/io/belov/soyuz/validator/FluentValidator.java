@@ -1,6 +1,5 @@
 package io.belov.soyuz.validator;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,9 +7,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by fbelov on 28.04.16.
@@ -147,12 +144,18 @@ public interface FluentValidator<T> {
         }
     }
 
-    @AllArgsConstructor
     @Getter
     @ToString
     public static class ValidationException extends RuntimeException {
         private Object rootObject;
         private List<Error> errors; //todo replace with Errors
+
+        public ValidationException(Object rootObject, List<Error> errors) {
+            super("{root=" + rootObject + ", errors=" + errors + "}");
+
+            this.rootObject = rootObject;
+            this.errors = errors;
+        }
 
         public ValidationException(Object rootObject, Error error) {
             this(rootObject, FvUtils.to.list(error));
