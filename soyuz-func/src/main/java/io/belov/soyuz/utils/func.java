@@ -1,8 +1,11 @@
 package io.belov.soyuz.utils;
 
+import lombok.SneakyThrows;
+
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -23,6 +26,11 @@ public class func {
         }
 
         return object;
+    }
+
+    @SneakyThrows
+    public static <T> T call(Callable<T> callable) {
+        return callable.call();
     }
 
     public static <T, R> R apply(T object, Function<T, R> consumer) {
