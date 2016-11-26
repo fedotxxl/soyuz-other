@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class MdcRunnable implements Runnable {
 
-    private Map<String, String> context;
+    private Map<String, Object> context;
     private Runnable runnable;
 
     public MdcRunnable(String key, String value, Runnable runnable) {
@@ -19,7 +19,7 @@ public class MdcRunnable implements Runnable {
         this.context.put(key, value);
     }
 
-    public MdcRunnable(Map<String, String> context, Runnable runnable) {
+    public MdcRunnable(Map<String, Object> context, Runnable runnable) {
         this.context = context;
         this.runnable = runnable;
     }
