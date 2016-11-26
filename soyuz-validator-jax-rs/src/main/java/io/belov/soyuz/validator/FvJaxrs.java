@@ -2,6 +2,7 @@ package io.belov.soyuz.validator;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
  */
 public class FvJaxrs {
 
+    @Provider
     public static class ExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<FluentValidator.ValidationException> {
 
         private FvMessageResolverI fvMessageResolver;
