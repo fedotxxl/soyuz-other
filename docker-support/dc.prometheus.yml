@@ -1,18 +1,26 @@
-#docker-compose --file ./dc.prometheus.yml up -d > /job/log/dc.prometheus.log
-prometheus-pg:
+#use docker-compose -f ./dc.prometheus.yml up -d > /job/log/dc.prometheus.log
+
+support-prometheus-pg:
   container_name: support-prometheus-pg
   image: prom/pushgateway
   restart: always
   ports:
-    - "9091:9091"
+   - "9091:9091"
 
-prometheus:
+support-prometheus:
   container_name: support-prometheus
   image: prom/prometheus
   restart: always
   links:
-    - prometheus-pg
+   - support-prometheus-pg
   ports:
-    - "9090:9090"
+   - "9090:9090"
+  command:
+      - '-config.file=/etc/prometheus/prometheus.yml'
+      - '-storage.local.memory-chunks=87381'
+      - '-storage.local.path=/prom-data'
+      - '-web.console.libraries=/etc/prometheus/console_libraries'
+      - '-web.console.templates=/etc/prometheus/consoles'
   volumes:
-    - /job/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+   - /job/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+   - /job/prometheus/data:/prom-data
