@@ -1,0 +1,9 @@
+#docker-compose --file ./dc.tomcat.7.yml up -d > /job/log/dc.tomcat.7.log
+support-tomcat-7:
+  container_name: support-tomcat-7
+  image: tomcat:7.0.73-jre7
+  restart: always
+  net: host
+  volumes:
+   - /job/tomcat/webapps:/usr/local/tomcat/webapps
+   - /job/tomcat/logs:/usr/local/tomcat/logs
