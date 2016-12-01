@@ -1,7 +1,15 @@
 include(
         [
-                "bus", "concurrent", "crypto", "err", "exec", "func", "jongo", "log",
-                "mail", "metrics-prometheus", "queue", "queue-domain", "template",
+                "bus",
+                "concurrent", "crypto",
+                "err", "exec",
+                "func",
+                "http",
+                "jongo",
+                "log",
+                "mail", "metrics-prometheus",
+                "queue", "queue-domain",
+                "template",
                 "validator", "validator-spring", "validator-jax-rs", "validator-to-err"
         ]
                 .collect { ":soyuz-${it}" } as String[])

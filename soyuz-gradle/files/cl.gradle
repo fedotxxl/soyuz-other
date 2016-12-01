@@ -60,6 +60,7 @@ allprojects {
                                 exec            : "io.belov:soyuz-exec:1.0",
                                 func            : "io.belov:soyuz-func:1.2",
                                 isTo            : "io.belov.soyuz:soyuz-is-to:1.42",
+                                http            : "io.belov:soyuz-http:1.1",
                                 jongo           : "io.belov:soyuz-jongo:1.1",
                                 log             : "io.belov:soyuz-log:1.2",
                                 mail            : "io.belov:soyuz-mail:1.1",
