@@ -1,0 +1,2 @@
+ReferenceError: abc is not defined
+at {m} ({f}:{l}:{c})|doSomeOtherIncorrectStuff|http://localhost/consumer/test/err.after.js|4|13

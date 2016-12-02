@@ -64,6 +64,8 @@ allprojects {
                                 http            : "io.belov:soyuz-http:1.1",
                                 io              : "io.belov:soyuz-io:1.0",
                                 jongo           : "io.belov:soyuz-jongo:1.1",
+                                jsStacktraceDomain: "io.belov:soyuz-js-stacktrace-domain:1.0",
+                                jsStacktraceParser: "io.belov:soyuz-js-stacktrace-parser:1.0",
                                 json            : "io.belov:soyuz-json:1.0",
                                 log             : "io.belov:soyuz-log:1.2",
                                 mail            : "io.belov:soyuz-mail:1.1",

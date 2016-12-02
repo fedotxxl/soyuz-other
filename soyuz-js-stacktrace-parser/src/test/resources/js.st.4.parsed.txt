@@ -1,0 +1,4 @@
+TypeError: Cannot read property 'classList' of null
+    at {m} ({f}:{l}:{c})|refreshDom|<anonymous>|1|26021
+    at {m} ({f}:{l}:{c})|removeNightMode|<anonymous>|1|25652
+    at {f}:{l}:{c}||<anonymous>|1|2

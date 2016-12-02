@@ -1,0 +1,5 @@
+ReferenceError: b is not defined
+    at {m} ({f}:{l}:{c})|Object.<anonymous>|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/angular/g.bg.js|5|9
+    at {m} ({f}:{l}:{c})|Object.e [as invoke]|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js|37|96
+    at {m} ({f}:{l}:{c})|Object.$get|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js|35|71
+    at {f}:{l}:{c}||chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js|38|410

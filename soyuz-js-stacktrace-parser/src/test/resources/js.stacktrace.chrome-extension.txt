@@ -1,0 +1,9 @@
+ReferenceError: abc is not defined
+    at Scope.$scope.save (chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/settings/js/g.settingsController.js:110:13)
+    at $parseFunctionCall (chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js:12332:18)
+    at ngEventDirectives.(anonymous function).compile.element.on.callback (chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js:22949:17)
+    at Scope.$get.Scope.$eval (chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js:14383:28)
+    at Scope.$get.Scope.$apply (chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js:14482:23)
+    at HTMLButtonElement.<anonymous> (chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js:22954:23)
+    at HTMLButtonElement.m.event.dispatch (chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/jquery-1.11.1.min.js:3:8436)
+    at HTMLButtonElement.m.event.add.r.handle (chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/jquery-1.11.1.min.js:3:5146)

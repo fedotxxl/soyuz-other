@@ -1,0 +1,9 @@
+ReferenceError: abc is not defined
+    at {m} ({f}:{l}:{c})|Scope.$scope.save|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/settings/js/g.settingsController.js|110|13
+    at {m} ({f}:{l}:{c})|$parseFunctionCall|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js|12332|18
+    at {m} ({f}:{l}:{c})|ngEventDirectives.(anonymous function).compile.element.on.callback|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js|22949|17
+    at {m} ({f}:{l}:{c})|Scope.$get.Scope.$eval|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js|14383|28
+    at {m} ({f}:{l}:{c})|Scope.$get.Scope.$apply|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js|14482|23
+    at {m} ({f}:{l}:{c})|HTMLButtonElement.<anonymous>|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/angular.js|22954|23
+    at {m} ({f}:{l}:{c})|HTMLButtonElement.m.event.dispatch|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/jquery-1.11.1.min.js|3|8436
+    at {m} ({f}:{l}:{c})|HTMLButtonElement.m.event.add.r.handle|chrome-extension://pajcecpnhldaegpcklaimdhogbgilogl/js/libs/jquery-1.11.1.min.js|3|5146

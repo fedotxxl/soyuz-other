@@ -1,0 +1,7 @@
+version "1.0"
+
+dependencies {
+    compile cl.utils.commons.lang
+    compile cl.utils.lombok
+    compile cl.json.jackson.core
+}

@@ -1,0 +1,13 @@
+version "1.0"
+
+dependencies {
+    compile project(":soyuz-js-stacktrace-domain")
+    compile cl.log.api
+    compile cl.utils.commons.lang
+    compile cl.utils.guava
+
+    testCompile cl.log.logback
+    testCompile cl.utils.soyuz.isTo
+    testCompile cl.utils.soyuz.base
+    testCompile cl.test.spock.core
+}

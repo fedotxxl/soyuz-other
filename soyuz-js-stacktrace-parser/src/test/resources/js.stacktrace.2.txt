@@ -1,0 +1,2 @@
+ReferenceError: abc is not defined
+at doSomeOtherIncorrectStuff (http://localhost/consumer/test/err.after.js:4:13)

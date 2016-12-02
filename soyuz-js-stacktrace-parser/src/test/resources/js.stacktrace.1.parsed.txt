@@ -1,0 +1,10 @@
+{m} <{f}:{l}>|getTrusted|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|12739
+at {m} <{f}:{l}>|e[]|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|13442
+at {m} <{f}:{l}>|Anonymous function|https://hashmem.com/assets/module.angular-9cac29a7f2fe101f7e881ca8bb3988f8.js|1
+at {m} <{f}:{l}>|C|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|10949
+at {m} <{f}:{l}>|C|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|10949
+at {m} <{f}:{l}>|Anonymous function|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|11035
+at {m} <{f}:{l}>|h.prototype.$eval|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|11955
+at {m} <{f}:{l}>|h.prototype.$digest|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|11781
+at {m} <{f}:{l}>|h.prototype.$apply|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|12061
+at {m} <{f}:{l}>|Anonymous function|https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js|1302

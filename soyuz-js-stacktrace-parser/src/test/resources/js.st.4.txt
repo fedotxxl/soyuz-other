@@ -1,0 +1,4 @@
+TypeError: Cannot read property 'classList' of null
+    at refreshDom (<anonymous>:1:26021)
+    at removeNightMode (<anonymous>:1:25652)
+    at <anonymous>:1:2
