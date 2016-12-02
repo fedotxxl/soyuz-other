@@ -4,6 +4,7 @@ include(
                 "concurrent", "crypto",
                 "err", "exec",
                 "func",
+                "io",
                 "jongo",
                 "log",
                 "mail", "metrics-prometheus",
