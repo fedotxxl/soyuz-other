@@ -5,7 +5,7 @@ include(
                 "err", "exec",
                 "func",
                 "io",
-                "jongo",
+                "jongo", "json",
                 "log",
                 "mail", "metrics-prometheus",
                 "queue", "queue-domain",

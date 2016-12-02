@@ -1,0 +1,7 @@
+version "1.0"
+
+dependencies {
+    compile cl.json.jackson.core
+    compile cl.log.api
+    compile cl.utils.guava
+}

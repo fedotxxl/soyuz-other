@@ -62,6 +62,7 @@ allprojects {
                                 isTo            : "io.belov.soyuz:soyuz-is-to:1.42",
                                 io              : "io.belov:soyuz-io:1.0",
                                 jongo           : "io.belov:soyuz-jongo:1.1",
+                                json            : "io.belov:soyuz-json:1.0",
                                 log             : "io.belov:soyuz-log:1.2",
                                 mail            : "io.belov:soyuz-mail:1.1",
                                 metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.1",
