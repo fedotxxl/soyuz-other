@@ -1,0 +1,17 @@
+apply plugin: "groovy"
+
+version "1.0"
+
+dependencies {
+    compile cl.json.jackson.core
+    compile cl.log.logback
+    compile cl.mongo.driver
+    compile cl.mongo.jongo
+    compile cl.utils.guava
+    compile cl.utils.soyuz.jongo
+    compile cl.utils.ua
+
+    testCompile cl.utils.soyuz.isTo
+    testCompile cl.utils.soyuz.base
+    testCompile cl.test.spock.core
+}

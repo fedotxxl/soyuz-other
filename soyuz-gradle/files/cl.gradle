@@ -67,6 +67,7 @@ allprojects {
                                 queue           : "io.belov:soyuz-queue:1.1",
                                 queueDomain     : "io.belov:soyuz-queue-domain:1.1",
                                 template        : "io.belov:soyuz-template:1.0",
+                                ua              : "io.belov:soyuz-ua:1.0",
                                 validator       : "io.belov:soyuz-validator:1.0",
                         ],
                         lombok    : "org.projectlombok:lombok:1.16.10",
