@@ -65,7 +65,7 @@ allprojects {
                                 mail            : "io.belov:soyuz-mail:1.1",
                                 metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.1",
                                 queue           : "io.belov:soyuz-queue:1.1",
-                                queueDomain     : "io.belov:soyuz-queue-domain:1.1",
+                                queueDomain     : "io.belov:soyuz-queue-domain:1.2",
                                 template        : "io.belov:soyuz-template:1.0",
                                 ua              : "io.belov:soyuz-ua:1.0",
                                 validator       : "io.belov:soyuz-validator:1.0",

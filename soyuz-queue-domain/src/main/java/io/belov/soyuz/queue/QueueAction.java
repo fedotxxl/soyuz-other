@@ -17,6 +17,7 @@ public class QueueAction {
     protected ObjectId _id;
     protected int tries = 0;
     protected Date lastTry;
+    protected String type;
 
     @JsonProperty("pId")
     protected ObjectId projectId;
@@ -26,6 +27,11 @@ public class QueueAction {
 
     public QueueAction(ObjectId projectId) {
         this.projectId = projectId;
+    }
+
+    public QueueAction(ObjectId projectId, String type) {
+        this.projectId = projectId;
+        this.type = type;
     }
 
     public ObjectId getId() {
@@ -42,5 +48,9 @@ public class QueueAction {
 
     public Date getLastTry() {
         return lastTry;
+    }
+
+    public String getType() {
+        return type;
     }
 }
