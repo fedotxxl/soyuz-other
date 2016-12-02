@@ -9,7 +9,7 @@ include(
                 "io",
                 "jongo", "json",
                 "log",
-                "mail", "metrics-prometheus",
+                "mail", "metrics", "metrics-prometheus",
                 "queue", "queue-domain",
                 "template",
                 "ua",
