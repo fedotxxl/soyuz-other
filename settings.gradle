@@ -4,6 +4,7 @@ include(
                 "concurrent", "crypto",
                 "err", "exec",
                 "func",
+                "http",
                 "guava",
                 "io",
                 "jongo", "json",
