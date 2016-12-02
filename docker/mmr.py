@@ -36,7 +36,7 @@ def install(args):
     if package_type == "rpm":
         subprocess.call(["rpm", "-i", url])
     elif package_type == "deb":
-        os.system("curl -O " + url + " && sudo dpkg -i " + file_name)
+        os.system("cd /tmp && curl -O " + url + " && sudo dpkg -i " + file_name)
 
 def info(args):
     [url, file_name] = artifact_to_url(args[0])
@@ -46,7 +46,7 @@ def info(args):
     if package_type == "rpm":
         a = 1 #todo
     elif package_type == "deb":
-        os.system("curl -O " + url + " && sudo dpkg -I " + file_name)
+        os.system("cd /tmp && curl -O " + url + " && sudo dpkg -I " + file_name)
 
 if op_command == "install":
     install(op_args)
