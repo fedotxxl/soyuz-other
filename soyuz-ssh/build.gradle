@@ -1,0 +1,10 @@
+apply plugin: "groovy"
+
+version "1.0"
+
+dependencies {
+    compile cl.utils.jsch
+    compile cl.utils.guava
+
+    testCompile cl.test.spock.core
+}

@@ -11,6 +11,7 @@ include(
                 "log",
                 "mail", "metrics", "metrics-prometheus",
                 "queue", "queue-domain",
+                "ssh",
                 "template",
                 "ua",
                 "validator", "validator-spring", "validator-jax-rs", "validator-to-err",
