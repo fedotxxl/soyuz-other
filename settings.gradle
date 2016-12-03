@@ -12,7 +12,7 @@ include(
                 "mail", "metrics", "metrics-prometheus",
                 "queue", "queue-domain",
                 "ssh",
-                "template",
+                "template", "test",
                 "ua",
                 "validator", "validator-spring", "validator-jax-rs", "validator-to-err",
                 "web"

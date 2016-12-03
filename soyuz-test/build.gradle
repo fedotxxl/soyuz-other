@@ -1,0 +1,8 @@
+version "1.0"
+
+apply plugin: "groovy"
+
+dependencies {
+    compile cl.log.logback
+    compile cl.test.spring
+}
