@@ -1,12 +1,20 @@
 package io.belov.soyuz.web;
 
+import humanize.util.Parameters;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import static humanize.Humanize.slugify;
 
 /**
  * Created by fbelov on 28.06.15.
  */
 public class UrlUtils {
+
+    private static final Parameters.SlugifyParams SLUGIFY_PARAMS = Parameters.SlugifyParams.begin().separator("_").toLowerCase(false);
 
     public static String getProtocolAndHost(String url) {
         int slashslash = url.indexOf("//") + 2;
@@ -60,5 +68,23 @@ public class UrlUtils {
 
     public static boolean isRelative(String url) {
         return !isValid(url);
+    }
+
+    public static String normalizePath(String path) {
+        path = path.trim();
+        String [] pathElements = path.split("/");
+        List<String> pathElementsNormalized = new ArrayList<>(pathElements.length);
+
+        for (String pathElement : pathElements) {
+            pathElementsNormalized.add(slugify(pathElement, SLUGIFY_PARAMS));
+        }
+
+        String answer = String.join("/", pathElementsNormalized);
+
+        if (path.endsWith("/")) {
+            answer += "/";
+        }
+
+        return answer;
     }
 }
