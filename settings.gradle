@@ -12,7 +12,7 @@ include(
                 "log",
                 "mail", "metrics", "metrics-prometheus",
                 "queue", "queue-domain",
-                "rabbit",
+                "rabbit", "route",
                 "spring-jdbc", "ssh",
                 "template", "test", "text", "text-md",
                 "ua",
