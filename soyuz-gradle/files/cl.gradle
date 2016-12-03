@@ -83,7 +83,7 @@ allprojects {
                 utils        : [
                         guava     : "com.google.guava:guava:18.0",
                         soyuz     : [
-                                base            : "io.belov:soyuz-utils:1.28",
+                                base            : "io.belov:soyuz-utils:1.29",
                                 bus             : "io.belov:soyuz-bus:1.1",
                                 concurrent      : "io.belov:soyuz-concurrent:1.1",
                                 exec            : "io.belov:soyuz-exec:1.0",
