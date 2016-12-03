@@ -3,6 +3,7 @@ package io.belov.soyuz.log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,6 +31,18 @@ public class LoggerEvents {
         return log;
     }
 
+    public void trace(String event) {
+        trace(event, null);
+    }
+
+    public void trace(String event, Map params) {
+        log.trace(toLogMessage(event, params), toLogParams(params));
+    }
+
+    public void trace(String event, Map debugContext, Map params) {
+        trace(event, joinContexts(debugContext, params));
+    }
+
     public void debug(String event) {
         debug(event, null);
     }
@@ -38,12 +51,20 @@ public class LoggerEvents {
         log.debug(toLogMessage(event, params), toLogParams(params));
     }
 
+    public void debug(String event, Map debugContext, Map params) {
+        debug(event, joinContexts(debugContext, params));
+    }
+
     public void info(String event) {
         info(event, null);
     }
 
     public void info(String event, Map params) {
         log.info(toLogMessage(event, params), toLogParams(params));
+    }
+
+    public void info(String event, Map debugContext, Map params) {
+        info(event, joinContexts(debugContext, params));
     }
 
     public void warn(String event) {
@@ -56,6 +77,10 @@ public class LoggerEvents {
 
     public void warn(String event, Map params) {
         log.warn(toLogMessage(event, params), toLogParams(params));
+    }
+
+    public void warn(String event, Map debugContext, Map params) {
+        warn(event, joinContexts(debugContext, params));
     }
 
     public void warn(String event, Map params, Throwable throwable) {
@@ -72,6 +97,10 @@ public class LoggerEvents {
 
     public void error(String event, Map params) {
         log.error(toLogMessage(event, params), toLogParams(params));
+    }
+
+    public void error(String event, Map debugContext, Map params) {
+        error(event, joinContexts(debugContext, params));
     }
 
     public void error(String event, Map params, Throwable throwable) {
@@ -112,6 +141,14 @@ public class LoggerEvents {
         } else {
             return new Object[] { params };
         }
+    }
+
+    private Map joinContexts(Map debugContext, Map params) {
+        Map answer = new HashMap<>(debugContext);
+
+        answer.putAll(params);
+
+        return answer;
     }
 
 }
