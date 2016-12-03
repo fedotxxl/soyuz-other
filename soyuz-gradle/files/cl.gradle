@@ -2,8 +2,37 @@ allprojects {
     ext {
         cl = [
                 groovy       : "org.codehaus.groovy:groovy-all:$groovyVersion",
+                db        : [
+                        connection        : [
+                                zaxxer: [
+                                        "com.zaxxer:HikariCP-java6:2.1.0",
+                                        "org.postgresql:postgresql:9.3-1102-jdbc41"
+                                ],
+                                c3po  : [
+                                        "com.mchange:c3p0:0.9.5",
+                                        "org.postgresql:postgresql:9.3-1102-jdbc41"
+                                ]
+                        ],
+                        jdbi              : "org.jdbi:jdbi:2.56",
+                        jdbiStringTemplate: "org.antlr:stringtemplate:3.2",
+                        jooq              : "org.jooq:jooq:3.7.1",
+                        jdbc              : [
+                                postgresql: "org.postgresql:postgresql:9.3-1102-jdbc41"
+                        ]
+                ],
                 spring       : [
                         core : "org.springframework:spring-context:$springVersion",
+                        db            : [
+                                "com.devadmin.utils:utils-spring-jdbc:20151127",
+                                "org.springframework:spring-tx:$springVersion",
+                                "org.springframework:spring-jdbc:$springVersion",
+                                "org.springframework:spring-orm:$springVersion"
+                        ],
+                        dbWithoutUtils: [
+                                "org.springframework:spring-tx:$springVersion",
+                                "org.springframework:spring-jdbc:$springVersion",
+                                "org.springframework:spring-orm:$springVersion"
+                        ],
                         cache: "org.springframework:spring-context-support:$springVersion"
                 ],
                 javax        : [

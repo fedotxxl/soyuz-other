@@ -1,8 +1,13 @@
-version "1.0"
+version "1.1"
 
 apply plugin: "groovy"
 
 dependencies {
+    compile cl.groovy
+
     compile cl.log.logback
+    compile cl.spring.db
+    compile cl.test.spock.core
     compile cl.test.spring
+    compile cl.utils.guava
 }

@@ -1,0 +1,7 @@
+version = "1.0"
+
+dependencies {
+    compile cl.log.api
+    compile cl.spring.dbWithoutUtils
+    compile cl.utils.guava
+}

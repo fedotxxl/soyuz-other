@@ -13,6 +13,5 @@ dependencies {
     compile cl.utils.soyuz.base
     compile cl.utils.jsr305
 
-
-    testCompile project(":soyuz-text")
+    testCompile project(":soyuz-test")
 }

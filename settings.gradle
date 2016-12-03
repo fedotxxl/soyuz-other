@@ -13,7 +13,7 @@ include(
                 "mail", "metrics", "metrics-prometheus",
                 "queue", "queue-domain",
                 "rabbit",
-                "ssh",
+                "spring-jdbc", "ssh",
                 "template", "test", "text", "text-md",
                 "ua",
                 "validator", "validator-spring", "validator-jax-rs", "validator-to-err",
