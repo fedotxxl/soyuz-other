@@ -1,0 +1,18 @@
+apply plugin: "groovy"
+
+version "1.0"
+
+dependencies {
+    compile project(":soyuz-io")
+    compile project(":soyuz-exec")
+
+    compile cl.log.api
+    compile cl.utils.lombok
+    compile cl.utils.guava
+    compile cl.utils.soyuz.isTo
+    compile cl.utils.soyuz.base
+    compile cl.utils.jsr305
+
+
+    testCompile project(":soyuz-text")
+}

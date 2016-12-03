@@ -1,0 +1,8 @@
+version "1.0"
+
+dependencies {
+    compile cl.rabbit
+    compile cl.utils.commons.pool
+    compile cl.utils.soyuz.base
+    compile cl.utils.soyuz.json
+}

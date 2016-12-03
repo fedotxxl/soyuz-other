@@ -4,6 +4,7 @@ include(
                 "concurrent", "crypto",
                 "err", "exec",
                 "func",
+                "git",
                 "html", "http",
                 "guava",
                 "io",
@@ -11,8 +12,9 @@ include(
                 "log",
                 "mail", "metrics", "metrics-prometheus",
                 "queue", "queue-domain",
+                "rabbit",
                 "ssh",
-                "template", "test",
+                "template", "test", "text", "text-md",
                 "ua",
                 "validator", "validator-spring", "validator-jax-rs", "validator-to-err",
                 "web"

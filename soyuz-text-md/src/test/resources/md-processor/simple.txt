@@ -1,0 +1,12 @@
+<!-- tags: hello, world, urls, something useful -->
+<!-- title: Title from comment -->
+<h1>Hello Md</h1>
+<ul>
+<li>this</li>
+<li>is</li>
+<li>really</li>
+<li>simple</li>
+</ul>
+<pre><code class="language-js"><span class="hljs-keyword">var</span> md = <span class="hljs-built_in">require</span>(<span class="hljs-string">'markdown-it'</span>)();
+<span class="hljs-keyword">var</span> result = md.renderInline(<span class="hljs-string">'__markdown-it__ rulezz!'</span>);
+</code></pre>
