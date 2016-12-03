@@ -1,4 +1,4 @@
-package io.belov.soyuz.io;
+package io.belov.soyuz.io.temp;
 
 import com.google.common.base.Throwables;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -16,21 +16,25 @@ public class SimpleTempFileProvider implements TempFileProvider {
     private File rootDir;
     private String filePrefix;
 
-    public SimpleTempFileProvider(String rootDirName, String filePrefix) {
-        try {
-            File temp = File.createTempFile("temp-file-name", ".tmp");
-            temp.deleteOnExit();
+    public SimpleTempFileProvider(String rootDirName) {
+        this(rootDirName, "");
+    }
 
-            this.filePrefix = filePrefix;
-            this.rootDir = new File(temp.getParentFile(), rootDirName);
-            this.rootDir.mkdirs();
-        } catch (IOException e) {
-            throw Throwables.propagate(e);
+    public SimpleTempFileProvider(String rootDirName, String filePrefix) {
+        this.filePrefix = filePrefix;
+        this.rootDir = new File(getSystemTempDirectory(), rootDirName);
+
+        if (!this.rootDir.exists() && !this.rootDir.mkdirs()) {
+            throw new IllegalStateException("Can't create directory for temp files: " + rootDir.getAbsolutePath());
         }
     }
 
     public File getRootDir() {
         return rootDir;
+    }
+
+    public String getFilePrefix() {
+        return filePrefix;
     }
 
     @Override
@@ -68,5 +72,14 @@ public class SimpleTempFileProvider implements TempFileProvider {
         } catch (IOException e) {
             throw Throwables.propagate(e);
         }
+    }
+
+    private File getSystemTempDirectory() {
+        String path = System.getProperty("java.io.tmpdir");
+        File tempDirectory = new File(path);
+
+        tempDirectory.mkdirs();
+
+        return tempDirectory;
     }
 }

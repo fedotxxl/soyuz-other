@@ -1,9 +1,9 @@
-package io.belov.soyuz.io;
+package io.belov.soyuz.io.temp;
 
 import java.io.File;
 
 /**
- * Created by fbelov on 07.06.15.
+ * Created by fbelov on 16.04.15.
  */
 public interface TempFileProvider {
 

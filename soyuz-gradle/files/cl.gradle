@@ -62,7 +62,7 @@ allprojects {
                                 guava           : "io.belov:soyuz-guava:1.0",
                                 isTo            : "io.belov.soyuz:soyuz-is-to:1.42",
                                 http            : "io.belov:soyuz-http:1.1",
-                                io              : "io.belov:soyuz-io:1.1",
+                                io              : "io.belov:soyuz-io:1.2",
                                 jongo           : "io.belov:soyuz-jongo:1.1",
                                 jsStacktraceDomain: "io.belov:soyuz-js-stacktrace-domain:1.0",
                                 jsStacktraceParser: "io.belov:soyuz-js-stacktrace-parser:1.0",
