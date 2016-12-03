@@ -26,6 +26,10 @@ public class LoggerEvents {
         this.log = logger;
     }
 
+    public Logger getLog() {
+        return log;
+    }
+
     public void debug(String event) {
         debug(event, null);
     }
@@ -72,6 +76,26 @@ public class LoggerEvents {
 
     public void error(String event, Map params, Throwable throwable) {
         log.error(event + ": " + params.toString(), throwable);
+    }
+
+    public boolean isTraceEnabled() {
+        return log.isTraceEnabled();
+    }
+
+    public boolean isDebugEnabled() {
+        return log.isDebugEnabled();
+    }
+
+    public boolean isInfoEnabled() {
+        return log.isInfoEnabled();
+    }
+
+    public boolean isWarnEnabled() {
+        return log.isWarnEnabled();
+    }
+
+    public boolean isErrorEnabled() {
+        return log.isErrorEnabled();
     }
 
     private String toLogMessage(String event, Map params) {
