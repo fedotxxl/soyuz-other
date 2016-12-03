@@ -1,0 +1,6 @@
+version "1.0"
+
+dependencies {
+    compile cl.html.jsoup
+    compile cl.utils.jsr305
+}

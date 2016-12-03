@@ -4,7 +4,7 @@ include(
                 "concurrent", "crypto",
                 "err", "exec",
                 "func",
-                "http",
+                "html", "http",
                 "guava",
                 "io",
                 "jongo", "json", "js-stacktrace-parser", "js-stacktrace-domain",

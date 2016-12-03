@@ -61,6 +61,7 @@ allprojects {
                                 func            : "io.belov:soyuz-func:1.2",
                                 guava           : "io.belov:soyuz-guava:1.0",
                                 isTo            : "io.belov.soyuz:soyuz-is-to:1.42",
+                                html            : "io.belov:soyuz-html:1.0",
                                 http            : "io.belov:soyuz-http:1.1",
                                 io              : "io.belov:soyuz-io:1.2",
                                 jongo           : "io.belov:soyuz-jongo:1.1",
