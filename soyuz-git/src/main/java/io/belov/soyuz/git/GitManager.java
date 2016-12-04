@@ -130,22 +130,22 @@ public class GitManager {
 
     @Value
     public static class Result {
-        private boolean isSuccess;
+        private boolean isOk;
         private int exitCode;
         private List<String> log;
         private RemoteProblem problem;
 
-        public Result(int exitCode, boolean isSuccess) {
-            this(exitCode, isSuccess, null);
+        public Result(int exitCode, boolean isOk) {
+            this(exitCode, isOk, null);
         }
 
-        public Result(int exitCode, boolean isSuccess, RemoteProblem problem) {
-            this(exitCode, isSuccess, problem, null);
+        public Result(int exitCode, boolean isOk, RemoteProblem problem) {
+            this(exitCode, isOk, problem, null);
         }
 
-        public Result(int exitCode, boolean isSuccess, RemoteProblem problem, List<String> log) {
+        public Result(int exitCode, boolean isOk, RemoteProblem problem, List<String> log) {
             this.exitCode = exitCode;
-            this.isSuccess = isSuccess;
+            this.isOk = isOk;
             this.problem = problem;
             this.log = log;
         }
@@ -156,6 +156,22 @@ public class GitManager {
     }
 
     public enum RemoteProblem {
-        AUTH, AUTH_OR_REPO_DOESNT_EXIST, CANT_CONNECT, UNKNOWN, NOT_A_REPO, REPO_DOESNT_EXIST, INCORRECT_INPUT_DATA, INCORRECT_BRANCH, INCORRECT_DIR, KILLED_BY_WATCHDOG
+        AUTH("auth"), AUTH_OR_REPO_DOESNT_EXIST("auth_or_repo_doesnt_exist"),
+        CANT_CONNECT("cant_connect"),
+        INCORRECT_BRANCH("incorrect_branch"), INCORRECT_DIR("incorrect_dir"), INCORRECT_INPUT_DATA("incorrect_input_data"),
+        KILLED_BY_WATCHDOG("killed_by_watchdog"),
+        NOT_A_REPO("not_a_repo"),
+        REPO_DOESNT_EXIST("repo_desont_exist"),
+        UNKNOWN("unknown");
+
+        private String code;
+
+        RemoteProblem(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
     }
 }
