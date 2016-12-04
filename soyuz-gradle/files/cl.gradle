@@ -106,7 +106,7 @@ allprojects {
                                 queueDomain     : "io.belov:soyuz-queue-domain:1.2",
                                 rabbit          : "io.belov:soyuz-rabbit:1.0",
                                 route           : "io.belov:soyuz-route:1.0",
-                                ssh             : "io.belov:soyuz-ssh:1.0",
+                                ssh             : "io.belov:soyuz-ssh:1.1",
                                 template        : "io.belov:soyuz-template:1.0",
                                 test            : "io.belov:soyuz-test:1.0",
                                 text            : "io.belov:soyuz-text:1.0",

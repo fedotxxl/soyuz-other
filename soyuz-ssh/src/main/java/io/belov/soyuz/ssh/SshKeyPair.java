@@ -1,4 +1,4 @@
-package ssh;
+package io.belov.soyuz.ssh;
 
 /**
  * Created by fbelov on 03.02.16.
