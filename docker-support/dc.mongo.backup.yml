@@ -2,6 +2,7 @@
 support-mongo-backup:
   container_name: support-mongo-backup
   image: istepanov/mongodump
+  restart: always
   net: host
   volumes:
    - /job/mongo/backup:/backup
