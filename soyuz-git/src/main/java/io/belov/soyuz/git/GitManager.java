@@ -130,22 +130,22 @@ public class GitManager {
 
     @Value
     public static class Result {
-        private boolean isOk;
+        private boolean isSuccess;
         private int exitCode;
         private List<String> log;
         private RemoteProblem problem;
 
-        public Result(int exitCode, boolean isOk) {
-            this(exitCode, isOk, null);
+        public Result(int exitCode, boolean isSuccess) {
+            this(exitCode, isSuccess, null);
         }
 
-        public Result(int exitCode, boolean isOk, RemoteProblem problem) {
-            this(exitCode, isOk, problem, null);
+        public Result(int exitCode, boolean isSuccess, RemoteProblem problem) {
+            this(exitCode, isSuccess, problem, null);
         }
 
-        public Result(int exitCode, boolean isOk, RemoteProblem problem, List<String> log) {
+        public Result(int exitCode, boolean isSuccess, RemoteProblem problem, List<String> log) {
             this.exitCode = exitCode;
-            this.isOk = isOk;
+            this.isSuccess = isSuccess;
             this.problem = problem;
             this.log = log;
         }
