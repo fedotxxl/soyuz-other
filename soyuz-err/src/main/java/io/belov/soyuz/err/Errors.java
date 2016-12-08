@@ -21,9 +21,7 @@ public class Errors implements Iterable<Err> {
     }
 
     public Errors add(Err... errors) {
-        Collections.addAll(this.errors, errors);
-
-        return this;
+        return add(Arrays.asList(errors));
     }
 
     public Errors add(Collection<Err> errors) {
