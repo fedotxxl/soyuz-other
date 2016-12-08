@@ -1,4 +1,4 @@
-package ssh
+package io.belov.soyuz.ssh
 
 import spock.lang.Specification
 

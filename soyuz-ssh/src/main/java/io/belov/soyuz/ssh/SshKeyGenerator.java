@@ -1,4 +1,4 @@
-package ssh;
+package io.belov.soyuz.ssh;
 
 import com.google.common.base.Throwables;
 import com.jcraft.jsch.JSch;

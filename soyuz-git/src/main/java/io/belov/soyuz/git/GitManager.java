@@ -156,6 +156,22 @@ public class GitManager {
     }
 
     public enum RemoteProblem {
-        AUTH, AUTH_OR_REPO_DOESNT_EXIST, CANT_CONNECT, UNKNOWN, NOT_A_REPO, REPO_DOESNT_EXIST, INCORRECT_INPUT_DATA, INCORRECT_BRANCH, INCORRECT_DIR, KILLED_BY_WATCHDOG
+        AUTH("auth"), AUTH_OR_REPO_DOESNT_EXIST("auth_or_repo_doesnt_exist"),
+        CANT_CONNECT("cant_connect"),
+        INCORRECT_BRANCH("incorrect_branch"), INCORRECT_DIR("incorrect_dir"), INCORRECT_INPUT_DATA("incorrect_input_data"),
+        KILLED_BY_WATCHDOG("killed_by_watchdog"),
+        NOT_A_REPO("not_a_repo"),
+        REPO_DOESNT_EXIST("repo_desont_exist"),
+        UNKNOWN("unknown");
+
+        private String code;
+
+        RemoteProblem(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
     }
 }
