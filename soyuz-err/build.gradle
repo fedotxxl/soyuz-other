@@ -1,6 +1,6 @@
 apply plugin: "groovy"
 
-version "1.7"
+version "1.8"
 
 dependencies {
     compile cl.utils.jsr305

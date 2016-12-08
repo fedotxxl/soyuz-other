@@ -46,16 +46,33 @@ public class Err<V> {
         this.args = args;
     }
 
+    public static Err reject(Code code, Object... args) {
+        return reject(code.getErrCode(), args);
+    }
+
     public static Err reject(String code, Object... args) {
         return new Err<>(null, code, null, null, args);
+    }
+
+    public static <V> Err<V> reject(String field, Code code, V value) {
+        return reject(field, code.getErrCode(), value);
     }
 
     public static <V> Err<V> reject(String field, String code, V value) {
         return new Err<>(field, code, null, value, null);
     }
 
+    public static <V> Err<V> reject(String field, Code code, V value, Object... args) {
+        return reject(field, code.getErrCode(), value, args);
+    }
+
     public static <V> Err<V> reject(String field, String code, V value, Object... args) {
         return new Err<>(field, code, null, value, args);
     }
 
+    public interface Code {
+
+        String getErrCode();
+
+    }
 }

@@ -86,7 +86,7 @@ allprojects {
                                 base            : "io.belov:soyuz-utils:1.29",
                                 bus             : "io.belov:soyuz-bus:1.1",
                                 concurrent      : "io.belov:soyuz-concurrent:1.1",
-                                err             : "io.belov:soyuz-err:1.7",
+                                err             : "io.belov:soyuz-err:1.8",
                                 exec            : "io.belov:soyuz-exec:1.0",
                                 func            : "io.belov:soyuz-func:1.2",
                                 git             : "io.belov:soyuz-git:1.2",
