@@ -30,6 +30,11 @@ public class Err<V> {
         return field == null;
     }
 
+    @JsonIgnore
+    public boolean isField() {
+        return field != null;
+    }
+
     private Err() {
     }
 

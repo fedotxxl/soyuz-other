@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by fbelov on 31.05.16.
@@ -39,9 +40,18 @@ public class Errors implements Iterable<Err> {
         return !errors.isEmpty();
     }
 
-    @JsonProperty("errors")
     public List<Err> get() {
         return errors;
+    }
+
+    @JsonProperty("global")
+    public List<Err> getGlobalErrors() {
+        return errors.stream().filter(Err::isGlobal).collect(Collectors.toList());
+    }
+
+    @JsonProperty("field")
+    public List<Err> getFieldErrors() {
+        return errors.stream().filter(Err::isField).collect(Collectors.toList());
     }
 
     public static Errors ok() {
