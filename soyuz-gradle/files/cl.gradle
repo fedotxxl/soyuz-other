@@ -102,7 +102,7 @@ allprojects {
                                 jsStacktraceDomain: "io.belov:soyuz-js-stacktrace-domain:1.0",
                                 jsStacktraceParser: "io.belov:soyuz-js-stacktrace-parser:1.0",
                                 json            : "io.belov:soyuz-json:1.1",
-                                log             : "io.belov:soyuz-log:1.6",
+                                log             : "io.belov:soyuz-log:1.9",
                                 mail            : "io.belov:soyuz-mail:1.1",
                                 metrics         : "io.belov:soyuz-metrics:1.0",
                                 metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.2",

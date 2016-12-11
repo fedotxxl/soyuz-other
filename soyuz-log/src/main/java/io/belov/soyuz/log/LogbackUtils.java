@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * http://stackoverflow.com/questions/7967165/how-to-configure-logback-with-java-code-to-set-log-level
@@ -34,10 +35,14 @@ public final class LogbackUtils
     }
 
     public static void setLogLevelForPackages(Level level, Collection<String> packages) {
-        logger.info("Changing log level for packages {} to {}", packages, level);
+        packages = packages.stream().filter(p -> p != null && !p.trim().isEmpty()).collect(Collectors.toList());
 
-        for (String p : packages) {
-            setLogLevel(p, level.toString());
+        if (packages.size() > 0) {
+            logger.info("Changing log level for packages {} to {}", packages, level);
+
+            for (String p : packages) {
+                setLogLevel(p, level.toString());
+            }
         }
     }
 
