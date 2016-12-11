@@ -48,6 +48,9 @@ allprojects {
                                 "ch.qos.logback:logback-classic:1.1.7",
                                 "org.codehaus.janino:janino:2.7.8"
                         ],
+                        slf4j      : [
+                                julToSlf4j: "org.slf4j:jul-to-slf4j:$slf4jVersion"
+                        ],
                         logentries: "com.logentries:logentries-appender:1.1.35",
                         sentry: "com.getsentry.raven:raven-logback:7.8.0"
                 ],
@@ -99,7 +102,7 @@ allprojects {
                                 jsStacktraceDomain: "io.belov:soyuz-js-stacktrace-domain:1.0",
                                 jsStacktraceParser: "io.belov:soyuz-js-stacktrace-parser:1.0",
                                 json            : "io.belov:soyuz-json:1.1",
-                                log             : "io.belov:soyuz-log:1.5",
+                                log             : "io.belov:soyuz-log:1.6",
                                 mail            : "io.belov:soyuz-mail:1.1",
                                 metrics         : "io.belov:soyuz-metrics:1.0",
                                 metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.2",

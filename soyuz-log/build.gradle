@@ -1,5 +1,6 @@
-version "1.5"
+version "1.6"
 
 dependencies {
     compile cl.log.logback
+    compile cl.log.slf4j.julToSlf4j
 }

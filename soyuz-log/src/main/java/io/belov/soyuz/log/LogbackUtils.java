@@ -2,10 +2,12 @@ package io.belov.soyuz.log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * http://stackoverflow.com/questions/7967165/how-to-configure-logback-with-java-code-to-set-log-level
@@ -25,6 +27,18 @@ public final class LogbackUtils
     private LogbackUtils()
     {
         // Prevent instance creation
+    }
+
+    public static void setLogLevelForPackages(Level level, String... packages) {
+        setLogLevelForPackages(level, Arrays.asList(packages));
+    }
+
+    public static void setLogLevelForPackages(Level level, Collection<String> packages) {
+        logger.info("Changing log level for packages {} to {}", packages, level);
+
+        for (String p : packages) {
+            setLogLevel(p, level.toString());
+        }
     }
 
     /**
