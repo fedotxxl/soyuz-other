@@ -1,15 +1,13 @@
 package io.belov.soyuz.concurrent;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.Sets;
+import io.belov.soyuz.log.LoggerEvents;
 import io.belov.soyuz.log.Mdc;
 import io.belov.soyuz.utils.to;
 
 import javax.annotation.Nullable;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -18,6 +16,10 @@ import java.util.function.Consumer;
  */
 public class ProcessorPool<T> {
 
+    private static final LoggerEvents loge = LoggerEvents.getInstance(ProcessorPool.class);
+
+    private List<T> processingActions = Collections.synchronizedList(new ArrayList<T>());
+    private Map<T, Future> futuresByActions = new ConcurrentHashMap<>();
     private LockerMap<String> lockers = new LockerMap<>();
     private Set<String> scheduled = Sets.newConcurrentHashSet();
     private Consumer<T> processor;
@@ -50,34 +52,60 @@ public class ProcessorPool<T> {
 
                 if (isScheduled.get()) {
                     try {
+                        processingActions.add(action);
                         doProcess(actionId, action);
                     } finally {
                         scheduled.remove(actionId);
+                        processingActions.remove(action);
                     }
                 }
             } else {
                 doProcess(actionId, action);
             }
         } catch (Exception e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         } finally {
             semaphore.release();
         }
     }
 
+    public void interrupt(T action) {
+        Future future = futuresByActions.get(action);
+
+        if (future != null) {
+            future.cancel(true);
+        }
+    }
+
+    public List<T> getProcessingActions() {
+        return processingActions;
+    }
+
     private void doProcess(@Nullable String actionId, T action) {
         try {
-            executor.submit(() -> {
-                Runnable rProcess = () -> processor.accept(action);
+            Future future = executor.submit(() -> {
+                try {
+                    Runnable rProcess = () -> processor.accept(action);
 
-                if (actionId == null) {
-                    rProcess.run();
-                } else {
-                    Mdc.wrap(to.map("a", actionId), rProcess).run();
+                    if (actionId == null) {
+                        rProcess.run();
+                    } else {
+                        Mdc.wrap(to.map("a", actionId), rProcess).run();
+                    }
+                } catch (Exception e) {
+                    loge.error("processorPool.e", to.map("id", actionId, "a", action), e);
                 }
-            }).get();
+            });
+
+            futuresByActions.put(action, future);
+
+            future.get();
+        } catch (InterruptedException | CancellationException e) {
+            loge.warn("processorPool.interrupted", to.map("id", actionId, "a", action));
         } catch (Exception e) {
-            throw Throwables.propagate(e);
+            loge.error("processorPool.e", to.map("id", actionId, "a", action), e);
+        } finally {
+            futuresByActions.remove(action);
         }
     }
 }
