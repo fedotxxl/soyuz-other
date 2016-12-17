@@ -1,0 +1,11 @@
+version "1.0"
+
+dependencies {
+    compile cl.jersey.client
+    compile cl.json.jackson.core
+    compile cl.utils.soyuz.isTo
+    compile cl.utils.soyuz.log
+
+    provided cl.utils.lombok
+
+}
