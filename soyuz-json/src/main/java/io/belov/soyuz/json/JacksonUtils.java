@@ -2,12 +2,12 @@ package io.belov.soyuz.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.*;
 import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.function.Consumer;
 
 /**
  * Created by fbelov on 28.06.15.
@@ -18,6 +18,16 @@ public class JacksonUtils {
     private static final ObjectWriter writer = new ObjectMapper().writer();
     private static final ObjectReader reader = new ObjectMapper().reader();
     private static final ObjectMapper jsReader;
+
+    public static final Consumer<ObjectMapper> CONFIGURER_CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES = (om) -> {
+        om.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    };
+
+    public static final Consumer<ObjectMapper> CONFIGURER_FAIL_SAFE = (om) -> {
+        om
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    };
 
     static {
         //http://stackoverflow.com/questions/26591359/parsing-non-json-javascript-object-with-jackson

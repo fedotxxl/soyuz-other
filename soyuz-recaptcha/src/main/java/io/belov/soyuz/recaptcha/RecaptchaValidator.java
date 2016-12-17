@@ -4,16 +4,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.belov.soyuz.jersey.client.JerseyClientUtils;
 import io.belov.soyuz.log.LoggerEvents;
 import io.belov.soyuz.utils.to;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.glassfish.jersey.client.JerseyClientBuilder;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +30,21 @@ public class RecaptchaValidator {
 
     public RecaptchaValidator(Config config) {
         this.config = config;
-        this.target = JerseyClientBuilder.createClient().target(config.getValidationUrl());
+        this.target = JerseyClientUtils
+                .getClientWithJacksonSupport(config.getConnectionTimeoutInSeconds() * 1000, config.getReadTimeoutInSeconds() * 1000)
+                .target(config.getValidationUrl());
     }
 
     public Result validate(String userResponse, String userIp) {
         loge.debug("recaptcha.validate", to.map("config", config, "userResponse", userResponse, "ip", userIp));
 
         Result result = target
+                .queryParam("secret", config.getSecretKey())
+                .queryParam("response", userResponse)
+                .queryParam("remoteip", userIp)
                 .request()
-                .post(Entity.json(new Request(config.getSecretKey(), userResponse, userIp)))
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.text("abc"))
                 .readEntity(Result.class);
 
         return result;
@@ -51,14 +58,8 @@ public class RecaptchaValidator {
     public static class Config {
         private String validationUrl;
         private String secretKey;
-    }
-
-    @AllArgsConstructor
-    @Getter
-    private static class Request {
-        private String secret;
-        private String response;
-        private String remoteip;
+        private int connectionTimeoutInSeconds;
+        private int readTimeoutInSeconds;
     }
 
     @Getter

@@ -1,0 +1,10 @@
+apply plugin: "groovy"
+
+version "1.0"
+
+dependencies {
+    compile project(":soyuz-json")
+    compile cl.jersey.client
+    compile cl.utils.guava
+    compile cl.utils.soyuz.log
+}
