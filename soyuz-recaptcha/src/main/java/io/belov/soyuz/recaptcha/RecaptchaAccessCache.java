@@ -1,7 +1,10 @@
 package io.belov.soyuz.recaptcha;
 
+import com.google.common.base.Supplier;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.primitives.Booleans;
+import io.belov.soyuz.utils.to;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -13,20 +16,29 @@ import java.util.concurrent.TimeUnit;
  */
 public class RecaptchaAccessCache {
 
-    private Cache<Access, Boolean> cache;
+    private Cache<Access, Boolean> cacheAccess;
+    private Cache<String, Boolean> cacheExceededForce;
     private int maxItemsPerIp;
 
     public RecaptchaAccessCache(long expireDurationInSeconds, int maxItemsPerIp) {
-        this.cache = CacheBuilder.newBuilder().expireAfterWrite(expireDurationInSeconds, TimeUnit.SECONDS).build();
+        this.cacheAccess = CacheBuilder.newBuilder().expireAfterWrite(expireDurationInSeconds, TimeUnit.SECONDS).build();
+        this.cacheExceededForce = CacheBuilder.newBuilder().expireAfterWrite(expireDurationInSeconds, TimeUnit.SECONDS).build();
         this.maxItemsPerIp = maxItemsPerIp;
     }
 
     public void access(String ip) {
-        cache.put(Access.from(ip), true);
+        cacheAccess.put(Access.from(ip), true);
+    }
+
+    public void markAsExceeded(String ip) {
+        cacheExceededForce.put(ip, true);
     }
 
     public boolean isLimitExceededForIp(String ip) {
-        return cache.asMap().keySet().stream().filter(a -> a.getIp().equals(ip)).count() > maxItemsPerIp;
+        Supplier<Boolean> isForced = () -> to.or(cacheExceededForce.getIfPresent(ip), false);
+        Supplier<Boolean> isExceeded = () -> cacheAccess.asMap().keySet().stream().filter(a -> a.getIp().equals(ip)).count() > maxItemsPerIp;
+
+        return isForced.get() || isExceeded.get();
     }
 
     @Getter
