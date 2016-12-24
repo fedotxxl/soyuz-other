@@ -119,6 +119,8 @@ allprojects {
                                 textMd          : "io.belov:soyuz-text-md:1.0",
                                 ua              : "io.belov:soyuz-ua:1.0",
                                 validator       : "io.belov:soyuz-validator:1.18",
+                                validatorSpring : "io.belov:soyuz-validator-spring:1.1",
+                                validatorToErr  : "io.belov:soyuz-validator-to-err:1.0",
                                 web             : "io.belov:soyuz-web:1.1",
                         ],
                         lombok    : "org.projectlombok:lombok:1.16.10",
