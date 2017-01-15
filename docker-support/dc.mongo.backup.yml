@@ -1,10 +1,11 @@
-#docker-compose --file ./dc.mongo.backup.yml up -d > /job/log/dc.mongo.backup.log
+#docker-compose --file /job/dc/dc.mongo.backup.yml up -d > /job/log/dc.mongo.backup.log
 support-mongo-backup:
   container_name: support-mongo-backup
   image: istepanov/mongodump
   restart: always
-  net: host
   volumes:
-   - /job/mongo/backup:/backup
+   - /job/backup/mongo:/backup
+  external_links:
+   - support-mongo:mongo
   environment:
    - CRON_SCHEDULE=0 1 * * *
