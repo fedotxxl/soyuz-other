@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!--https://github.com/jOOQ/jOOQ/blob/master/jOOQ-examples/jOOQ-spring-example/src/main/resources/jooq-spring.xml-->
+
+    <!--<bean class="org.jooq.impl.DefaultConfiguration" name="jooqConfig">-->
+        <!--<property name="SQLDialect">-->
+            <!--<value type="org.jooq.SQLDialect">${jooq.dialect}</value>-->
+        <!--</property>-->
+        <!--<property name="connectionProvider" ref="connectionProvider"/>-->
+        <!--<property name="transactionProvider" ref="jooqTransactionProvider"/>-->
+        <!--<property name="executeListenerProvider">-->
+            <!--<array>-->
+                <!--<bean class="org.jooq.impl.DefaultExecuteListenerProvider">-->
+                    <!--<constructor-arg index="0" ref="jooqExceptionTranslator"/>-->
+                <!--</bean>-->
+            <!--</array>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <bean class="org.jooq.impl.DataSourceConnectionProvider" name="connectionProvider">
+        <constructor-arg ref="proxyDataSource" />
+    </bean>
+
+    <!-- Configure the DSL object, optionally overriding jOOQ Exceptions with Spring Exceptions -->
+    <bean id="dsl" class="org.jooq.impl.DefaultDSLContext">
+        <constructor-arg ref="jooqConfig" />
+    </bean>
+
+    <bean id="jooqTransactionProvider" class="com.devadmin.utils.db.jooq.spring.SpringTransactionProvider" />
+
+    <bean id="jooqExceptionTranslator" class="com.devadmin.utils.db.jooq.spring.ExceptionTranslator" />
+
+    <bean class="com.devadmin.utils.db.jooq.ZonedDateTimeConverter" />
+
+</beans>

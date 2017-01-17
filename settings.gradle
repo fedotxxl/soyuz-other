@@ -2,6 +2,7 @@ include(
         [
                 "bus",
                 "concurrent", "crypto",
+                "db-jooq",
                 "err", "exec",
                 "func",
                 "git",

@@ -1,0 +1,9 @@
+version = "1.0"
+
+dependencies {
+    compile cl.db.jooq
+    compile cl.spring.dbWithoutUtils
+
+    compile cl.utils.soyuz.isTo
+    compile cl.utils.soyuz.json
+}

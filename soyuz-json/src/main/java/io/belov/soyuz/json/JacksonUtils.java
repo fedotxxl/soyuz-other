@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableMap;
+import io.belov.soyuz.log.LoggerEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +16,8 @@ import java.util.function.Consumer;
  */
 public class JacksonUtils {
 
-    private static final Logger log = LoggerFactory.getLogger(JacksonUtils.class);
+    private static final LoggerEvents loge = LoggerEvents.getInstance(JacksonUtils.class);
+
     private static final ObjectWriter writer = new ObjectMapper().writer();
     private static final ObjectReader reader = new ObjectMapper().reader();
     private static final ObjectMapper jsReader;
@@ -39,23 +42,48 @@ public class JacksonUtils {
     }
 
     public static String toJson(Object o) {
+        return toJson(o, writer);
+    }
+
+    public static String toJson(Object o, ObjectMapper objectMapper) {
+        return toJson(o, objectMapper.writer());
+    }
+
+    public static String toJson(Object o, ObjectWriter writer) {
         try {
             return writer.writeValueAsString(o);
         } catch (JsonProcessingException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 
     public static String toJsonOrNull(Object o) {
-        return (o != null) ? toJson(o) : null;
+        return toJsonOrNull(o, writer);
+    }
+
+    public static String toJsonOrNull(Object o, ObjectMapper objectMapper) {
+        return toJsonOrNull(o, objectMapper.writer());
+    }
+
+    public static String toJsonOrNull(Object o, ObjectWriter writer) {
+        return (o != null) ? toJson(o, writer) : null;
     }
 
     public static <T> T fromJson(String json, Class<T> clazz) {
+        return fromJson(json, clazz, reader);
+    }
+
+    public static <T> T fromJson(String json, Class<T> clazz, ObjectMapper mapper) {
+        return fromJson(json, clazz, mapper.reader());
+    }
+
+    public static <T> T fromJson(String json, Class<T> clazz, ObjectReader reader) {
         try {
             return reader.withType(clazz).readValue(json);
         } catch (Throwable e) {
-            log.warn("Exception on parsing JSON {} to {}", json, clazz);
-            throw Throwables.propagate(e);
+            loge.error("json.from.e", ImmutableMap.of("json", json, "class", clazz), e);
+
+            throw new RuntimeException(e);
         }
     }
 
@@ -63,8 +91,9 @@ public class JacksonUtils {
         try {
             return jsReader.readValue(js, clazz);
         } catch (Throwable e) {
-            log.warn("Exception on parsing JavaScript {} to {}", js, clazz);
-            throw Throwables.propagate(e);
+            loge.error("json.js.from.e", ImmutableMap.of("js", js, "class", clazz), e);
+
+            throw new RuntimeException(e);
         }
     }
 
