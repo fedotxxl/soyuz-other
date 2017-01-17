@@ -1,4 +1,4 @@
-package com.devadmin.utils.db.jooq;
+package io.belov.soyuz.db.jooq;
 
 import java.sql.Timestamp;
 import java.time.ZoneId;

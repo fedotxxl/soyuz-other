@@ -1,4 +1,4 @@
-package com.devadmin.utils.db.jooq;
+package io.belov.soyuz.db.jooq;
 
 import io.belov.soyuz.utils.is;
 import io.belov.soyuz.utils.to;

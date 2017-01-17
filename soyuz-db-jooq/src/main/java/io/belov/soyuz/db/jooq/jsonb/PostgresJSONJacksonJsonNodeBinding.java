@@ -1,4 +1,4 @@
-package com.devadmin.utils.db.jooq.jsonb;
+package io.belov.soyuz.db.jooq.jsonb;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jooq.*;

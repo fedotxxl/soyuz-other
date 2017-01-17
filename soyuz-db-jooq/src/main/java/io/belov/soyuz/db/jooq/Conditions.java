@@ -1,4 +1,4 @@
-package com.devadmin.utils.db.jooq;
+package io.belov.soyuz.db.jooq;
 
 import org.jooq.Condition;
 import org.jooq.Operator;

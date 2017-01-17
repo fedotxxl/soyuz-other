@@ -35,10 +35,10 @@
         <constructor-arg ref="jooqConfig" />
     </bean>
 
-    <bean id="jooqTransactionProvider" class="com.devadmin.utils.db.jooq.spring.SpringTransactionProvider" />
+    <bean id="jooqTransactionProvider" class="io.belov.soyuz.db.jooq.spring.SpringTransactionProvider" />
 
-    <bean id="jooqExceptionTranslator" class="com.devadmin.utils.db.jooq.spring.ExceptionTranslator" />
+    <bean id="jooqExceptionTranslator" class="io.belov.soyuz.db.jooq.spring.ExceptionTranslator" />
 
-    <bean class="com.devadmin.utils.db.jooq.ZonedDateTimeConverter" />
+    <bean class="io.belov.soyuz.db.jooq.ZonedDateTimeConverter" />
 
 </beans>

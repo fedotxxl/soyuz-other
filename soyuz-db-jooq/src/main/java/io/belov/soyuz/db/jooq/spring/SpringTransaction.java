@@ -1,4 +1,4 @@
-package com.devadmin.utils.db.jooq.spring;
+package io.belov.soyuz.db.jooq.spring;
 
 import org.jooq.Transaction;
 
