@@ -113,6 +113,7 @@ allprojects {
                                 rabbit          : "io.belov:soyuz-rabbit:1.0",
                                 recaptcha       : "io.belov:soyuz-recaptcha:1.6",
                                 route           : "io.belov:soyuz-route:1.0",
+                                springJdbc      : "io.belov:soyuz-spring-jdbc:1.2",
                                 ssh             : "io.belov:soyuz-ssh:1.1",
                                 template        : "io.belov:soyuz-template:1.0",
                                 test            : "io.belov:soyuz-test:1.0",
