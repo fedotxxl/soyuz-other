@@ -1,4 +1,4 @@
-package com.devadmin.spring.jdbc;
+package io.belov.soyuz.spring.jdbc;
 
 import com.google.common.collect.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.devadmin.spring.jdbc;
+package io.belov.soyuz.spring.jdbc;
 
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
