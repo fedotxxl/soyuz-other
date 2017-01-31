@@ -2,7 +2,9 @@ package io.belov.soyuz.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import io.belov.soyuz.log.LoggerEvents;
@@ -82,6 +84,26 @@ public class JacksonUtils {
             return reader.withType(clazz).readValue(json);
         } catch (Throwable e) {
             loge.error("json.from.e", ImmutableMap.of("json", json, "class", clazz), e);
+
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(String json, TypeReference<T> obj, ObjectMapper reader) {
+        try {
+            return reader.readValue(json, obj);
+        } catch (Throwable e) {
+            loge.error("json.from.e", ImmutableMap.of("json", json, "tr", obj), e);
+
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(String json, JavaType obj, ObjectMapper reader) {
+        try {
+            return reader.readValue(json, obj);
+        } catch (Throwable e) {
+            loge.error("json.from.e", ImmutableMap.of("json", json, "ct", obj), e);
 
             throw new RuntimeException(e);
         }

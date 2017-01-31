@@ -103,7 +103,7 @@ allprojects {
                                 jongo           : "io.belov:soyuz-jongo:1.1",
                                 jsStacktraceDomain: "io.belov:soyuz-js-stacktrace-domain:1.0",
                                 jsStacktraceParser: "io.belov:soyuz-js-stacktrace-parser:1.0",
-                                json            : "io.belov:soyuz-json:1.3",
+                                json            : "io.belov:soyuz-json:1.4",
                                 log             : "io.belov:soyuz-log:1.9",
                                 mail            : "io.belov:soyuz-mail:1.1",
                                 metrics         : "io.belov:soyuz-metrics:1.0",
