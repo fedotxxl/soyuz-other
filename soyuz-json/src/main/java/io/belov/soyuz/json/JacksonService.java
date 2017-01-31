@@ -2,6 +2,7 @@ package io.belov.soyuz.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
@@ -24,16 +25,19 @@ public class JacksonService {
         return (object != null) ? toJson(object) : null;
     }
 
-    public <T> T fromJson(String json, Class<T> clazz) {
-        return JacksonUtils.fromJson(json, clazz, objectMapper);
+    @Nullable
+    public <T> T fromJson(@Nullable String json, Class<T> clazz) {
+        return (json == null) ? null : JacksonUtils.fromJson(json, clazz, objectMapper);
     }
 
-    public <T> List<T> fromJsonList(String json, Class<T> clazz) {
-        return JacksonUtils.fromJson(json, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz), objectMapper);
+    @Nullable
+    public <T> List<T> fromJsonList(@Nullable String json, Class<T> clazz) {
+        return (json == null) ? null : JacksonUtils.fromJson(json, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz), objectMapper);
     }
 
-    public <T> Set<T> fromJsonSet(String json, Class<T> clazz) {
-        return JacksonUtils.fromJson(json, objectMapper.getTypeFactory().constructCollectionType(Set.class, clazz), objectMapper);
+    @Nullable
+    public <T> Set<T> fromJsonSet(@Nullable String json, Class<T> clazz) {
+        return (json == null) ? null : JacksonUtils.fromJson(json, objectMapper.getTypeFactory().constructCollectionType(Set.class, clazz), objectMapper);
     }
 
 }
