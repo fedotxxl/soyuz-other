@@ -107,7 +107,7 @@ allprojects {
                                 log             : "io.belov:soyuz-log:1.9",
                                 mail            : "io.belov:soyuz-mail:1.1",
                                 metrics         : "io.belov:soyuz-metrics:1.0",
-                                metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.2",
+                                metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.3",
                                 queue           : "io.belov:soyuz-queue:1.1",
                                 queueDomain     : "io.belov:soyuz-queue-domain:1.2",
                                 rabbit          : "io.belov:soyuz-rabbit:1.0",
