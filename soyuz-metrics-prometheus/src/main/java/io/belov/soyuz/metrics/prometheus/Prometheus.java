@@ -30,16 +30,18 @@ public class Prometheus {
     }
 
     public static void doAndTime(Histogram metric, @Nullable List<String> labels, Runnable action) {
-        if (labels != null) {
-            metric.labels(to.arrOfStrings(labels));
-        }
+        Histogram.Timer timer;
 
-        Histogram.Timer requestTimer = metric.startTimer();
+        if (labels != null) {
+            timer = metric.labels(to.arrOfStrings(labels)).startTimer();
+        } else {
+            timer = metric.startTimer();
+        }
 
         try {
             action.run();
         } finally {
-            requestTimer.observeDuration();
+            timer.observeDuration();
         }
     }
 
@@ -56,18 +58,20 @@ public class Prometheus {
     }
 
     public static <T> T doAndTime(Histogram metric, @Nullable List<String> labels, Callable<T> action) {
-        if (labels != null) {
-            metric.labels(to.arrOfStrings(labels));
-        }
+        Histogram.Timer timer;
 
-        Histogram.Timer requestTimer = metric.startTimer();
+        if (labels != null) {
+            timer = metric.labels(to.arrOfStrings(labels)).startTimer();
+        } else {
+            timer = metric.startTimer();
+        }
 
         try {
             return action.call();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            requestTimer.observeDuration();
+            timer.observeDuration();
         }
     }
 
