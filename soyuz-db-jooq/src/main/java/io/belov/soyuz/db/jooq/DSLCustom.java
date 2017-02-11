@@ -13,8 +13,12 @@ public interface DSLCustom {
     class Postgres {
 
         //SELECT u.id FROM juser u WHERE array(SELECT advertiser_id FROM user_advertiser WHERE user_id = u.id) @> ARRAY [213, 6057];
-        public static <T> Condition toArrayAndContains(Select<? extends Record1<T>> select, T[] values) {
+        public static <T> Condition selectContainsAllValues(Select<? extends Record1<T>> select, T[] values) {
             return DSL.condition("ARRAY({0}) @> {1}", select, values);
+        }
+
+        public static <T> Condition valuesContainsAllFromSelect(T[] values, Select<? extends Record1<T>> select) {
+            return DSL.condition("{0} @> ARRAY({1})", values, select);
         }
 
     }
