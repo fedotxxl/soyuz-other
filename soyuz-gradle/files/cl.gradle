@@ -89,7 +89,7 @@ allprojects {
                                 base            : "io.belov:soyuz-utils:1.29",
                                 bus             : "io.belov:soyuz-bus:1.1",
                                 concurrent      : "io.belov:soyuz-concurrent:1.5",
-                                dbJooq          : "io.belov:soyuz-db-jooq:1.1",
+                                dbJooq          : "io.belov:soyuz-db-jooq:1.2",
                                 err             : "io.belov:soyuz-err:1.8",
                                 exec            : "io.belov:soyuz-exec:1.0",
                                 func            : "io.belov:soyuz-func:1.2",
