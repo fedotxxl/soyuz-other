@@ -1,0 +1,19 @@
+apply plugin: "groovy"
+
+version "1.0"
+
+dependencies {
+    compile project(":soyuz-bus")
+    compile project(":soyuz-concurrent")
+    compile project(":soyuz-json")
+    compile project(":soyuz-log")
+    compile project(":soyuz-spring-jdbc")
+    compile cl.utils.commons.collections
+    compile cl.utils.commons.lang
+    compile cl.utils.guava
+    compile cl.utils.jsr305
+
+    testCompile cl.test.spock.core
+    testCompile cl.db.connection.zaxxer
+    testCompile project(":soyuz-test")
+}
