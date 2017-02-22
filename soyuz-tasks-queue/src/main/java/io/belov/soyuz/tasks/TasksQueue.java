@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by fbelov on 09.02.16.
@@ -60,7 +61,7 @@ public class TasksQueue<T> {
         ExecutorService exec = Executors.newFixedThreadPool(config.getMaxTasksToProcessAtTheSameTime(), ThreadUtils.withPrefix(threadNamePrefix));
 
         executor = new BoundedExecutor(exec, config.getMaxTasksToProcessAtTheSameTime());
-        eventPrefix = "tq." +((config.hasQueueName()) ? config.getQueueName() + "." : "");
+        eventPrefix = "tq." + ((config.hasQueueName()) ? config.getQueueName() + "." : "");
     }
 
     public void setListener(TasksQueueProcessListenerI<T> listener) {
@@ -196,19 +197,22 @@ public class TasksQueue<T> {
     }
 
     private TasksQueueProcessorI.Result process(Task task) {
-        TasksQueueProcessorI.Result result = TasksQueueProcessorI.Result.EXCEPTION;
+        AtomicReference<TasksQueueProcessorI.Result> result = new AtomicReference<>(TasksQueueProcessorI.Result.EXCEPTION);
         T executionContext = contextCreator.createContext(task);
 
         try {
-            result = transactionTemplate.execute((c) -> {
-                loge.debug(getEventName("process.start"), ImmutableMap.of("t", task.getId()));
+            result.set(
+                    transactionTemplate.execute((c) -> {
+                        loge.debug(getEventName("process.start"), ImmutableMap.of("t", task.getId()));
 
-                TasksQueueProcessorI.Result processResult = processor.process(task, executionContext);
+                        TasksQueueProcessorI.Result processResult = processor.process(task, executionContext);
+                        AtomicReference<TasksQueueProcessorI.Result> answer = new AtomicReference<>(processResult);
 
-                listeners.forEach(l -> l.on(task, executionContext, processResult));
+                        listeners.forEach(l -> l.on(task, executionContext, answer));
 
-                return processResult;
-            });
+                        return answer;
+                    }).get()
+            );
 
             for (TasksQueueProcessListenerI l : listeners) {
                 if (l instanceof TasksQueueProcessListenerI.AfterTransaction) {
@@ -218,7 +222,7 @@ public class TasksQueue<T> {
         } catch (Throwable e) {
             listeners.forEach(l -> l.onException(task, executionContext, e));
 
-            result = TasksQueueProcessorI.Result.EXCEPTION;
+            result.set(TasksQueueProcessorI.Result.EXCEPTION);
         } finally {
             listeners.forEach(l -> {
                 if (l instanceof TasksQueueProcessListenerI.Finally) {
@@ -229,7 +233,7 @@ public class TasksQueue<T> {
             loge.debug(getEventName("process.finish"), ImmutableMap.of("t", task.getId(), "result", result));
         }
 
-        return result;
+        return result.get();
     }
 
     private void release(Task task, TasksQueueProcessorI.Result result) {
@@ -249,7 +253,7 @@ public class TasksQueue<T> {
             return Task.Status.NEW;
         } else if (result == TasksQueueProcessorI.Result.EXCEPTION) {
             return Task.Status.EXCEPTION;
-        }else {
+        } else {
             throw new IllegalStateException();
         }
     }

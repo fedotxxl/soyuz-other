@@ -2,6 +2,8 @@ package io.belov.soyuz.tasks;
 
 import com.google.common.eventbus.EventBus;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * Created by fbelov on 10.02.16.
  */
@@ -20,8 +22,8 @@ public class TasksQueueProcessListenerBus implements TasksQueueProcessListenerI<
     }
 
     @Override
-    public void on(Task task, Object executionContext, TasksQueueProcessorI.Result result) {
-        bus.post(new TasksQueueResultEvent(queueName, task, executionContext, result));
+    public void on(Task task, Object executionContext, AtomicReference<TasksQueueProcessorI.Result> result) {
+        bus.post(new TasksQueueResultEvent(queueName, task, executionContext, result.get()));
     }
 
     @Override
