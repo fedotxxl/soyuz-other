@@ -73,7 +73,8 @@ allprojects {
                         client: "org.elasticsearch:elasticsearch:2.1.0"
                 ],
                 cache        : [
-                        ehcache: "net.sf.ehcache:ehcache:2.9.0"
+                        ehcache: "net.sf.ehcache:ehcache:2.9.0",
+                        ehcache3: "org.ehcache:ehcache:3.2.0"
                 ],
                 test         : [
                         junit : "junit:junit:4.11",
