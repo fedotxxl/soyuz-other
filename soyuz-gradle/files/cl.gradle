@@ -52,7 +52,7 @@ allprojects {
                                 julToSlf4j: "org.slf4j:jul-to-slf4j:$slf4jVersion"
                         ],
                         logentries: "com.logentries:logentries-appender:1.1.35",
-                        sentry: "com.getsentry.raven:raven-logback:7.8.0"
+                        sentry: "com.getsentry.raven:raven-logback:7.8.2"
                 ],
                 mongo        : [
                         driver: "org.mongodb:mongo-java-driver:2.13.0",
