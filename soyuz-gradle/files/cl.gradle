@@ -18,7 +18,7 @@ allprojects {
                         jooq              : "org.jooq:jooq:3.7.1",
                         jdbc              : [
                                 postgresql: "org.postgresql:postgresql:9.3-1102-jdbc41",
-                                msssql    : "com.microsoft.sqlserver:mssql-jdbc:6.1.0.jre8"
+                                mssql    : "com.microsoft.sqlserver:mssql-jdbc:6.1.0.jre8"
                         ]
                 ],
                 spring       : [
