@@ -73,6 +73,13 @@ allprojects {
                         jest  : "io.searchbox:jest:2.0.0",
                         client: "org.elasticsearch:elasticsearch:2.1.0"
                 ],
+                gradle: [
+                        plugin: [
+                                nebula: [
+                                        ospackage: "com.netflix.nebula:gradle-ospackage-plugin:2.2.6"
+                                ]
+                        ]
+                ],
                 cache        : [
                         ehcache: "net.sf.ehcache:ehcache:2.9.0",
                         ehcache3: "org.ehcache:ehcache:3.2.0"
