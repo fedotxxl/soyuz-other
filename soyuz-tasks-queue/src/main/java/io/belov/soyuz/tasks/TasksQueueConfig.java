@@ -13,17 +13,19 @@ public class TasksQueueConfig {
     private int delayBeforeInterruptingWorkerThread;
     private int maxTasksToProcessAtTheSameTime;
     private boolean startOnCreation;
+    private boolean doNotUseTransactionOnProcessing;
 
     private String taskType;
     private String queueName;
 
-    public TasksQueueConfig(int delayBeforeInterruptingWorkerThread, int delayOnEmpty, int delayOnTask, int delayOverflow, int maxTasksToProcessAtTheSameTime, boolean startOnCreation) {
+    public TasksQueueConfig(int delayBeforeInterruptingWorkerThread, int delayOnEmpty, int delayOnTask, int delayOverflow, int maxTasksToProcessAtTheSameTime, boolean startOnCreation, boolean doNotUseTransactionOnProcessing) {
         this.delayBeforeInterruptingWorkerThread = delayBeforeInterruptingWorkerThread;
         this.delayOnEmpty = delayOnEmpty;
         this.delayOnTask = delayOnTask;
         this.delayOverflow = delayOverflow;
         this.maxTasksToProcessAtTheSameTime = maxTasksToProcessAtTheSameTime;
         this.startOnCreation = startOnCreation;
+        this.doNotUseTransactionOnProcessing = doNotUseTransactionOnProcessing;
     }
 
     public boolean hasQueueName() {
@@ -68,6 +70,10 @@ public class TasksQueueConfig {
 
     public boolean isStartOnCreation() {
         return startOnCreation;
+    }
+
+    public boolean isDoNotUseTransactionOnProcessing() {
+        return doNotUseTransactionOnProcessing;
     }
 
     @Nullable

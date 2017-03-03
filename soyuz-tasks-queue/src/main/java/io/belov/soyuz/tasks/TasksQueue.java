@@ -9,6 +9,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionOperations;
 
 import java.util.ArrayList;
@@ -202,7 +204,7 @@ public class TasksQueue<T> {
 
         try {
             result.set(
-                    transactionTemplate.execute((c) -> {
+                    executeWithinTransactionIfNecessary((c) -> {
                         loge.debug(getEventName("process.start"), ImmutableMap.of("t", task.getId()));
 
                         TasksQueueProcessorI.Result processResult = processor.process(task, executionContext);
@@ -234,6 +236,14 @@ public class TasksQueue<T> {
         }
 
         return result.get();
+    }
+
+    private <T> T executeWithinTransactionIfNecessary(TransactionCallback<T> action) throws TransactionException {
+        if (config.isDoNotUseTransactionOnProcessing()) {
+            return action.doInTransaction(null);
+        } else {
+            return transactionTemplate.execute(action);
+        }
     }
 
     private void release(Task task, TasksQueueProcessorI.Result result) {
