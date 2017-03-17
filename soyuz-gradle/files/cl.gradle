@@ -170,7 +170,8 @@ allprojects {
                                 "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.4.0",
                                 "javax.ws.rs:javax.ws.rs-api:2.0.1"
                         ]
-                ]
+                ],
+                paypal       : "com.paypal.sdk:rest-api-sdk:+"
         ]
     }
 }
