@@ -14,7 +14,7 @@
     <!--and session factory-->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="proxyDataSource"/>
-        <property name="packagesToScan" value="${hibernate.packages:com.devadmin}"/>
+        <property name="packagesToScan" value="${hibernate.packages}"/>
         <property name="hibernateProperties">
             <props>
                 <!--http://stackoverflow.com/questions/10075081/hibernate-slow-to-acquire-postgres-connection-->

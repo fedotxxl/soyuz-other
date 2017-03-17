@@ -1,7 +1,9 @@
-version "1.2"
+version "1.5"
 
 dependencies {
     compile cl.json.jackson.core
     compile cl.log.api
     compile cl.utils.guava
+    compile cl.utils.jsr305
+    compile cl.utils.soyuz.log
 }

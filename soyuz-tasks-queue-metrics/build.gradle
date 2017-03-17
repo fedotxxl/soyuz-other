@@ -1,0 +1,10 @@
+apply plugin: "groovy"
+
+version "1.0"
+
+dependencies {
+    compile project(":soyuz-tasks-queue")
+    compile cl.monitoring.prometheus.core
+    compile cl.spring.db
+    compile cl.utils.soyuz.isTo
+}

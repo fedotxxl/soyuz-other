@@ -1,10 +1,10 @@
-version "1.5"
+version "1.7"
 
 dependencies {
     compile project(":soyuz-log")
-    compile cl.utils.jsr305
-    compile cl.utils.soyuz.base
     compile cl.utils.guava
+    compile cl.utils.jsr305
+    compile cl.utils.soyuz.isTo
 
     testCompile cl.test.spring
     testCompile cl.utils.commons.lang
