@@ -26,12 +26,12 @@ public class Err<V> {
     private Object[] args;
 
     @JsonIgnore
-    public boolean isGlobal() {
+    public boolean isGlobalScope() {
         return field == null;
     }
 
     @JsonIgnore
-    public boolean isField() {
+    public boolean isFieldScope() {
         return field != null;
     }
 

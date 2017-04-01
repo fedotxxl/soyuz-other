@@ -46,12 +46,12 @@ public class Errors implements Iterable<Err> {
 
     @JsonProperty("global")
     public List<Err> getGlobalErrors() {
-        return errors.stream().filter(Err::isGlobal).collect(Collectors.toList());
+        return errors.stream().filter(Err::isGlobalScope).collect(Collectors.toList());
     }
 
     @JsonProperty("field")
     public List<Err> getFieldErrors() {
-        return errors.stream().filter(Err::isField).collect(Collectors.toList());
+        return errors.stream().filter(Err::isFieldScope).collect(Collectors.toList());
     }
 
     public static Errors ok() {
