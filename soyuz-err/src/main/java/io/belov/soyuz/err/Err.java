@@ -36,53 +36,90 @@ public class Err<V> {
         return field != null;
     }
 
+    public static <K> ErrBuilder<K> builder() {
+        return new ErrBuilder<>();
+    }
+
     private Err() {
     }
 
-    @Builder
-    private Err(String field, String code, Code codeAsObject, String message, V value, Object[] args) {
+    private Err(String field, String code, String message, V value, Object[] args) {
         this.field = field;
-        this.code = (codeAsObject != null) ? codeAsObject.getErrCode() : code;
+        this.code = code;
         this.message = message;
         this.value = value;
         this.args = args;
     }
-//
-//    public static Err reject(Code code, Object... args) {
-//        return reject(code.getErrCode(), args);
-//    }
-//
-//    public static Err reject(String code, Object... args) {
-//        return new Err<>(null, code, null, null, args);
-//    }
-//
-//    public static <V> Err<V> reject(String field, Code code, V value) {
-//        return reject(field, code.getErrCode(), value);
-//    }
-//
-//    public static <V> Err<V> reject(String field, String code, V value) {
-//        return new Err<>(field, code, null, value, null);
-//    }
-//
-//    public static <V> Err<V> reject(String field, Code code, V value, Object... args) {
-//        return reject(field, code.getErrCode(), value, args);
-//    }
-//
-//    public static <V> Err<V> reject(String field, String code, V value, Object... args) {
-//        return new Err<>(field, code, null, value, args);
-//    }
 
-    public static ErrBuilder code(String code) {
-        return Err.builder().code(code);
+    public static <V> ErrBuilder<V> code(Code code) {
+        return Err.<V>builder().code(code);
     }
 
-    public static ErrBuilder field(String field) {
-        return Err.builder().field(field);
+    public static <V> ErrBuilder<V> code(String code) {
+        return Err.<V>builder().code(code);
+    }
+
+    public static <V> ErrBuilder<V> field(String field) {
+        return Err.<V>builder().field(field);
+    }
+
+    public static <V> ErrBuilder<V> message(Code code) {
+        return Err.<V>builder().code(code);
     }
 
     public interface Code {
 
         String getErrCode();
 
+    }
+
+    public static class ErrBuilder<V> {
+        private String field;
+        private String code;
+        private String message;
+        private V value;
+        private Object[] args;
+
+        public Err<V> build() {
+            return new Err<>(field, code, message, value, args);
+        }
+
+        public ErrBuilder<V> field(String field) {
+            this.field = field;
+
+            return this;
+        }
+
+        public ErrBuilder<V> code(String code) {
+            this.code = code;
+
+            return this;
+        }
+
+        public ErrBuilder<V> code(Code code) {
+            if (code != null) {
+                this.code = code.getErrCode();
+            }
+
+            return this;
+        }
+
+        public ErrBuilder<V> message(String message) {
+            this.message = message;
+
+            return this;
+        }
+
+        public ErrBuilder<V> value(V value) {
+            this.value = value;
+
+            return this;
+        }
+
+        public ErrBuilder<V> args(Object[] args) {
+            this.args = args;
+
+            return this;
+        }
     }
 }

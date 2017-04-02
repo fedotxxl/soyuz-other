@@ -20,7 +20,7 @@ class AnswerOrErrorsSpec extends Specification {
 
         where:
         answer << [
-                AnswerOrErrors.failure(Err.reject("thumbnails", "defaultNotSet", ["id":"600,0104c66f88e83774","server":"dev.search.devadmin.com:8073"])),
+                AnswerOrErrors.failure(Err.field("thumbnails").code("defaultNotSet").value(["id":"600,0104c66f88e83774","server":"dev.search.devadmin.com:8073"]).build()),
                 AnswerOrErrors.ok(),
         ]
         json << [
