@@ -116,7 +116,7 @@ public class Err<V> {
             return this;
         }
 
-        public ErrBuilder<V> args(Object[] args) {
+        public ErrBuilder<V> args(Object... args) {
             this.args = args;
 
             return this;
