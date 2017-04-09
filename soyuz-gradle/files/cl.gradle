@@ -70,6 +70,7 @@ allprojects {
                                 dropwizard: "io.prometheus:simpleclient_dropwizard:0.0.13"
                         ]
                 ],
+                quartz: "org.quartz-scheduler:quartz:2.2.1",
                 elasticsearch: [
                         jest  : "io.searchbox:jest:2.0.0",
                         client: "org.elasticsearch:elasticsearch:2.1.0"
