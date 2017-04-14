@@ -3,6 +3,7 @@ package io.belov.soyuz.metrics.prometheus;
 import io.belov.soyuz.utils.is;
 import io.belov.soyuz.utils.to;
 import io.prometheus.client.Histogram;
+import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ public class Prometheus {
         return doAndTime(metric, (is.t(label)) ? to.list(label) : null, action);
     }
 
+    @SneakyThrows
     public static <T> T doAndTime(Histogram metric, @Nullable List<String> labels, Callable<T> action) {
         Histogram.Timer timer;
 
@@ -68,8 +70,6 @@ public class Prometheus {
 
         try {
             return action.call();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             timer.observeDuration();
         }

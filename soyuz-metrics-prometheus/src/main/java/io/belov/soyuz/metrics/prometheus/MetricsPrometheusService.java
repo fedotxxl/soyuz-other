@@ -5,6 +5,7 @@ import io.belov.soyuz.utils.to;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.exporter.PushGateway;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
@@ -39,13 +40,12 @@ public class MetricsPrometheusService {
         }
     }
 
+    @SneakyThrows
     public <T> T doAndTime(Histogram metric, Callable<T> action) {
         Histogram.Timer requestTimer = metric.startTimer();
 
         try {
             return action.call();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             requestTimer.observeDuration();
         }

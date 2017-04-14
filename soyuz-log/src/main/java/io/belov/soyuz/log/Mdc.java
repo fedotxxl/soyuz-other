@@ -1,5 +1,6 @@
 package io.belov.soyuz.log;
 
+import lombok.SneakyThrows;
 import org.slf4j.MDC;
 
 import java.util.Map;
@@ -20,15 +21,12 @@ public class Mdc {
         }
     }
 
+    @SneakyThrows
     public static <T> T with(Map<String, Object> context, Callable<T> action) {
         moveDataToMdc(context);
 
         try {
-            try {
-                return action.call();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            return action.call();
         } finally {
             removeDataFromMdc(context);
         }
