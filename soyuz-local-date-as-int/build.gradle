@@ -1,0 +1,7 @@
+version "1.0"
+
+dependencies {
+    compile cl.json.jackson.annotations
+    compile cl.utils.soyuz.isTo
+    compileOnly cl.utils.lombok
+}
