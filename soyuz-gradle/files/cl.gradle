@@ -58,7 +58,7 @@ allprojects {
                 ],
                 mongo        : [
                         driver: "org.mongodb:mongo-java-driver:2.13.0",
-                        jongo : "org.jongo:jongo:1.3"
+                        jongo : "org.jongo:jongo:1.3.0"
                 ],
                 monitoring: [
                         prometheus: [
