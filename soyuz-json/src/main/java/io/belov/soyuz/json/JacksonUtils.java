@@ -130,7 +130,7 @@ public class JacksonUtils {
         }
     }
 
-    private static SimpleModule getLocalDateToIntModule() {
+    public static SimpleModule getLocalDateToIntModule() {
         SimpleModule module = new SimpleModule();
 
         module.addSerializer(LocalDate.class, new JsonSerializer<LocalDate>() {
@@ -143,7 +143,7 @@ public class JacksonUtils {
         return module;
     }
 
-    private static SimpleModule getZonedDateTimeToIsoStringModule() {
+    public static SimpleModule getZonedDateTimeToIsoStringModule() {
         SimpleModule module = new SimpleModule();
 
         module.addSerializer(ZonedDateTime.class, new JsonSerializer<ZonedDateTime>() {
