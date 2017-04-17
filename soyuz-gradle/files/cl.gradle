@@ -184,7 +184,8 @@ allprojects {
                 json         : [
                         jackson: [
                                 core: "com.fasterxml.jackson.core:jackson-databind:2.4.4",
-                                annotations: "com.fasterxml.jackson.core:jackson-annotations:2.6.3"
+                                annotations: "com.fasterxml.jackson.core:jackson-annotations:2.6.3",
+                                jsr310     : "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion",
                         ]
                 ],
                 rabbit       : "com.rabbitmq:amqp-client:3.5.6",
