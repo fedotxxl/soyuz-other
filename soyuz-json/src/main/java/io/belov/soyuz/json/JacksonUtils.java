@@ -1,16 +1,19 @@
 package io.belov.soyuz.json;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.google.common.base.Throwables;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.ImmutableMap;
+import io.belov.soyuz.date.LocalDateAsInt;
 import io.belov.soyuz.log.LoggerEvents;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 /**
@@ -32,6 +35,14 @@ public class JacksonUtils {
         om
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    };
+
+    public static final Consumer<ObjectMapper> CONFIGURE_LOCAL_DATE_AS_INT = (om) -> {
+        om.registerModule(getLocalDateToIntModule());
+    };
+
+    public static final Consumer<ObjectMapper> CONFIGURE_ZONED_DATE_TIME_AS_ISO_STRING = (om) -> {
+        om.registerModule(getZonedDateTimeToIsoStringModule());
     };
 
     static {
@@ -119,4 +130,29 @@ public class JacksonUtils {
         }
     }
 
+    private static SimpleModule getLocalDateToIntModule() {
+        SimpleModule module = new SimpleModule();
+
+        module.addSerializer(LocalDate.class, new JsonSerializer<LocalDate>() {
+            @Override
+            public void serialize(LocalDate localDate, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+                jsonGenerator.writeNumber(new LocalDateAsInt(localDate).asInt());
+            }
+        });
+
+        return module;
+    }
+
+    private static SimpleModule getZonedDateTimeToIsoStringModule() {
+        SimpleModule module = new SimpleModule();
+
+        module.addSerializer(ZonedDateTime.class, new JsonSerializer<ZonedDateTime>() {
+            @Override
+            public void serialize(ZonedDateTime zonedDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+                jsonGenerator.writeString(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZZ").format(zonedDateTime));
+            }
+        });
+
+        return module;
+    }
 }
