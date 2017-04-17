@@ -21,7 +21,7 @@ public class ValidatorToErr {
     }
 
     private static Err toErr(FluentValidator.Error error) {
-        return Err.reject(error.getProperty(), error.getCode(), error.getValue(), error.getArgs());
+        return Err.field(error.getProperty()).code(error.getCode()).value(error.getValue()).args(error.getArgs()).build();
     }
 
 }
