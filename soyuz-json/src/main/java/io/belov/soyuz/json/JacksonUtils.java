@@ -140,6 +140,13 @@ public class JacksonUtils {
             }
         });
 
+        module.addDeserializer(LocalDate.class, new JsonDeserializer<LocalDate>() {
+            @Override
+            public LocalDate deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+                return new LocalDateAsInt(jp.readValueAs(String.class)).toLocalDate();
+            }
+        });
+
         return module;
     }
 
