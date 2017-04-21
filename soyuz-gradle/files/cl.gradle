@@ -106,6 +106,10 @@ allprojects {
                 ],
                 utils        : [
                         guava     : "com.google.guava:guava:18.0",
+                        thedocs   : [
+                                isTo: "io.thedocs:soyuz-is-to:0.58",
+                                loge: "io.thedocs:soyuz-loge:1.2"
+                        ],
                         soyuz     : [
                                 base            : "io.belov:soyuz-utils:1.29",
                                 bus             : "io.belov:soyuz-bus:1.1",
