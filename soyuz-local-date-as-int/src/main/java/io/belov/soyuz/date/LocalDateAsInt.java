@@ -57,4 +57,8 @@ public class LocalDateAsInt {
 
         return LocalDate.of(year, month, day);
     }
+
+    public static LocalDateAsInt today() {
+        return new LocalDateAsInt(LocalDate.now());
+    }
 }
