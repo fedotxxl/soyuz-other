@@ -5,6 +5,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -17,8 +18,12 @@ public class TransactionManagerWrapper {
 
     private TransactionTemplate template;
 
-    public TransactionManagerWrapper(PlatformTransactionManager transactionManager, TransactionDefinition transactionDefinition) {
-        this.template = new TransactionTemplate(transactionManager, transactionDefinition);
+    public TransactionManagerWrapper(PlatformTransactionManager transactionManager, PropagationBehavior propagationBehavior) {
+        this(transactionManager, propagationBehavior.id);
+    }
+
+    public TransactionManagerWrapper(PlatformTransactionManager transactionManager, int propagationBehavior) {
+        this.template = new TransactionTemplate(transactionManager, new DefaultTransactionDefinition(propagationBehavior));
     }
 
     public <T> T execute(TransactionCallback<T> action) throws TransactionException {
@@ -41,5 +46,15 @@ public class TransactionManagerWrapper {
                 return callable.call();
             }
         });
+    }
+
+    public enum PropagationBehavior {
+        REQUIRED(0), SUPPORTS(1), MANDATORY(2), REQUIRES_NEW(3), NOT_SUPPORTED(4), NEVER(5), NESTED(6);
+
+        private int id;
+
+        PropagationBehavior(int id) {
+            this.id = id;
+        }
     }
 }
