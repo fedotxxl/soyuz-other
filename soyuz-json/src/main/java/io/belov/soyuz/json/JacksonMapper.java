@@ -14,7 +14,11 @@ public class JacksonMapper {
     private JacksonService jacksonService;
 
     public JacksonMapper() {
-        this.jacksonService = new JacksonService(new ObjectMapper());
+        this(new ObjectMapper());
+    }
+
+    public JacksonMapper(ObjectMapper objectMapper) {
+        this.jacksonService = new JacksonService(objectMapper);
     }
 
     public String toJson(Object object) {
