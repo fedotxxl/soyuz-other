@@ -10,6 +10,10 @@ public interface TasksQueueProcessListenerI<T> {
     void on(Task task, T executionContext, AtomicReference<TasksQueueProcessorI.Result> result);
     void onException(Task task, T executionContext, Throwable e);
 
+    interface Start {
+        void onStart(Task task);
+    }
+
     interface Finally<T> {
         void onFinally(Task task, T executionContext);
     }

@@ -199,6 +199,12 @@ public class TasksQueue<T> {
     }
 
     private TasksQueueProcessorI.Result process(Task task) {
+        listeners.forEach(l -> {
+            if (l instanceof TasksQueueProcessListenerI.Start) {
+                ((TasksQueueProcessListenerI.Start) l).onStart(task);
+            }
+        });
+
         AtomicReference<TasksQueueProcessorI.Result> result = new AtomicReference<>(TasksQueueProcessorI.Result.EXCEPTION);
         T executionContext = contextCreator.createContext(task);
 
