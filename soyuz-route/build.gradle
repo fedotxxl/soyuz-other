@@ -1,9 +1,9 @@
 apply plugin: "groovy"
 
-version "1.0"
+version "1.1"
 
 dependencies {
-    compile cl.utils.soyuz.isTo
+    compile cl.utils.thedocs.isTo
 
     testCompile cl.test.spock.core
 }

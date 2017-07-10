@@ -3,7 +3,7 @@ package io.belov.soyuz.bus;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
-import io.belov.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.log.LoggerEvents;
 
 /**
  * Created by fbelov on 16.09.15.

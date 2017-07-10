@@ -1,6 +1,6 @@
 apply plugin: "groovy"
 
-version "1.2"
+version "1.3"
 
 dependencies {
     compile project(":soyuz-io")
@@ -9,9 +9,9 @@ dependencies {
     compile cl.log.api
     compile cl.utils.lombok
     compile cl.utils.guava
-    compile cl.utils.soyuz.isTo
     compile cl.utils.soyuz.base
     compile cl.utils.jsr305
+    compile cl.utils.thedocs.isTo
 
     testCompile project(":soyuz-test")
 }

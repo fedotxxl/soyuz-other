@@ -1,10 +1,10 @@
-version "1.10"
+version "1.11"
 
 dependencies {
     compile cl.json.jackson.core
     compile cl.log.api
     compile cl.utils.guava
     compile cl.utils.jsr305
-    compile cl.utils.soyuz.log
+    compile cl.utils.thedocs.loge
     compile cl.utils.soyuz.localDateAsInt
 }

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.ImmutableMap;
 import io.belov.soyuz.date.LocalDateAsInt;
-import io.belov.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.log.LoggerEvents;
 
 import java.io.IOException;
 import java.time.LocalDate;

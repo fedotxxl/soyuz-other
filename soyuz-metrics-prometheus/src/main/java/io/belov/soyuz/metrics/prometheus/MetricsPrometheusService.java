@@ -1,7 +1,7 @@
 package io.belov.soyuz.metrics.prometheus;
 
-import io.belov.soyuz.log.LoggerEvents;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.to;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.exporter.PushGateway;
@@ -22,7 +22,7 @@ public class MetricsPrometheusService {
 
         PushGateway pg = new PushGateway(url);
 
-        to.daemonForever("prometheus.push", intervalInMillis, () -> {
+        to.e.daemonForever("prometheus.push", intervalInMillis, () -> {
             try {
                 pg.pushAdd(CollectorRegistry.defaultRegistry, "app");
             } catch (IOException e) {

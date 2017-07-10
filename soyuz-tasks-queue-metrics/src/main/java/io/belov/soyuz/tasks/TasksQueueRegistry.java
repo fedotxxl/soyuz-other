@@ -1,6 +1,6 @@
 package io.belov.soyuz.tasks;
 
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.to;
 import io.prometheus.client.Gauge;
 
 /**
@@ -20,7 +20,7 @@ public class TasksQueueRegistry {
     }
 
     private void setUp(String prefix, int repeatEverySeconds) {
-        to.daemonForever(prefix + "_tasks_metrics_collector", repeatEverySeconds*1000, this::collectMetrics).start();
+        to.e.daemonForever(prefix + "_tasks_metrics_collector", repeatEverySeconds*1000, this::collectMetrics).start();
     }
 
     private void collectMetrics() {

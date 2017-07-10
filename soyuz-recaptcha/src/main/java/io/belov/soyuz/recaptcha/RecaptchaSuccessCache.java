@@ -2,8 +2,8 @@ package io.belov.soyuz.recaptcha;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import io.belov.soyuz.utils.is;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.is;
+import io.thedocs.soyuz.to;
 
 import java.util.concurrent.TimeUnit;
 

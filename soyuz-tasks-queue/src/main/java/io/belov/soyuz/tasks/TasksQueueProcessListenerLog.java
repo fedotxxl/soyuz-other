@@ -1,7 +1,7 @@
 package io.belov.soyuz.tasks;
 
 import com.google.common.collect.ImmutableMap;
-import io.belov.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.log.LoggerEvents;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;

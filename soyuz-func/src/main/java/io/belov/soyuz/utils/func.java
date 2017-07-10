@@ -1,5 +1,6 @@
 package io.belov.soyuz.utils;
 
+import io.thedocs.soyuz.is;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;

@@ -2,7 +2,7 @@ package io.belov.soyuz.tasks;
 
 import io.belov.soyuz.concurrent.BoundedExecutor;
 import io.belov.soyuz.concurrent.ThreadUtils;
-import io.belov.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.log.LoggerEvents;
 import io.belov.soyuz.log.Mdc;
 import io.belov.soyuz.tasks.events.TaskQueueStoppedEvent;
 import com.google.common.collect.ImmutableList;

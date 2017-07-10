@@ -2,7 +2,7 @@ package io.belov.soyuz.date;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.to;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -39,7 +39,7 @@ public class LocalDateAsInt {
     }
 
     public LocalDateAsInt(String value) {
-        this(to.integer(value));
+        this(to.Integer(value));
     }
 
     public LocalDateTime toBeginningOfTheDay() {

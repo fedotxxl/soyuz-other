@@ -2,7 +2,7 @@ package io.belov.soyuz.bus;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
-import io.belov.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.log.LoggerEvents;
 import org.springframework.context.ApplicationContext;
 
 import javax.annotation.PostConstruct;

@@ -1,6 +1,6 @@
 package io.belov.soyuz.text.md;
 
-import io.belov.soyuz.utils.is;
+import io.thedocs.soyuz.is;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

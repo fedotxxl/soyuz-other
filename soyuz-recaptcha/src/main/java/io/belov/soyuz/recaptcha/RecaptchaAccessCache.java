@@ -4,7 +4,7 @@ import com.google.common.base.Supplier;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.primitives.Booleans;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.to;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 

@@ -2,7 +2,7 @@ package io.belov.soyuz.jersey.client;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.ByteStreams;
-import io.belov.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.log.LoggerEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

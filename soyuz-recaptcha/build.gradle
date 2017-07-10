@@ -1,10 +1,10 @@
-version "1.6"
+version "1.7"
 
 dependencies {
     compile project(":soyuz-jersey-client")
     compile cl.utils.guava
-    compile cl.utils.soyuz.isTo
-    compile cl.utils.soyuz.log
+    compile cl.utils.thedocs.isTo
+    compile cl.utils.thedocs.loge
 
     provided cl.utils.lombok
 

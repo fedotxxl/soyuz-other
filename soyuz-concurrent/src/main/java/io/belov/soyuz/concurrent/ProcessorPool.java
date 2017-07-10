@@ -1,9 +1,9 @@
 package io.belov.soyuz.concurrent;
 
 import com.google.common.collect.Sets;
-import io.belov.soyuz.log.LoggerEvents;
 import io.belov.soyuz.log.Mdc;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.to;
 
 import javax.annotation.Nullable;
 import java.util.*;

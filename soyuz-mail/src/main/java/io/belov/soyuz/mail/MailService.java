@@ -1,8 +1,8 @@
 package io.belov.soyuz.mail;
 
 import com.sun.mail.smtp.SMTPTransport;
-import io.belov.soyuz.log.LoggerEvents;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.to;
 import io.prometheus.client.Counter;
 
 import javax.mail.Message;

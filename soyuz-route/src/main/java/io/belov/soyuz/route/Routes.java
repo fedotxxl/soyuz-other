@@ -1,7 +1,7 @@
 package io.belov.soyuz.route;
 
-import io.belov.soyuz.utils.is;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.is;
+import io.thedocs.soyuz.to;
 
 import java.util.HashMap;
 import java.util.Map;

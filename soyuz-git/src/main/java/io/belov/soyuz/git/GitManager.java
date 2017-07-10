@@ -2,7 +2,7 @@ package io.belov.soyuz.git;
 
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
-import io.belov.soyuz.utils.is;
+import io.thedocs.soyuz.is;
 import io.belov.soyuz.utils.exec.CollectingLogListener;
 import io.belov.soyuz.io.DaFileUtils;
 import io.belov.soyuz.io.temp.TempFileProvider;

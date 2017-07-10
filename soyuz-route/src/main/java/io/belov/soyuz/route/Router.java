@@ -1,6 +1,6 @@
 package io.belov.soyuz.route;
 
-import io.belov.soyuz.utils.is;
+import io.thedocs.soyuz.is;
 
 import javax.script.*;import javax.script.Bindings;import javax.script.ScriptEngine;import javax.script.ScriptEngineManager;import javax.script.ScriptException;import javax.script.SimpleBindings;
 import java.io.InputStream;

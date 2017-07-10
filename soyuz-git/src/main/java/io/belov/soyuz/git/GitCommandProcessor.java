@@ -2,7 +2,7 @@ package io.belov.soyuz.git;
 
 import com.google.common.base.Throwables;
 import io.belov.soyuz.utils.ClassPathFile;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.to;
 import io.belov.soyuz.utils.exec.CollectingLogOutputStream;
 import io.belov.soyuz.utils.exec.KillableExecutor;
 import io.belov.soyuz.io.DaFileUtils;

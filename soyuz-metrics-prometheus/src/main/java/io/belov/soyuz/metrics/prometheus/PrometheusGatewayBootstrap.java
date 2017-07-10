@@ -1,8 +1,8 @@
 package io.belov.soyuz.metrics.prometheus;
 
-import io.belov.soyuz.log.LoggerEvents;
-import io.belov.soyuz.utils.is;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.log.LoggerEvents;
+import io.thedocs.soyuz.is;
+import io.thedocs.soyuz.to;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.exporter.PushGateway;
 

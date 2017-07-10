@@ -1,10 +1,9 @@
-version "1.8"
+version "1.9"
 
 dependencies {
-    compile project(":soyuz-log")
-
-    compile cl.utils.soyuz.isTo
     compile cl.utils.prometheus
+    compile cl.utils.thedocs.isTo
+    compile cl.utils.thedocs.loge
     compileOnly cl.utils.lombok
 
     testCompile cl.test.spock.core

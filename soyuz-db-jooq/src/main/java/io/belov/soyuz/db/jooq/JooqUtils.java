@@ -1,11 +1,10 @@
 package io.belov.soyuz.db.jooq;
 
-import io.belov.soyuz.utils.is;
-import io.belov.soyuz.utils.to;
+import io.thedocs.soyuz.is;
+import io.thedocs.soyuz.to;
 import org.jooq.Field;
 import org.jooq.Query;
 import org.jooq.Table;
-import org.jooq.TableField;
 
 import java.util.Collections;
 import java.util.List;
