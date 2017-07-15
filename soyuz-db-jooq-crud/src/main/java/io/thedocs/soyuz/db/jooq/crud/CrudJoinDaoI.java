@@ -34,7 +34,7 @@ public interface CrudJoinDaoI<T extends CrudBeanI, LR extends JooqListRequestI> 
 
         SelectSeekStepN<Record> step = getJoinToOneStep()
                 .where(getListConditions(request))
-                .orderBy(params.getSortFields());
+                .orderBy(getSortFields(params.getSortFields()));
 
         if (params.hasOffsetAndLimit()) {
             return step

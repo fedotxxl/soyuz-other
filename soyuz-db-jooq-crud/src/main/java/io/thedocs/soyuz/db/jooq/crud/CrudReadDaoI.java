@@ -1,5 +1,7 @@
 package io.thedocs.soyuz.db.jooq.crud;
 
+import io.thedocs.soyuz.is;
+import io.thedocs.soyuz.to;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jooq.*;
@@ -13,6 +15,7 @@ import java.util.List;
 public interface CrudReadDaoI<T, R extends Record, LR extends JooqListRequestI> extends CrudDaoBaseI<T, R> {
 
     JooqEntryData<T, R> getJooqEntryData();
+
     Collection<Condition> getListConditions(LR request);
 
     default Field<Integer> getIdField() {
@@ -49,7 +52,7 @@ public interface CrudReadDaoI<T, R extends Record, LR extends JooqListRequestI> 
 
         SelectSeekStepN<? extends R> step = data.dsl.selectFrom(data.table)
                 .where(getListConditions(request))
-                .orderBy(params.getSortFields());
+                .orderBy(getSortFields(params.getSortFields()));
 
         if (params.hasOffsetAndLimit()) {
             return step
@@ -71,6 +74,19 @@ public interface CrudReadDaoI<T, R extends Record, LR extends JooqListRequestI> 
                 .fetchOne(0, int.class);
     }
 
+    default List<SortField<?>> getSortFields(List<FieldWithOrder> fieldsWithOrder) {
+        return !is.t(fieldsWithOrder) ? to.list() : to.list(fieldsWithOrder, (o) -> toJooqField(o.getField()).sort((o.getOrder().equalsIgnoreCase("asc")) ? SortOrder.ASC : SortOrder.DESC));
+    }
+
+    default Field<?> toJooqField(String field) {
+        Field<?> answer = getJooqEntryData().getTable().field(field);
+
+        if (answer == null) {
+            throw new IllegalStateException("Unable to get field for " + field);
+        } else {
+            return answer;
+        }
+    }
 
     @AllArgsConstructor
     @Getter
