@@ -1,0 +1,10 @@
+version = "1.0"
+
+dependencies {
+    compile project(":soyuz-db-jooq-crud-domain")
+    compile cl.db.jooq
+    compile cl.utils.thedocs.isTo
+    compile cl.utils.soyuz.validator
+    compile cl.json.jackson.annotations
+    compileOnly cl.utils.lombok
+}
