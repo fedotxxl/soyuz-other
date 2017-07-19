@@ -130,7 +130,7 @@ allprojects {
                                 jsStacktraceParser: "io.belov:soyuz-js-stacktrace-parser:1.1",
                                 json            : "io.belov:soyuz-json:1.11",
                                 localDateAsInt  : "io.belov:soyuz-local-date-as-int:1.2",
-                                log             : "io.belov:soyuz-log:1.12",
+                                log             : "io.belov:soyuz-log:1.13",
                                 mail            : "io.belov:soyuz-mail:1.2",
                                 metrics         : "io.belov:soyuz-metrics:1.0",
                                 metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.9",

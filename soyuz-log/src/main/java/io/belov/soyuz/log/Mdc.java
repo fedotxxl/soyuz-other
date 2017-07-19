@@ -3,6 +3,8 @@ package io.belov.soyuz.log;
 import lombok.SneakyThrows;
 import org.slf4j.MDC;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -12,23 +14,23 @@ import java.util.concurrent.Callable;
 public class Mdc {
 
     public static void with(Map<String, Object> context, Runnable action) {
-        moveDataToMdc(context);
+        List<String> movedKeys = moveDataToMdc(context);
 
         try {
             action.run();
         } finally {
-            removeDataFromMdc(context);
+            removeDataFromMdc(context, movedKeys);
         }
     }
 
     @SneakyThrows
     public static <T> T with(Map<String, Object> context, Callable<T> action) {
-        moveDataToMdc(context);
+        List<String> movedKeys = moveDataToMdc(context);
 
         try {
             return action.call();
         } finally {
-            removeDataFromMdc(context);
+            removeDataFromMdc(context, movedKeys);
         }
     }
 
@@ -56,17 +58,26 @@ public class Mdc {
         MDC.clear();
     }
 
-    private static void moveDataToMdc(Map<String, Object> context) {
-        for (Map.Entry<String, Object> e : context.entrySet()) {
-            Object value = e.getValue();
-            String valueString = (value == null) ? null : value.toString();
+    private static List<String> moveDataToMdc(Map<String, Object> context) {
+        List<String> movedKeys = new ArrayList<>();
 
-            MDC.put(e.getKey(), valueString);
+        for (Map.Entry<String, Object> e : context.entrySet()) {
+            String key = e.getKey();
+
+            if (MDC.get(key) == null) {
+                Object value = e.getValue();
+                String valueString = (value == null) ? null : value.toString();
+
+                MDC.put(key, valueString);
+                movedKeys.add(key);
+            }
         }
+
+        return movedKeys;
     }
 
-    private static void removeDataFromMdc(Map<String, Object> context) {
-        for (String key : context.keySet()) {
+    private static void removeDataFromMdc(Map<String, Object> context, List<String> movedKeys) {
+        for (String key : movedKeys) {
             MDC.remove(key);
         }
     }
