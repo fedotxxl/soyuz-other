@@ -4,9 +4,11 @@ import io.thedocs.soyuz.is;
 import io.thedocs.soyuz.to;
 import org.jooq.Field;
 import org.jooq.Query;
+import org.jooq.Record;
 import org.jooq.Table;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +51,28 @@ public class JooqUtils {
         } else {
             return field;
         }
+    }
+
+    public static Map<? extends Field<?>, ?> intoMap(Record r) {
+        Map answer = new HashMap<>();
+
+        for (Field field : r.fields()) {
+            answer.put(field, r.getValue(field));
+        }
+
+        return answer;
+    }
+
+    public static Map<? extends Field<?>, ?> intoMapChanged(Record r) {
+        Map answer = new HashMap<>();
+
+        for (Field field : r.fields()) {
+            if (r.changed(field)) {
+                answer.put(field, r.getValue(field));
+            }
+        }
+
+        return answer;
     }
 
 }
