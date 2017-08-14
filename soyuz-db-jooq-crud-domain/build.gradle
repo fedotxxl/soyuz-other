@@ -1,6 +1,7 @@
-version = "1.0"
+version = "1.1"
 
 dependencies {
+    compile cl.json.jackson.annotations
     compile cl.utils.thedocs.isTo
     compileOnly cl.utils.lombok
 }
