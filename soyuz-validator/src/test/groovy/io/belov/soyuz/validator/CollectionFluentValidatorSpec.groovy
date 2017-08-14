@@ -66,7 +66,7 @@ class CollectionFluentValidatorSpec extends Specification {
         members                            | result
         null                               | { t, m -> FluentValidator.Result.success(t) }
         [new Member(name: "filya")] as Set | { t, m -> FluentValidator.Result.success(t) }
-        [new Member(name: "")] as Set      | { t, m -> FluentValidator.Result.failure(t, "members.name", "notEmpty", "") } //todo think about value?
+        [new Member(name: "")] as Set      | { t, m -> FluentValidator.Result.failure(t, "members.0.name", "notEmpty", "") } //todo think about value?
     }
 
     @EqualsAndHashCode

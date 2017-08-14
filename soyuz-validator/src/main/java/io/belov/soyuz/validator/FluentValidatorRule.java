@@ -295,13 +295,16 @@ public interface FluentValidatorRule<R, V> {
                     return FluentValidator.Result.success();
                 } else {
                     List<FluentValidator.Error> errors = new ArrayList<>();
+                    int index = 0;
 
                     for (V item : value) {
                         FluentValidator.Result result = validator.validate(item);
 
                         if (result.hasErrors()) {
-                            errors.addAll(FluentValidatorObjects.ErrorUtils.addParentProperty(result.getErrors(), property));
+                            errors.addAll(FluentValidatorObjects.ErrorUtils.addParentProperty(result.getErrors(), property + "." + index));
                         }
+
+                        index++;
                     }
 
                     if (errors.isEmpty()) {
