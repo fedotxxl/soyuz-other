@@ -7,7 +7,12 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by fbelov on 28.04.16.
@@ -141,6 +146,30 @@ public interface FluentValidator<T> {
             if (hasErrors()) {
                 throw new ValidationException(rootObject, errors);
             }
+        }
+
+        public void ifHasErrorsThrowAnExceptionOr(Runnable runnable) {
+            ifHasErrorsThrowAnException();
+
+            runnable.run();
+        }
+
+        public void ifHasErrorsThrowAnExceptionOr(Consumer<R> consumer) {
+            ifHasErrorsThrowAnException();
+
+            consumer.accept(rootObject);
+        }
+
+        public <T> T ifHasErrorsThrowAnExceptionOr(Supplier<T> supplier) {
+            ifHasErrorsThrowAnException();
+
+            return supplier.get();
+        }
+
+        public <T> T ifHasErrorsThrowAnExceptionOr(Function<R, T> function) {
+            ifHasErrorsThrowAnException();
+
+            return function.apply(rootObject);
         }
     }
 
