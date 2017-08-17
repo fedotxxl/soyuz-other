@@ -17,7 +17,9 @@ public interface CrudReadServiceI<T extends CrudBeanI, D extends CrudReadDaoI<T,
 
     D getDao();
 
-    ExecutorService getPool();
+    default ExecutorService getPool() {
+        return CrudUtils.getDefaultPool();
+    };
 
 //    default FluentValidator<T> getValidator() {
 //        return null;
