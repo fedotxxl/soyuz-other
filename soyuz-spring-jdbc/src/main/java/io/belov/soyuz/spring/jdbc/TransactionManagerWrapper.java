@@ -10,6 +10,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 /**
  * Created on 08.05.17.
@@ -33,6 +34,14 @@ public class TransactionManagerWrapper {
     public void execute(Runnable runnable) throws TransactionException {
         template.execute(s -> {
             runnable.run();
+
+            return 0;
+        });
+    }
+
+    public void execute(Consumer<TransactionStatus> consumer) throws TransactionException {
+        template.execute(s -> {
+            consumer.accept(s);
 
             return 0;
         });
