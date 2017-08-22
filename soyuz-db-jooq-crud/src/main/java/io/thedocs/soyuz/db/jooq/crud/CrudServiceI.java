@@ -8,9 +8,11 @@ import javax.annotation.Nullable;
 /**
  * Добавляет операции чтения и записи в сервис
  */
-public interface CrudServiceI<T extends CrudBeanI, D extends CrudDaoI<T, ? extends Record, LR>, LR extends JooqListRequestI> extends CrudReadServiceI<T, D, LR>, CrudListenerI.PostUpdate<T>, CrudListenerI.PostDelete<T> {
+public interface CrudServiceI<T extends CrudBeanI<I>, I, D extends CrudDaoI<T, I, LR>, LR extends JooqListRequestI> extends CrudReadServiceI<T, I, D, LR>, CrudListenerI.PostUpdate<T>, CrudListenerI.PostDelete<T, I> {
 
-//    default FluentValidator<T> getValidator() {
+    interface Int<T extends CrudBeanI.Int, D extends CrudDaoI<T, Integer, LR>, LR extends JooqListRequestI> extends CrudServiceI<T, Integer, D, LR> {
+    }
+    //    default FluentValidator<T> getValidator() {
 //        return null;
 //    }
 
@@ -55,7 +57,7 @@ public interface CrudServiceI<T extends CrudBeanI, D extends CrudDaoI<T, ? exten
         return answer;
     }
 
-    default void delete(int id) {
+    default void delete(I id) {
         getDao().delete(id);
         postDelete(id);
     }

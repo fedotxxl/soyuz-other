@@ -8,7 +8,11 @@ public interface CrudListenerI {
         default void postUpdate(T object) {}
     }
 
-    interface PostDelete<T extends CrudBeanI> {
-        default void postDelete(int id) {}
+    interface PostDelete<T extends CrudBeanI, I> {
+
+        interface Int<T extends CrudBeanI.Int> extends PostDelete<T, Integer> {
+        }
+
+        default void postDelete(I id) {}
     }
 }

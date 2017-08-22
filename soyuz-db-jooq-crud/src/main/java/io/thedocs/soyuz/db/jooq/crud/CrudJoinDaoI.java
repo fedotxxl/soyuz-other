@@ -12,10 +12,13 @@ import java.util.Map;
 /**
  * Добавляет операции чтения с join'ом сторонних таблиц
  */
-public interface CrudJoinDaoI<T extends CrudBeanI<?>, LR extends JooqListRequestI> extends CrudReadDaoI<T, Record, LR> {
+public interface CrudJoinDaoI<T extends CrudBeanI<I>, I, LR extends JooqListRequestI> extends CrudReadDaoI<T, I, LR> {
 
-    default T get(int id) {
-        JooqEntryData<T, Record> data = getJooqEntryData();
+    interface Int<T extends CrudBeanI.Int, LR extends JooqListRequestI> extends CrudJoinDaoI<T, Integer, LR> {
+    }
+
+    default T get(I id) {
+        JooqEntryData<T> data = getJooqEntryData();
 
         return getJoinToOneStep()
                 .where(getIdField().eq(id))
@@ -23,13 +26,13 @@ public interface CrudJoinDaoI<T extends CrudBeanI<?>, LR extends JooqListRequest
     }
 
     default List<T> list() {
-        JooqEntryData<T, Record> data = getJooqEntryData();
+        JooqEntryData<T> data = getJooqEntryData();
 
         return getJoinToOneStep().fetch(data.getMapper());
     }
 
     default List<T> list(LR request) {
-        JooqEntryData<T, Record> data = getJooqEntryData();
+        JooqEntryData<T> data = getJooqEntryData();
         JooqListRequestI.JooqParams params = request.getJooq();
 
         SelectSeekStepN<Record> step = getJoinToOneStep()
@@ -66,16 +69,16 @@ public interface CrudJoinDaoI<T extends CrudBeanI<?>, LR extends JooqListRequest
     }
 
     default List<T> loadJoinToManyData(List<T> entries) {
-        JooqEntryData<T, Record> data = getJooqEntryData();
+        JooqEntryData<T> data = getJooqEntryData();
 
         if (!data.hasJoinToManyDataMapper()) {
             return entries;
         } else {
-            Map<?, T> entriesByIds = to.map(entries, CrudBeanI::getId);
+            Map<I, T> entriesByIds = to.map(entries, CrudBeanI::getId);
 
-            JoinToManyDataMapper<Record, T> joinToManyDataMapper = data.getJoinToManyDataMapper();
+            JoinToManyDataMapper<T> joinToManyDataMapper = data.getJoinToManyDataMapper();
 
-            Map<Integer, Result<Record>> result = getJoinToManyStep().where(getIdField().in(entriesByIds.keySet())).fetchGroups(getIdField());
+            Map<I, Result<Record>> result = getJoinToManyStep().where(getIdField().in(entriesByIds.keySet())).fetchGroups(getIdField());
 
             return to.list(entries, (e) -> {
                 Result<Record> record = result.get(e.getId());

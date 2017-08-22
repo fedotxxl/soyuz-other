@@ -13,7 +13,10 @@ import java.util.function.Function;
 /**
  * Добавляет операции чтения в сервис
  */
-public interface CrudReadServiceI<T extends CrudBeanI, D extends CrudReadDaoI<T, ? extends Record, LR>, LR extends JooqListRequestI> {
+public interface CrudReadServiceI<T extends CrudBeanI<I>, I, D extends CrudReadDaoI<T, I, LR>, LR extends JooqListRequestI> {
+
+    interface Int<T extends CrudBeanI.Int, D extends CrudReadDaoI<T, Integer, LR>, LR extends JooqListRequestI> extends CrudReadServiceI<T, Integer, D, LR> {
+    }
 
     D getDao();
 
@@ -25,7 +28,7 @@ public interface CrudReadServiceI<T extends CrudBeanI, D extends CrudReadDaoI<T,
 //        return null;
 //    }
 
-    default T get(int id) {
+    default T get(I id) {
         D dao = getDao();
 
         return postProcessLoadedData(dao.get(id));

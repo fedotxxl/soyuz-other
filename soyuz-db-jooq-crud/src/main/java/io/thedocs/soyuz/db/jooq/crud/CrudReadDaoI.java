@@ -12,45 +12,44 @@ import java.util.List;
 /**
  * Добавляет операции чтения
  */
-public interface CrudReadDaoI<T, R extends Record, LR extends JooqListRequestI> extends CrudDaoBaseI<T, R> {
+public interface CrudReadDaoI<T, I, LR extends JooqListRequestI> extends CrudDaoBaseI<T, I> {
 
-    JooqEntryData<T, R> getJooqEntryData();
+    interface Int<T, LR extends JooqListRequestI> extends CrudReadDaoI<T, Integer, LR> {
+    }
+
+    JooqEntryData<T> getJooqEntryData();
 
     Collection<Condition> getListConditions(LR request);
 
-    default Field<Integer> getIdField() {
-        return getJooqEntryData().getTable().field("id", Integer.class);
-    }
-
-    default boolean has(int id) {
-        JooqEntryData<T, R> data = getJooqEntryData();
+    default boolean has(I id) {
+        JooqEntryData<T> data = getJooqEntryData();
 
         return data.dsl.selectCount().from(data.table).where(getIdField().eq(id)).fetchOne(0, int.class) > 0;
     }
 
-    default T get(int id) {
-        JooqEntryData<T, R> data = getJooqEntryData();
+    default T get(I id) {
+        JooqEntryData<T> data = getJooqEntryData();
 
         return data.dsl.selectFrom(data.table).where(getIdField().eq(id)).fetchOne(data.mapper);
     }
 
     default List<T> list() {
-        JooqEntryData<T, R> data = getJooqEntryData();
+        JooqEntryData<T> data = getJooqEntryData();
 
         return data.dsl.selectFrom(data.table).fetch(data.mapper);
     }
 
     default List<T> list(Collection<Integer> ids) {
-        JooqEntryData<T, R> data = getJooqEntryData();
+        JooqEntryData<T> data = getJooqEntryData();
 
         return data.dsl.selectFrom(data.table).where(getIdField().in(ids)).fetch(data.mapper);
     }
 
     default List<T> list(LR request) {
-        JooqEntryData<T, R> data = getJooqEntryData();
+        JooqEntryData<T> data = getJooqEntryData();
         JooqListRequestI.JooqParams params = request.getJooq();
 
-        SelectSeekStepN<? extends R> step = data.dsl.selectFrom(data.table)
+        SelectSeekStepN<? extends Record> step = data.dsl.selectFrom(data.table)
                 .where(getListConditions(request))
                 .orderBy(getSortFields(params.getSortFields()));
 
@@ -66,7 +65,7 @@ public interface CrudReadDaoI<T, R extends Record, LR extends JooqListRequestI> 
     }
 
     default int count(LR request) {
-        JooqEntryData<T, R> data = getJooqEntryData();
+        JooqEntryData<T> data = getJooqEntryData();
 
         return data.dsl.selectCount()
                 .from(data.table)
@@ -90,13 +89,13 @@ public interface CrudReadDaoI<T, R extends Record, LR extends JooqListRequestI> 
 
     @AllArgsConstructor
     @Getter
-    class JooqEntryData<T, R extends Record> {
+    class JooqEntryData<T> {
         private DSLContext dsl;
-        private Table<? extends R> table;
-        private RecordMapper<R, T> mapper;
-        private JoinToManyDataMapper<Record, T> joinToManyDataMapper;
+        private Table<? extends Record> table;
+        private RecordMapper<Record, T> mapper;
+        private JoinToManyDataMapper<T> joinToManyDataMapper;
 
-        public JooqEntryData(DSLContext dsl, Table<? extends R> table, RecordMapper<R, T> mapper) {
+        public JooqEntryData(DSLContext dsl, Table<? extends Record> table, RecordMapper<Record, T> mapper) {
             this.dsl = dsl;
             this.table = table;
             this.mapper = mapper;

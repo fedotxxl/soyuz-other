@@ -1,4 +1,4 @@
-version = "1.4"
+version = "1.4.id"
 
 dependencies {
     compile project(":soyuz-db-jooq-crud-domain")

@@ -3,8 +3,12 @@ package io.thedocs.soyuz.db.jooq.crud;
 /**
  * Добавляет методы, необходимые для crud операций
  */
-public interface CrudBeanI<T> {
+public interface CrudBeanI<I> {
 
-    T getId();
+    interface Int extends CrudBeanI<Integer> {
+
+    }
+
+    I getId();
 
 }

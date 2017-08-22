@@ -127,8 +127,8 @@ allprojects {
                                 jerseyClient    : "io.belov:soyuz-jersey-client:1.1",
                                 jongo           : "io.belov:soyuz-jongo:1.1",
                                 jooq              : [
-                                        crud  : "io.belov:soyuz-db-jooq-crud:1.4",
-                                        domain: "io.belov:soyuz-db-jooq-crud-domain:1.2"
+                                        crud  : "io.belov:soyuz-db-jooq-crud:1.4.id",
+                                        domain: "io.belov:soyuz-db-jooq-crud-domain:1.2.id"
                                 ],
                                 jsStacktraceDomain: "io.belov:soyuz-js-stacktrace-domain:1.0",
                                 jsStacktraceParser: "io.belov:soyuz-js-stacktrace-parser:1.1",
