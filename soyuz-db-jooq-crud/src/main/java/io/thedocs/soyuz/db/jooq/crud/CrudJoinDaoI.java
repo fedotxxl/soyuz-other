@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Добавляет операции чтения с join'ом сторонних таблиц
  */
-public interface CrudJoinDaoI<T extends CrudBeanI, LR extends JooqListRequestI> extends CrudReadDaoI<T, Record, LR> {
+public interface CrudJoinDaoI<T extends CrudBeanI<?>, LR extends JooqListRequestI> extends CrudReadDaoI<T, Record, LR> {
 
     default T get(int id) {
         JooqEntryData<T, Record> data = getJooqEntryData();
@@ -71,7 +71,7 @@ public interface CrudJoinDaoI<T extends CrudBeanI, LR extends JooqListRequestI> 
         if (!data.hasJoinToManyDataMapper()) {
             return entries;
         } else {
-            Map<Integer, T> entriesByIds = to.map(entries, CrudBeanI::getId);
+            Map<?, T> entriesByIds = to.map(entries, CrudBeanI::getId);
 
             JoinToManyDataMapper<Record, T> joinToManyDataMapper = data.getJoinToManyDataMapper();
 
