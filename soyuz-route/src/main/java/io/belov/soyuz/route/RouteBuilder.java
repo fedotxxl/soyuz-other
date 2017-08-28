@@ -1,6 +1,6 @@
 package io.belov.soyuz.route;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class RouteBuilder {
 
-    private Map<String, String> urls = new HashMap<>();
+    private Map<String, String> urls = new LinkedHashMap<>();
 
     RouteBuilder add(String path, String url) {
         urls.put(path, url);
