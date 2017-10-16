@@ -9,8 +9,8 @@ import java.io.IOException;
  */
 public class FvMessageResolverFromPropertiesResource extends FvMessageResolverFromPropertiesFile {
 
-    public FvMessageResolverFromPropertiesResource(Resource resource, PropertyNameResolver propertyNameResolver) throws IOException {
-        super(resource.getInputStream(), propertyNameResolver);
+    public FvMessageResolverFromPropertiesResource(Resource resource, String encoding, PropertyNameResolver propertyNameResolver) throws IOException {
+        super(resource.getInputStream(), encoding, propertyNameResolver);
     }
 
 }

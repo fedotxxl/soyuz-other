@@ -1,10 +1,7 @@
 package io.belov.soyuz.validator;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,33 +16,33 @@ public class FvMessageResolverFromPropertiesFile implements FvMessageResolverI {
     private Properties properties;
     private boolean strictMode;
 
-    public FvMessageResolverFromPropertiesFile(File file, PropertyNameResolver propertyNameResolver) {
-        this(file, propertyNameResolver, true);
+    public FvMessageResolverFromPropertiesFile(File file, String encoding, PropertyNameResolver propertyNameResolver) {
+        this(file, encoding, propertyNameResolver, true);
     }
 
-    public FvMessageResolverFromPropertiesFile(File file, PropertyNameResolver propertyNameResolver, boolean strictMode) {
+    public FvMessageResolverFromPropertiesFile(File file, String encoding, PropertyNameResolver propertyNameResolver, boolean strictMode) {
         try (FileInputStream inputStream = new FileInputStream(file)) {
             this.properties = new Properties();
             this.propertyNameResolver = propertyNameResolver;
             this.strictMode = strictMode;
 
-            properties.load(inputStream);
+            properties.load(new InputStreamReader(inputStream, getEncoding(encoding)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public FvMessageResolverFromPropertiesFile(InputStream inputStream, PropertyNameResolver propertyNameResolver) {
-        this(inputStream, propertyNameResolver, true);
+    public FvMessageResolverFromPropertiesFile(InputStream inputStream, String encoding, PropertyNameResolver propertyNameResolver) {
+        this(inputStream, encoding, propertyNameResolver, true);
     }
 
-    public FvMessageResolverFromPropertiesFile(InputStream inputStream, PropertyNameResolver propertyNameResolver, boolean strictMode) {
+    public FvMessageResolverFromPropertiesFile(InputStream inputStream, String encoding, PropertyNameResolver propertyNameResolver, boolean strictMode) {
         try {
             this.properties = new Properties();
             this.propertyNameResolver = propertyNameResolver;
             this.strictMode = strictMode;
 
-            properties.load(inputStream);
+            properties.load(new InputStreamReader(inputStream, getEncoding(encoding)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -68,6 +65,10 @@ public class FvMessageResolverFromPropertiesFile implements FvMessageResolverI {
         } else {
             return null;
         }
+    }
+
+    private String getEncoding(String encoding) {
+        return (encoding == null || "".equalsIgnoreCase(encoding) ? "UTF-8" : encoding);
     }
 
     private <V> String formatMessage(String message, FluentValidator.Error<V> error) {
