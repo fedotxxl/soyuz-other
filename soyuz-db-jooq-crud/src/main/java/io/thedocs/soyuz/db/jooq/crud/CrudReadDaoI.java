@@ -75,7 +75,20 @@ public interface CrudReadDaoI<T, R extends Record, LR extends JooqListRequestI> 
     }
 
     default List<SortField<?>> getSortFields(List<FieldWithOrder> fieldsWithOrder) {
-        return !is.t(fieldsWithOrder) ? to.list() : to.list(fieldsWithOrder, (o) -> toJooqField(o.getField()).sort((o.getOrder().equalsIgnoreCase("asc")) ? SortOrder.ASC : SortOrder.DESC));
+        if (!is.t(fieldsWithOrder)) {
+            return to.list();
+        } else {
+            return to.list(fieldsWithOrder, (o) -> {
+                SortOrder order = (o.getOrder().equalsIgnoreCase("asc")) ? SortOrder.ASC : SortOrder.DESC;
+                SortField<?> field = toJooqField(o.getField()).sort(order);
+
+                if (order == SortOrder.DESC) {
+                    field = field.nullsLast();
+                }
+
+                return field;
+            });
+        }
     }
 
     default Field<?> toJooqField(String field) {
