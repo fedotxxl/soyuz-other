@@ -54,97 +54,189 @@ public interface FluentValidatorRule<R, V> {
     }
 
     interface Int {
-        class Min<R> extends AbstractRule<R, Integer> {
-            private int min;
+        class GreaterOrEqual<R> extends AbstractRule<R, Integer> {
+            private int value;
 
-            public Min(int min) {
-                this.min = min;
+            public GreaterOrEqual(int value) {
+                this.value = value;
             }
 
             @Override
             protected String getCode() {
-                return "min";
+                return "greaterOrEqual";
             }
 
             @Override
             protected boolean isValid(R rootObject, Integer value) {
-                return value != null && value > min;
+                return value != null && value >= this.value;
             }
 
             @Override
             public Object[] getErrorArgs() {
-                return new Object[]{min};
+                return new Object[]{value};
             }
         }
 
-        class Max<R> extends AbstractRule<R, Integer> {
-            private int max;
+        class GreaterThan<R> extends AbstractRule<R, Integer> {
+            private int value;
 
-            public Max(int max) {
-                this.max = max;
+            public GreaterThan(int value) {
+                this.value = value;
             }
 
             @Override
             protected String getCode() {
-                return "max";
+                return "greaterThan";
             }
 
             @Override
             protected boolean isValid(R rootObject, Integer value) {
-                return value != null && value < max;
+                return value != null && value > this.value;
             }
 
             @Override
             public Object[] getErrorArgs() {
-                return new Object[]{max};
+                return new Object[]{value};
+            }
+        }
+
+        class LessOrEqual<R> extends AbstractRule<R, Integer> {
+            private int value;
+
+            public LessOrEqual(int value) {
+                this.value = value;
+            }
+
+            @Override
+            protected String getCode() {
+                return "lessOrEqual";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Integer value) {
+                return value != null && value <= this.value;
+            }
+
+            @Override
+            public Object[] getErrorArgs() {
+                return new Object[]{value};
+            }
+        }
+
+        class LessThan<R> extends AbstractRule<R, Integer> {
+            private int value;
+
+            public LessThan(int value) {
+                this.value = value;
+            }
+
+            @Override
+            protected String getCode() {
+                return "lessThan";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Integer value) {
+                return value != null && value < this.value;
+            }
+
+            @Override
+            public Object[] getErrorArgs() {
+                return new Object[]{value};
             }
         }
     }
 
     interface N {
-        class Min<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
-            private V min;
+        class GreaterOrEqual<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
+            private V value;
 
-            public Min(V min) {
-                this.min = min;
+            public GreaterOrEqual(V value) {
+                this.value = value;
             }
 
             @Override
             protected String getCode() {
-                return "min";
+                return "greaterOrEqual";
             }
 
             @Override
             protected boolean isValid(R rootObject, V value) {
-                return value == null || value.compareTo(min) > 0;
+                return value == null || value.compareTo(this.value) >= 0;
             }
 
             @Override
             public Object[] getErrorArgs() {
-                return new Object[]{min};
+                return new Object[]{value};
             }
         }
 
-        class Max<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
-            private V max;
+        class GreaterThan<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
+            private V value;
 
-            public Max(V max) {
-                this.max = max;
+            public GreaterThan(V value) {
+                this.value = value;
             }
 
             @Override
             protected String getCode() {
-                return "max";
+                return "greaterThan";
             }
 
             @Override
             protected boolean isValid(R rootObject, V value) {
-                return value == null || value.compareTo(max) < 0;
+                return value == null || value.compareTo(this.value) > 0;
             }
 
             @Override
             public Object[] getErrorArgs() {
-                return new Object[]{max};
+                return new Object[]{value};
+            }
+        }
+
+        class LessOrEqual<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
+            private V value;
+
+            public LessOrEqual(V value) {
+                this.value = value;
+            }
+
+            @Override
+            protected String getCode() {
+                return "lessOrEqual";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, V value) {
+                return value == null || value.compareTo(this.value) <= 0;
+            }
+
+            @Override
+            public Object[] getErrorArgs() {
+                return new Object[]{value};
+            }
+        }
+
+        class LessThan<R, V extends Number & Comparable<V>> extends AbstractRule<R, V> {
+            private V value;
+
+            public LessThan(V value) {
+                this.value = value;
+            }
+
+            @Override
+            protected String getCode() {
+                return "lessThan";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, V value) {
+                return value == null || value.compareTo(this.value) < 0;
+            }
+
+            @Override
+            public Object[] getErrorArgs() {
+                return new Object[]{value};
             }
         }
     }
@@ -245,39 +337,75 @@ public interface FluentValidatorRule<R, V> {
             }
         }
 
-        class Min<R, V> extends AbstractRule<R, Collection<V>> {
-            private int min;
+        class GreaterOrEqual<R, V> extends AbstractRule<R, Collection<V>> {
+            private int size;
 
-            public Min(int min) {
-                this.min = min;
+            public GreaterOrEqual(int size) {
+                this.size = size;
             }
 
             @Override
             protected String getCode() {
-                return "min";
+                return "greaterOrEqual";
             }
 
             @Override
             protected boolean isValid(R rootObject, Collection<V> value) {
-                return value != null && value.size() > min;
+                return value != null && value.size() >= size;
             }
         }
 
-        class Max<R, V> extends AbstractRule<R, Collection<V>> {
-            private int max;
+        class GreaterThan<R, V> extends AbstractRule<R, Collection<V>> {
+            private int size;
 
-            public Max(int max) {
-                this.max = max;
+            public GreaterThan(int size) {
+                this.size = size;
             }
 
             @Override
             protected String getCode() {
-                return "max";
+                return "greaterThan";
             }
 
             @Override
             protected boolean isValid(R rootObject, Collection<V> value) {
-                return value == null || value.size() < max;
+                return value != null && value.size() > size;
+            }
+        }
+
+        class LessOrEqual<R, V> extends AbstractRule<R, Collection<V>> {
+            private int size;
+
+            public LessOrEqual(int size) {
+                this.size = size;
+            }
+
+            @Override
+            protected String getCode() {
+                return "lessOrEqual";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Collection<V> value) {
+                return value == null || value.size() <= size;
+            }
+        }
+
+        class LessThan<R, V> extends AbstractRule<R, Collection<V>> {
+            private int size;
+
+            public LessThan(int size) {
+                this.size = size;
+            }
+
+            @Override
+            protected String getCode() {
+                return "lessThan";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, Collection<V> value) {
+                return value == null || value.size() < size;
             }
         }
 

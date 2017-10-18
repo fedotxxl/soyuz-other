@@ -4,9 +4,9 @@ import spock.lang.Specification
 
 class IntegerFluentValidatorSpec extends Specification {
 
-    def "min"() {
+    def "greaterThan"() {
         when:
-        def validator = FluentValidator.of(Car).integer("power").min(50).b().build()
+        def validator = FluentValidator.of(Car).integer("power").greaterThan(50).b().build()
 
         then:
         assert validator.validate(car) == result(car)
@@ -15,12 +15,28 @@ class IntegerFluentValidatorSpec extends Specification {
         car                 | result
         new Car()           | { c -> FluentValidator.Result.success(c) }
         new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
-        new Car(power: 10)  | { c -> FluentValidator.Result.failure(c, "power", "min", 10) }
+        new Car(power: 50)  | { c -> FluentValidator.Result.failure(c, "power", "greaterThan", 50, 50) }
+        new Car(power: 10)  | { c -> FluentValidator.Result.failure(c, "power", "greaterThan", 10, 50) }
     }
 
-    def "max"() {
+    def "greaterOrEqual"() {
         when:
-        def validator = FluentValidator.of(Car).integer("power").max(999).b().build()
+        def validator = FluentValidator.of(Car).integer("power").greaterOrEqual(50).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                 | result
+        new Car()           | { c -> FluentValidator.Result.success(c) }
+        new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
+        new Car(power: 50)  | { c -> FluentValidator.Result.success(c) }
+        new Car(power: 10)  | { c -> FluentValidator.Result.failure(c, "power", "greaterOrEqual", 10, 50) }
+    }
+
+    def "lessThan"() {
+        when:
+        def validator = FluentValidator.of(Car).integer("power").lessThan(999).b().build()
 
         then:
         assert validator.validate(car) == result(car)
@@ -29,20 +45,36 @@ class IntegerFluentValidatorSpec extends Specification {
         car                  | result
         new Car()            | { c -> FluentValidator.Result.success(c) }
         new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
-        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "max", 1500) }
+        new Car(power: 999)  | { c -> FluentValidator.Result.failure(c, "power", "lessThan", 999, 999) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "lessThan", 1500, 999) }
     }
 
-    def "min+max"() {
+    def "lessOrEqual"() {
         when:
-        def validator = FluentValidator.of(Car).integer("power").min(1).max(999).b().build()
+        def validator = FluentValidator.of(Car).integer("power").lessOrEqual(999).b().build()
 
         then:
         assert validator.validate(car) == result(car)
 
         where:
         car                  | result
-        new Car(power: -1)   | { c -> FluentValidator.Result.failure(c, "power", "min", -1) }
-        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "max", 1500) }
+        new Car()            | { c -> FluentValidator.Result.success(c) }
+        new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
+        new Car(power: 999)  | { c -> FluentValidator.Result.success(c) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "lessOrEqual", 1500, 999) }
+    }
+
+    def "greaterThan+lessThan"() {
+        when:
+        def validator = FluentValidator.of(Car).integer("power").greaterThan(1).lessThan(999).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                  | result
+        new Car(power: -1)   | { c -> FluentValidator.Result.failure(c, "power", "greaterThan", -1, 1) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "lessThan", 1500, 999) }
         new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
     }
 

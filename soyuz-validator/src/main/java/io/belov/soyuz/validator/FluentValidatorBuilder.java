@@ -120,16 +120,25 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             super(builder, new FluentValidatorObjects.IntData(), property);
         }
 
-        public PrimitiveIntBuilder<R> min(int min) {
-            data.addRule(new FluentValidatorRule.Int.Min<>(min));
+        public PrimitiveIntBuilder<R> greaterOrEqual(int value) {
+            data.addRule(new FluentValidatorRule.Int.GreaterOrEqual<>(value));
             return this;
         }
 
-        public PrimitiveIntBuilder<R> max(int max) {
-            data.addRule(new FluentValidatorRule.Int.Max<>(max));
+        public PrimitiveIntBuilder<R> greaterThan(int value) {
+            data.addRule(new FluentValidatorRule.Int.GreaterThan<>(value));
             return this;
         }
 
+        public PrimitiveIntBuilder<R> lessOrEqual(int value) {
+            data.addRule(new FluentValidatorRule.Int.LessOrEqual<>(value));
+            return this;
+        }
+
+        public PrimitiveIntBuilder<R> lessThan(int value) {
+            data.addRule(new FluentValidatorRule.Int.LessThan<>(value));
+            return this;
+        }
     }
 
     public static class IntegerBuilder<R> extends AbstractNumberBuilder<R, Integer, IntegerBuilder<R>, FluentValidatorObjects.NumberData<R, Integer>> {
@@ -244,14 +253,26 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             return this;
         }
 
-        public CollectionBuilder<R, V> min(int min) {
-            data.addRule(new FluentValidatorRule.Coll.Min<>(min));
+        public CollectionBuilder<R, V> greaterOrEqual(int size) {
+            data.addRule(new FluentValidatorRule.Coll.GreaterOrEqual<>(size));
 
             return this;
         }
 
-        public CollectionBuilder<R, V> max(int max) {
-            data.addRule(new FluentValidatorRule.Coll.Max<>(max));
+        public CollectionBuilder<R, V> greaterThan(int size) {
+            data.addRule(new FluentValidatorRule.Coll.GreaterThan<>(size));
+
+            return this;
+        }
+
+        public CollectionBuilder<R, V> lessOrEqual(int size) {
+            data.addRule(new FluentValidatorRule.Coll.LessOrEqual<>(size));
+
+            return this;
+        }
+
+        public CollectionBuilder<R, V> lessThan(int size) {
+            data.addRule(new FluentValidatorRule.Coll.LessThan<>(size));
 
             return this;
         }
@@ -275,14 +296,26 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             super(builder, data, property);
         }
 
-        public BuilderClass min(V min) {
-            data.addRule(new FluentValidatorRule.N.Min<>(min));
+        public BuilderClass greaterOrEqual(V value) {
+            data.addRule(new FluentValidatorRule.N.GreaterOrEqual<>(value));
 
             return _this();
         }
 
-        public BuilderClass max(V max) {
-            data.addRule(new FluentValidatorRule.N.Max<>(max));
+        public BuilderClass greaterThan(V value) {
+            data.addRule(new FluentValidatorRule.N.GreaterThan<>(value));
+
+            return _this();
+        }
+
+        public BuilderClass lessOrEqual(V value) {
+            data.addRule(new FluentValidatorRule.N.LessOrEqual<>(value));
+
+            return _this();
+        }
+
+        public BuilderClass lessThan(V value) {
+            data.addRule(new FluentValidatorRule.N.LessThan<>(value));
 
             return _this();
         }
