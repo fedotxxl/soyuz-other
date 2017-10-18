@@ -51,6 +51,138 @@ public interface FluentValidatorRule<R, V> {
                 return value != null && value.length() > 0;
             }
         }
+
+        class IsBoolean<R> extends AbstractRule<R, String> {
+            @Override
+            protected String getCode() {
+                return "isBoolean";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                return value != null && (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false"));
+            }
+        }
+
+        class IsByte<R> extends AbstractRule<R, String> {
+            @Override
+            protected String getCode() {
+                return "isByte";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                if (value == null) return false;
+
+                try {
+                    Byte.valueOf(value);
+
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+        }
+
+        class IsShort<R> extends AbstractRule<R, String> {
+            @Override
+            protected String getCode() {
+                return "isShort";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                if (value == null) return false;
+
+                try {
+                    Short.valueOf(value);
+
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+        }
+
+        class IsInteger<R> extends AbstractRule<R, String> {
+            @Override
+            protected String getCode() {
+                return "isInteger";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                if (value == null) return false;
+
+                try {
+                    Integer.valueOf(value);
+
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+        }
+
+        class IsLong<R> extends AbstractRule<R, String> {
+            @Override
+            protected String getCode() {
+                return "isLong";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                if (value == null) return false;
+
+                try {
+                    Long.valueOf(value);
+
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+        }
+
+        class IsDouble<R> extends AbstractRule<R, String> {
+            @Override
+            protected String getCode() {
+                return "isDouble";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                if (value == null) return false;
+
+                try {
+                    Double.valueOf(value);
+
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+        }
+
+        class IsFloat<R> extends AbstractRule<R, String> {
+            @Override
+            protected String getCode() {
+                return "isFloat";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                if (value == null) return false;
+
+                try {
+                    Float.valueOf(value);
+
+                    return true;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+        }
     }
 
     interface Int {

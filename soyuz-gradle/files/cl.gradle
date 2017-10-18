@@ -152,7 +152,7 @@ allprojects {
                                 text            : "io.belov:soyuz-text:1.0",
                                 textMd          : "io.belov:soyuz-text-md:1.0",
                                 ua              : "io.belov:soyuz-ua:1.1",
-                                validator       : "io.belov:soyuz-validator:1.21",
+                                validator       : "io.belov:soyuz-validator:1.22",
                                 validatorSpring : "io.belov:soyuz-validator-spring:1.2",
                                 validatorToErr  : "io.belov:soyuz-validator-to-err:1.1",
                                 web             : "io.belov:soyuz-web:1.1",

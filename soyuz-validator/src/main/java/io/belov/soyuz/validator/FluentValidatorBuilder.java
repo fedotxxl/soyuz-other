@@ -181,6 +181,48 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             return this;
         }
 
+        public StringBuilder<R> isBoolean() {
+            data.addRule(new FluentValidatorRule.Str.IsBoolean<>());
+
+            return this;
+        }
+
+        public StringBuilder<R> isByte() {
+            data.addRule(new FluentValidatorRule.Str.IsByte<>());
+
+            return this;
+        }
+
+        public StringBuilder<R> isShort() {
+            data.addRule(new FluentValidatorRule.Str.IsShort<>());
+
+            return this;
+        }
+
+        public StringBuilder<R> isInteger() {
+            data.addRule(new FluentValidatorRule.Str.IsInteger<>());
+
+            return this;
+        }
+
+        public StringBuilder<R> isLong() {
+            data.addRule(new FluentValidatorRule.Str.IsLong<>());
+
+            return this;
+        }
+
+        public StringBuilder<R> isFloat() {
+            data.addRule(new FluentValidatorRule.Str.IsFloat<>());
+
+            return this;
+        }
+
+        public StringBuilder<R> isDouble() {
+            data.addRule(new FluentValidatorRule.Str.IsDouble<>());
+
+            return this;
+        }
+
         public StringBuilder<R> matches(Pattern pattern) {
             data.setMatches(pattern);
             return this;

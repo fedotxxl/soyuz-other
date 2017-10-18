@@ -8,7 +8,7 @@ class ValidatorFluentValidatorSpec extends Specification {
         when:
         def engineValidator = FluentValidator.of(CarEngine)
                 .string("title").notEmpty().b()
-                .i("power").min(1).max(999).b()
+                .i("power").greaterThan(1).lessThan(999).b()
                 .build()
 
         def carValidator = FluentValidator.of(Car)
@@ -38,7 +38,7 @@ class ValidatorFluentValidatorSpec extends Specification {
                     [
                             new FluentValidator.Error("title", "notEmpty", ""),
                             new FluentValidator.Error("engine.title", "notEmpty", null),
-                            new FluentValidator.Error("engine.power", "min", 0)
+                            new FluentValidator.Error("engine.power", "greaterThan", 0, 1)
 
                     ])
         }

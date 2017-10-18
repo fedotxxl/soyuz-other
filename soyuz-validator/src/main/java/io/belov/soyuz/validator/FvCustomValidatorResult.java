@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by fbelov on 07.06.16.
+ * todo mix with FluentValidator.Result
  */
 @Getter
 public class FvCustomValidatorResult {

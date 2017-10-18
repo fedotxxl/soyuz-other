@@ -1,6 +1,6 @@
 apply plugin: "groovy"
 
-version "1.21"
+version "1.22"
 
 dependencies {
     compile cl.utils.commons.bean

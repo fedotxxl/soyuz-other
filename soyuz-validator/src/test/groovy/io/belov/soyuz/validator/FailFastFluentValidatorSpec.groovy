@@ -53,9 +53,9 @@ class FailFastFluentValidatorSpec extends Specification {
                     powerChecked.set(true)
 
                     if (power > 100) {
-                        return FluentValidator.Result.success(car)
+                        return FvCustomValidatorResult.success()
                     } else {
-                        return FluentValidator.Result.failure(car, "power", "min", power)
+                        return FvCustomValidatorResult.failure(null, "min", power, null)
                     }
                 } as FluentValidatorObjects.CustomValidator.Simple).b()
                 .build()

@@ -12,7 +12,7 @@ class FvMessageResolverFromPropertiesFileSpec extends Specification {
         def root = new Object()
         def is = FluentValidator.class.getClassLoader().getResourceAsStream("fv.properties")
         def propertyNameResolver = new FvMessageResolverFromPropertiesFile.BasePropertyNameResolver()
-        def messageResolver = new FvMessageResolverFromPropertiesFile(is, propertyNameResolver)
+        def messageResolver = new FvMessageResolverFromPropertiesFile(is, "UTF-8", propertyNameResolver)
 
         then:
         assert messageResolver.getMessage(root, new FluentValidator.Error("notNull", null)) == "Object should not be null"
@@ -27,7 +27,7 @@ class FvMessageResolverFromPropertiesFileSpec extends Specification {
         def root = new Object()
         def is = FluentValidator.class.getClassLoader().getResourceAsStream("fv.properties")
         def propertyNameResolver = new FvMessageResolverFromPropertiesFile.BasePropertyNameResolver()
-        def messageResolver = new FvMessageResolverFromPropertiesFile(is, propertyNameResolver)
+        def messageResolver = new FvMessageResolverFromPropertiesFile(is, "UTF-8", propertyNameResolver)
 
         when:
         messageResolver.getMessage(root, new FluentValidator.Error("unknownErrorCode", null))

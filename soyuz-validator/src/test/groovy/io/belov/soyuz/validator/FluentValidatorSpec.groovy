@@ -15,9 +15,9 @@ class FluentValidatorSpec extends Specification {
     def "should mix property names"() {
         when:
         def validator = FluentValidator.of("actress.sizes", Actress.Sizes)
-                .i("height").min(4).max(5).b()
-                .i("breast").min(1).b()
-                .i("waist").min(1).max(999).b()
+                .i("height").greaterThan(4).lessThan(5).b()
+                .i("breast").greaterThan(1).b()
+                .i("waist").greaterThan(1).lessThan(999).b()
                 .build()
 
         then:
