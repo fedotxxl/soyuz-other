@@ -17,7 +17,7 @@ include(
                 "spring-jdbc", "ssh",
                 "tasks-queue", "tasks-queue-metrics", "template", "test", "text", "text-md",
                 "ua",
-                "validator", "validator-spring", "validator-jax-rs", "validator-to-err",
+                "validator", "validator-spring", "validator-spring-web", "validator-jax-rs", "validator-message", "validator-to-err",
                 "web"
         ]
                 .collect { ":soyuz-${it}" } as String[])

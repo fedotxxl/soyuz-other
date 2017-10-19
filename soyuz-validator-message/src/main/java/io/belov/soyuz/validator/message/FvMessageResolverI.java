@@ -1,4 +1,6 @@
-package io.belov.soyuz.validator;
+package io.belov.soyuz.validator.message;
+
+import io.belov.soyuz.validator.FluentValidator;
 
 /**
  * Created by fbelov on 07.06.16.

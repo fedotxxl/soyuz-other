@@ -1,4 +1,6 @@
-package io.belov.soyuz.validator;
+package io.belov.soyuz.validator.message;
+
+import io.belov.soyuz.validator.FluentValidator;
 
 import javax.annotation.Nullable;
 import java.io.*;

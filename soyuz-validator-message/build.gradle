@@ -1,11 +1,9 @@
 apply plugin: "groovy"
 
-version "1.3"
+version "1.0"
 
 dependencies {
     compile project(":soyuz-validator")
-    compile project(":soyuz-validator-message")
-    compile cl.spring.core
 
     testCompile cl.test.spock.core
 }

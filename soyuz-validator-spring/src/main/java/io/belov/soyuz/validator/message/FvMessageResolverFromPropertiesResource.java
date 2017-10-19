@@ -1,4 +1,4 @@
-package io.belov.soyuz.validator;
+package io.belov.soyuz.validator.message;
 
 import org.springframework.core.io.Resource;
 
