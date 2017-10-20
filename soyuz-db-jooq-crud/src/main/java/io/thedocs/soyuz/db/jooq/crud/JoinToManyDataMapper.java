@@ -7,8 +7,8 @@ import org.jooq.Result;
  * Маппер - преобразует множество joined записей в одну
  */
 @FunctionalInterface
-public interface JoinToManyDataMapper<R extends Record, E> {
+public interface JoinToManyDataMapper<E> {
 
-    E map(E entry, Result<R> result);
+    E map(E entry, Result<? extends Record> result);
 
 }

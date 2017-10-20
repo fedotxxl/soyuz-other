@@ -65,7 +65,22 @@ var vRoutes = {
         assert getRouterFromString(wavRoutes).getRoutePath(url) == path
 
         where:
-        url                                    | path
+        url    | path
+        "/m/2" | "movies.item"
+    }
+
+    def "should correctly route crud urls"() {
+        setup:
+        def routes = getClassPathInputStream("urls.crud.js").text
+
+        assert getRouterFromString(routes).getRoutePath(url) == path
+
+        where:
+        url                     | path
+        "/app/campaigns/"       | "app.campaigns.list"
+        "/app/campaigns/7"      | "app.campaigns.item.show"
+        "/app/campaigns/new"    | "app.campaigns.item.create"
+        "/app/campaigns/7/edit" | "app.campaigns.item.edit"
     }
 
     private getRouterFromString(String routes) {
