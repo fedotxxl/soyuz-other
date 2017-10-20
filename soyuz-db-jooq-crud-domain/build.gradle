@@ -1,4 +1,4 @@
-version = "1.2"
+version = "1.2-id"
 
 dependencies {
     compile cl.json.jackson.annotations
