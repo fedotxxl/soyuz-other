@@ -160,7 +160,7 @@ allprojects {
                                 validatorToErr  : "io.belov:soyuz-validator-to-err:1.1",
                                 web             : "io.belov:soyuz-web:1.1",
                         ],
-                        lombok    : "org.projectlombok:lombok:1.16.10",
+                        lombok    : "org.projectlombok:lombok:1.16.18",
                         ua        : "net.sf.uadetector:uadetector-resources:2014.10",
                         metrics   : "io.dropwizard.metrics:metrics-core:3.1.2",
                         mustache  : "com.github.spullara.mustache.java:compiler:0.9.1",
