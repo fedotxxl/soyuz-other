@@ -4,7 +4,7 @@ include(
                 "concurrent", "crypto",
                 "db-jooq", "db-jooq-crud",  "db-jooq-crud-domain", "db-jooq-performance",
                 "err", "exec",
-                "func",
+                "func", "func-processor",
                 "git",
                 "html", "http",
                 "guava",
