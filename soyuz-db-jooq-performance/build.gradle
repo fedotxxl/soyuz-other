@@ -1,0 +1,9 @@
+version = "1.1"
+
+dependencies {
+    compile cl.db.jooq
+    compile cl.utils.guava
+    compile cl.utils.thedocs.isTo
+    compile cl.utils.thedocs.loge
+    compileOnly cl.utils.lombok
+}
