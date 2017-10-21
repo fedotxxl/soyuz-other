@@ -1,9 +1,13 @@
-version "1.0"
+version "1.9"
 
 dependencies {
+    compile project(":soyuz-log")
     compile cl.utils.guava
     compile cl.utils.jsr305
+    compile cl.utils.lombok
     compile cl.utils.thedocs.isTo
+    compile cl.utils.thedocs.loge
 
-    compileOnly cl.utils.lombok
+    testCompile cl.test.spring
+    testCompile cl.utils.commons.lang
 }
