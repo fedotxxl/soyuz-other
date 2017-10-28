@@ -25,22 +25,32 @@ public class Rsync {
 
     public Rsync source(String source) {
         this.source = source;
+
+        return this;
     }
 
     public Rsync destination(String destination) {
         this.destination = destination;
+
+        return this;
     }
 
-    public Rsync arguments(String[] arguments) {
+    public Rsync arguments(String... arguments) {
         this.arguments = arguments;
+
+        return this;
     }
 
-    public Rsync setListenerOut(Consumer<String> listenerOut) {
+    public Rsync listenerOut(Consumer<String> listenerOut) {
         this.listenerOut = listenerOut;
+
+        return this;
     }
 
-    public Rsync setListenerErr(Consumer<String> listenerErr) {
+    public Rsync listenerErr(Consumer<String> listenerErr) {
         this.listenerErr = listenerErr;
+
+        return this;
     }
 
     public Result execute() {
