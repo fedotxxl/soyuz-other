@@ -39,7 +39,7 @@ public interface CrudReadDaoI<T, I, LR extends JooqListRequestI> extends CrudDao
         return data.dsl.selectFrom(data.table).fetch(data.mapper);
     }
 
-    default List<T> list(Collection<Integer> ids) {
+    default List<T> list(Collection<I> ids) {
         JooqEntryData<T> data = getJooqEntryData();
 
         return data.dsl.selectFrom(data.table).where(getIdField().in(ids)).fetch(data.mapper);
