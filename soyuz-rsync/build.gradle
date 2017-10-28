@@ -1,0 +1,10 @@
+version "1.0"
+
+dependencies {
+    compile cl.utils.commons.exec
+    compile cl.utils.soyuz.exec
+    compile cl.utils.jsr305
+    compileOnly cl.utils.lombok
+
+    testCompile cl.test.junit
+}

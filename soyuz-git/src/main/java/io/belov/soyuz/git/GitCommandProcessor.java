@@ -1,12 +1,14 @@
 package io.belov.soyuz.git;
 
 import com.google.common.base.Throwables;
+import io.belov.soyuz.io.DaFileUtils;
 import io.belov.soyuz.utils.ClassPathFile;
-import io.thedocs.soyuz.to;
 import io.belov.soyuz.utils.exec.CollectingLogOutputStream;
 import io.belov.soyuz.utils.exec.KillableExecutor;
-import io.belov.soyuz.io.DaFileUtils;
+import io.thedocs.soyuz.to;
 import org.apache.commons.exec.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -20,6 +22,8 @@ import java.util.function.Consumer;
  * Created by fbelov on 18.11.15.
  */
 public class GitCommandProcessor {
+
+    private static final Logger log = LoggerFactory.getLogger(GitCommandProcessor.class);
 
     private File binRoot;
     private String gitInitPath;
@@ -88,7 +92,7 @@ public class GitCommandProcessor {
 
             DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
 
-            PumpStreamHandler psh = new PumpStreamHandler(new CollectingLogOutputStream(listener));
+            PumpStreamHandler psh = new PumpStreamHandler(new CollectingLogOutputStream(listener, log));
             ExecuteWatchdog watchdog = new ExecuteWatchdog(initAndPullMaxDurationInSeconds * 1000);
             Executor exec = new KillableExecutor();
             exec.setWatchdog(watchdog); //implement killing watchdog - http://stackoverflow.com/questions/2950338/how-can-i-kill-a-linux-process-in-java-with-sigkill-process-destroy-does-sigte
@@ -118,7 +122,7 @@ public class GitCommandProcessor {
 
             DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
 
-            PumpStreamHandler psh = new PumpStreamHandler(new CollectingLogOutputStream(listener));
+            PumpStreamHandler psh = new PumpStreamHandler(new CollectingLogOutputStream(listener, log));
             ExecuteWatchdog watchdog = new ExecuteWatchdog(checkConnectionToRemoteMaxDurationInSeconds * 1000);
             Executor exec = new KillableExecutor();
             exec.setWorkingDirectory(repositoryDir);

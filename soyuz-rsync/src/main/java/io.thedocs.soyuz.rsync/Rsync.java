@@ -1,0 +1,87 @@
+package io.thedocs.soyuz.rsync;
+
+import io.belov.soyuz.utils.exec.CollectingLogOutputStream;
+import io.belov.soyuz.utils.exec.KillableExecutor;
+import io.belov.soyuz.utils.is;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.SneakyThrows;
+import org.apache.commons.exec.*;
+
+import java.util.List;
+import java.util.function.Consumer;
+
+import static org.apache.commons.exec.ExecuteWatchdog.INFINITE_TIMEOUT;
+
+/**
+ * Created on 28.10.17.
+ */
+public class Rsync {
+    private String source;
+    private String destination;
+    private String[] arguments;
+    private Consumer<String> listenerOut;
+    private Consumer<String> listenerErr;
+
+    public Rsync source(String source) {
+        this.source = source;
+    }
+
+    public Rsync destination(String destination) {
+        this.destination = destination;
+    }
+
+    public Rsync arguments(String[] arguments) {
+        this.arguments = arguments;
+    }
+
+    public Rsync setListenerOut(Consumer<String> listenerOut) {
+        this.listenerOut = listenerOut;
+    }
+
+    public Rsync setListenerErr(Consumer<String> listenerErr) {
+        this.listenerErr = listenerErr;
+    }
+
+    public Result execute() {
+        return execute(-1);
+    }
+
+    @SneakyThrows
+    public Result execute(long timeoutInMillis) {
+        if (!is.t(source)) throw new IllegalStateException("Source should be specified");
+        if (!is.t(destination)) throw new IllegalStateException("Destination should be specified");
+
+        CommandLine cmdLine = new CommandLine("rsync");
+
+        for (String argument : arguments) {
+            cmdLine.addArgument(argument);
+        }
+
+        cmdLine.addArgument(source);
+        cmdLine.addArgument(destination);
+
+        DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+
+        CollectingLogOutputStream logOutputStreamOut = new CollectingLogOutputStream(listenerOut);
+        CollectingLogOutputStream logOutputStreamErr = new CollectingLogOutputStream(listenerErr);
+        PumpStreamHandler psh = new PumpStreamHandler(logOutputStreamOut, logOutputStreamErr);
+        ExecuteWatchdog watchdog = new ExecuteWatchdog((timeoutInMillis <= 0) ? INFINITE_TIMEOUT : timeoutInMillis);
+        Executor exec = new KillableExecutor();
+        exec.setWatchdog(watchdog); //implement killing watchdog - http://stackoverflow.com/questions/2950338/how-can-i-kill-a-linux-process-in-java-with-sigkill-process-destroy-does-sigte
+        exec.setStreamHandler(psh);
+        exec.execute(cmdLine, resultHandler);
+
+        resultHandler.waitFor();
+
+        return new Result(resultHandler.getExitValue(), logOutputStreamOut.getLines(), logOutputStreamErr.getLines());
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class Result {
+        private int exitValue;
+        private List<String> out;
+        private List<String> err;
+    }
+}
