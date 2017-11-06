@@ -3,11 +3,14 @@ package io.thedocs.soyuz.rsync;
 import io.belov.soyuz.utils.exec.CollectingLogOutputStream;
 import io.belov.soyuz.utils.exec.KillableExecutor;
 import io.belov.soyuz.utils.is;
+import io.belov.soyuz.utils.to;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.exec.*;
+import org.apache.commons.validator.Arg;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -19,7 +22,7 @@ import static org.apache.commons.exec.ExecuteWatchdog.INFINITE_TIMEOUT;
 public class Rsync {
     private String source;
     private String destination;
-    private String[] arguments;
+    private List<Argument> arguments;
     private Consumer<String> listenerOut;
     private Consumer<String> listenerErr;
 
@@ -36,7 +39,25 @@ public class Rsync {
     }
 
     public Rsync arguments(String... arguments) {
-        this.arguments = arguments;
+        this.arguments = to.list(arguments, a -> new Argument(a, true));
+
+        return this;
+    }
+
+    public Rsync arguments(Argument... arguments) {
+        this.arguments = to.list(arguments);
+
+        return this;
+    }
+
+    public Rsync arguments(List<String> arguments) {
+        this.arguments = to.list(arguments, a -> new Argument(a, true));
+
+        return this;
+    }
+
+    public Rsync arguments(Collection<Argument> arguments) {
+        this.arguments = to.list(arguments);
 
         return this;
     }
@@ -64,8 +85,8 @@ public class Rsync {
 
         CommandLine cmdLine = new CommandLine("rsync");
 
-        for (String argument : arguments) {
-            cmdLine.addArgument(argument);
+        for (Argument argument : arguments) {
+            cmdLine.addArgument(argument.getValue(), argument.isHandleQuoting());
         }
 
         cmdLine.addArgument(source);
@@ -93,5 +114,12 @@ public class Rsync {
         private int exitValue;
         private List<String> out;
         private List<String> err;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class Argument {
+        private String value;
+        private boolean handleQuoting;
     }
 }

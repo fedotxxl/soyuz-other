@@ -146,7 +146,7 @@ allprojects {
                                 rabbit          : "io.belov:soyuz-rabbit:1.0",
                                 recaptcha       : "io.belov:soyuz-recaptcha:1.7",
                                 route           : "io.belov:soyuz-route:1.2",
-                                rsync           : "io.belov:soyuz-rsync:1.0",
+                                rsync           : "io.belov:soyuz-rsync:1.1",
                                 springJdbc      : "io.belov:soyuz-spring-jdbc:1.6",
                                 ssh             : "io.belov:soyuz-ssh:1.1",
                                 tasksQueue      : "io.belov:soyuz-tasks-queue:1.4",
