@@ -8,7 +8,7 @@ FROM phusion/baseimage
 COPY influxdb.nightly.dockerfile /Dockerfile
 
 #install nightly influxdb
-RUN wget https://dl.influxdata.com/influxdb/nightlies/influxdb_nightly_amd64.deb
+RUN curl https://dl.influxdata.com/influxdb/nightlies/influxdb_nightly_amd64.deb --output influxdb_nightly_amd64.deb
 RUN sudo dpkg -i influxdb_nightly_amd64.deb
 
 # Use baseimage-docker's init system.
