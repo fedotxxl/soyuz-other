@@ -1,4 +1,5 @@
-version = "1.4.id.2"
+group = "io.thedocs"
+version = "1.5"
 
 dependencies {
     compile project(":soyuz-db-jooq-crud-domain")
