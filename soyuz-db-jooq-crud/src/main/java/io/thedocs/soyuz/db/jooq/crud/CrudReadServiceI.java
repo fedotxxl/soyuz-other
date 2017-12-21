@@ -1,7 +1,6 @@
 package io.thedocs.soyuz.db.jooq.crud;
 
 import io.thedocs.soyuz.to;
-import org.jooq.Record;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -13,7 +12,10 @@ import java.util.function.Function;
 /**
  * Добавляет операции чтения в сервис
  */
-public interface CrudReadServiceI<T extends CrudBeanI, D extends CrudReadDaoI<T, ? extends Record, LR>, LR extends JooqListRequestI> {
+public interface CrudReadServiceI<T extends CrudBeanI<I>, I, D extends CrudReadDaoI<T, I, LR>, LR extends JooqListRequestI> {
+
+    interface Int<T extends CrudBeanI.Int, D extends CrudReadDaoI<T, Integer, LR>, LR extends JooqListRequestI> extends CrudReadServiceI<T, Integer, D, LR> {
+    }
 
     D getDao();
 
@@ -25,7 +27,7 @@ public interface CrudReadServiceI<T extends CrudBeanI, D extends CrudReadDaoI<T,
 //        return null;
 //    }
 
-    default T get(int id) {
+    default T get(I id) {
         D dao = getDao();
 
         return postProcessLoadedData(dao.get(id));
@@ -37,7 +39,7 @@ public interface CrudReadServiceI<T extends CrudBeanI, D extends CrudReadDaoI<T,
         return postProcessLoadedData(dao.list());
     }
 
-    default List<T> list(Collection<Integer> ids) {
+    default List<T> list(Collection<I> ids) {
         D dao = getDao();
 
         return postProcessLoadedData(dao.list(ids));

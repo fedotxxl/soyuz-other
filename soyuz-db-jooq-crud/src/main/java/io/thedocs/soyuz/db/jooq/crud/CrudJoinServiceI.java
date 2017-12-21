@@ -6,7 +6,10 @@ import java.util.List;
 /**
  * Добавляет операции чтения с join'ом сторонних таблиц в сервис
  */
-public interface CrudJoinServiceI<T extends CrudBeanI, D extends CrudWriteJoinDaoI<T, LR>, LR extends JooqListRequestI> extends CrudServiceI<T, D, LR> {
+public interface CrudJoinServiceI<T extends CrudBeanI<I>, I, D extends CrudWriteJoinDaoI<T, I, LR>, LR extends JooqListRequestI> extends CrudServiceI<T, I, D, LR> {
+
+    interface Int<T extends CrudBeanI.Int, D extends CrudWriteJoinDaoI<T, Integer, LR>, LR extends JooqListRequestI> extends CrudJoinServiceI<T, Integer, D, LR> {
+    }
 
     @Override
     default T postProcessLoadedData(T item) {

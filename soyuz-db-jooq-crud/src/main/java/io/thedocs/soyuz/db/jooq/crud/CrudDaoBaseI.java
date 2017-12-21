@@ -6,12 +6,12 @@ import org.jooq.Record;
 /**
  * JOOQ Crud - базовый класс работы с БД
  */
-public interface CrudDaoBaseI<T, R extends Record> {
+public interface CrudDaoBaseI<T, I> {
 
-    CrudDaoI.JooqEntryData<T, R> getJooqEntryData();
+    CrudDaoI.JooqEntryData<T> getJooqEntryData();
 
-    default Field<Integer> getIdField() {
-        return getJooqEntryData().getTable().field("id", Integer.class);
+    default Field<I> getIdField() {
+        return (Field<I>) getJooqEntryData().getTable().field("id");
     }
 
 }
