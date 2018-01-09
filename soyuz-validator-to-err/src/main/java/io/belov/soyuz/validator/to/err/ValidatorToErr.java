@@ -1,8 +1,8 @@
 package io.belov.soyuz.validator.to.err;
 
-import io.belov.soyuz.err.AnswerOrErrors;
-import io.belov.soyuz.err.Err;
-import io.belov.soyuz.err.Errors;
+import io.thedocs.soyuz.err.AnswerOrErrors;
+import io.thedocs.soyuz.err.Err;
+import io.thedocs.soyuz.err.Errors;
 import io.belov.soyuz.validator.FluentValidator;
 
 import java.util.stream.Collectors;

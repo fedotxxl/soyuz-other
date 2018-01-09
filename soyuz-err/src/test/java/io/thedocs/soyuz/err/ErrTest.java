@@ -1,4 +1,4 @@
-package io.belov.soyuz.err;
+package io.thedocs.soyuz.err;
 
 import org.junit.Assert;
 import org.junit.Test;

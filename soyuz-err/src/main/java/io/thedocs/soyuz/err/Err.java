@@ -1,7 +1,6 @@
-package io.belov.soyuz.err;
+package io.thedocs.soyuz.err;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

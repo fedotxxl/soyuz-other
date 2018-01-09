@@ -1,6 +1,7 @@
 apply plugin: "groovy"
 
-version "1.12"
+group = "io.thedocs"
+version "1.13"
 
 dependencies {
     compile cl.utils.jsr305

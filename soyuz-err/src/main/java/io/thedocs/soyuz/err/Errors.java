@@ -1,4 +1,4 @@
-package io.belov.soyuz.err;
+package io.thedocs.soyuz.err;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

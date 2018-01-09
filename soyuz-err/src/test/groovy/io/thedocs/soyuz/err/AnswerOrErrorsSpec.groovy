@@ -1,10 +1,9 @@
-package io.belov.soyuz.err
+package io.thedocs.soyuz.err
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.EqualsAndHashCode
 import spock.lang.Specification
-
 /**
  * Created by fbelov on 08.10.16.
  */
@@ -20,7 +19,7 @@ class AnswerOrErrorsSpec extends Specification {
 
         where:
         answer << [
-                AnswerOrErrors.failure(Err.field("thumbnails").code("defaultNotSet").value(["id":"600,0104c66f88e83774","server":"dev.search.devadmin.com:8073"]).build()),
+                AnswerOrErrors.failure(Err.field("thumbnails").code("defaultNotSet").value(["id":"600,0104c66f88e83774", "server":"dev.search.devadmin.com:8073"]).build()),
                 AnswerOrErrors.ok(),
         ]
         json << [

@@ -2,7 +2,7 @@ allprojects {
     ext {
         cl = [
                 groovy       : "org.codehaus.groovy:groovy-all:$groovyVersion",
-                db        : [
+                db           : [
                         connection        : [
                                 zaxxer: [
                                         "com.zaxxer:HikariCP-java6:2.1.0",
@@ -18,12 +18,12 @@ allprojects {
                         jooq              : "org.jooq:jooq:3.7.1",
                         jdbc              : [
                                 postgresql: "org.postgresql:postgresql:9.3-1102-jdbc41",
-                                mssql    : "com.microsoft.sqlserver:mssql-jdbc:6.1.0.jre8"
+                                mssql     : "com.microsoft.sqlserver:mssql-jdbc:6.1.0.jre8"
                         ]
                 ],
-                cglib     : "cglib:cglib:2.2.2",
+                cglib        : "cglib:cglib:2.2.2",
                 spring       : [
-                        core : "org.springframework:spring-context:$springVersion",
+                        core          : "org.springframework:spring-context:$springVersion",
                         db            : [
                                 "io.belov:soyuz-spring-jdbc:1.3",
                                 "org.springframework:spring-tx:$springVersion",
@@ -35,8 +35,8 @@ allprojects {
                                 "org.springframework:spring-jdbc:$springVersion",
                                 "org.springframework:spring-orm:$springVersion"
                         ],
-                        web: "org.springframework:spring-web:$springVersion",
-                        cache: "org.springframework:spring-context-support:$springVersion"
+                        web           : "org.springframework:spring-web:$springVersion",
+                        cache         : "org.springframework:spring-context-support:$springVersion"
                 ],
                 javax        : [
                         mail: "javax.mail:mail:1.4"
@@ -51,17 +51,17 @@ allprojects {
                                 "ch.qos.logback:logback-classic:1.1.7",
                                 "org.codehaus.janino:janino:2.7.8"
                         ],
-                        slf4j      : [
+                        slf4j     : [
                                 julToSlf4j: "org.slf4j:jul-to-slf4j:$slf4jVersion"
                         ],
                         logentries: "com.logentries:logentries-appender:1.1.35",
-                        sentry: "com.getsentry.raven:raven-logback:7.8.2"
+                        sentry    : "com.getsentry.raven:raven-logback:7.8.2"
                 ],
                 mongo        : [
                         driver: "org.mongodb:mongo-java-driver:2.13.0",
                         jongo : "org.jongo:jongo:1.3.0"
                 ],
-                monitoring: [
+                monitoring   : [
                         prometheus: [
                                 core      : [
                                         "io.prometheus:simpleclient:0.0.13",
@@ -71,12 +71,12 @@ allprojects {
                                 dropwizard: "io.prometheus:simpleclient_dropwizard:0.0.13"
                         ]
                 ],
-                quartz: "org.quartz-scheduler:quartz:2.2.1",
+                quartz       : "org.quartz-scheduler:quartz:2.2.1",
                 elasticsearch: [
                         jest  : "io.searchbox:jest:2.0.0",
                         client: "org.elasticsearch:elasticsearch:2.1.0"
                 ],
-                gradle: [
+                gradle       : [
                         plugin: [
                                 nebula: [
                                         ospackage: "com.netflix.nebula:gradle-ospackage-plugin:2.2.6"
@@ -84,7 +84,7 @@ allprojects {
                         ]
                 ],
                 cache        : [
-                        ehcache: "net.sf.ehcache:ehcache:2.9.0",
+                        ehcache : "net.sf.ehcache:ehcache:2.9.0",
                         ehcache3: "org.ehcache:ehcache:3.2.0"
                 ],
                 test         : [
@@ -109,59 +109,60 @@ allprojects {
                         guava     : "com.google.guava:guava:18.0",
                         thedocs   : [
                                 isTo: "io.thedocs:soyuz-is-to:0.65",
-                                loge: "io.thedocs:soyuz-loge:1.2"
+                                loge: "io.thedocs:soyuz-loge:1.2",
+                                err : "io.thedocs:soyuz-err:1.13",
                         ],
                         soyuz     : [
-                                base            : "io.belov:soyuz-utils:1.29",
-                                bus             : "io.belov:soyuz-bus:1.3",
-                                concurrent      : "io.belov:soyuz-concurrent:1.9",
-                                dbJooq          : "io.belov:soyuz-db-jooq:1.5",
-                                err             : "io.belov:soyuz-err:1.12",
-                                exec            : "io.belov:soyuz-exec:1.1",
-                                func            : "io.belov:soyuz-func:1.3",
-                                funcProcessor   : "io.belov:soyuz-func-processor:1.0",
-                                git             : "io.belov:soyuz-git:1.4",
-                                guava           : "io.belov:soyuz-guava:1.0",
-                                isTo            : "io.belov.soyuz:soyuz-is-to:1.57",
-                                html            : "io.belov:soyuz-html:1.0",
-                                http            : "io.belov:soyuz-http:1.1",
-                                io              : "io.belov:soyuz-io:1.3",
-                                jerseyClient    : "io.belov:soyuz-jersey-client:1.1",
-                                jongo           : "io.belov:soyuz-jongo:1.1",
+                                base              : "io.belov:soyuz-utils:1.29",
+                                bus               : "io.belov:soyuz-bus:1.3",
+                                concurrent        : "io.belov:soyuz-concurrent:1.9",
+                                dbJooq            : "io.belov:soyuz-db-jooq:1.5",
+                                err               : "io.belov:soyuz-err:1.12",
+                                exec              : "io.belov:soyuz-exec:1.1",
+                                func              : "io.belov:soyuz-func:1.3",
+                                funcProcessor     : "io.belov:soyuz-func-processor:1.0",
+                                git               : "io.belov:soyuz-git:1.4",
+                                guava             : "io.belov:soyuz-guava:1.0",
+                                isTo              : "io.belov.soyuz:soyuz-is-to:1.57",
+                                html              : "io.belov:soyuz-html:1.0",
+                                http              : "io.belov:soyuz-http:1.1",
+                                io                : "io.belov:soyuz-io:1.3",
+                                jerseyClient      : "io.belov:soyuz-jersey-client:1.1",
+                                jongo             : "io.belov:soyuz-jongo:1.1",
                                 jooq              : [
-                                        crud  : "io.belov:soyuz-db-jooq-crud:1.4",
-                                        domain: "io.belov:soyuz-db-jooq-crud-domain:1.1",
+                                        crud       : "io.belov:soyuz-db-jooq-crud:1.4",
+                                        domain     : "io.belov:soyuz-db-jooq-crud-domain:1.1",
                                         performance: "io.belov:soyuz-db-jooq-performance:1.1",
                                 ],
                                 jsStacktraceDomain: "io.belov:soyuz-js-stacktrace-domain:1.0",
                                 jsStacktraceParser: "io.belov:soyuz-js-stacktrace-parser:1.1",
-                                json            : "io.belov:soyuz-json:1.11",
-                                localDateAsInt  : "io.belov:soyuz-local-date-as-int:1.2",
-                                log             : "io.belov:soyuz-log:1.13",
-                                mail            : "io.belov:soyuz-mail:1.2",
-                                metrics         : "io.belov:soyuz-metrics:1.0",
-                                metricsPromtheus: "io.belov:soyuz-metrics-prometheus:1.9",
-                                queue           : "io.belov:soyuz-queue:1.1",
-                                queueDomain     : "io.belov:soyuz-queue-domain:1.2",
-                                rabbit          : "io.belov:soyuz-rabbit:1.0",
-                                recaptcha       : "io.belov:soyuz-recaptcha:1.7",
-                                route           : "io.belov:soyuz-route:1.2",
-                                rsync           : "io.belov:soyuz-rsync:1.1",
-                                springJdbc      : "io.belov:soyuz-spring-jdbc:1.6",
-                                ssh             : "io.belov:soyuz-ssh:1.1",
-                                tasksQueue      : "io.belov:soyuz-tasks-queue:1.4",
-                                tasksQueueMetrics: "io.belov:soyuz-tasks-queue-metrics:1.1",
-                                template        : "io.belov:soyuz-template:1.0",
-                                test            : "io.belov:soyuz-test:1.0",
-                                text            : "io.belov:soyuz-text:1.0",
-                                textMd          : "io.belov:soyuz-text-md:1.0",
-                                ua              : "io.belov:soyuz-ua:1.1",
-                                validator       : "io.belov:soyuz-validator:1.23",
-                                validatorMessage : "io.belov:soyuz-validator-message:1.0",
-                                validatorSpring : "io.belov:soyuz-validator-spring:1.3",
-                                validatorSpringWeb : "io.belov:soyuz-validator-spring-web:1.1",
-                                validatorToErr  : "io.belov:soyuz-validator-to-err:1.1",
-                                web             : "io.belov:soyuz-web:1.1",
+                                json              : "io.belov:soyuz-json:1.11",
+                                localDateAsInt    : "io.belov:soyuz-local-date-as-int:1.2",
+                                log               : "io.belov:soyuz-log:1.13",
+                                mail              : "io.belov:soyuz-mail:1.2",
+                                metrics           : "io.belov:soyuz-metrics:1.0",
+                                metricsPromtheus  : "io.belov:soyuz-metrics-prometheus:1.9",
+                                queue             : "io.belov:soyuz-queue:1.1",
+                                queueDomain       : "io.belov:soyuz-queue-domain:1.2",
+                                rabbit            : "io.belov:soyuz-rabbit:1.0",
+                                recaptcha         : "io.belov:soyuz-recaptcha:1.7",
+                                route             : "io.belov:soyuz-route:1.2",
+                                rsync             : "io.belov:soyuz-rsync:1.1",
+                                springJdbc        : "io.belov:soyuz-spring-jdbc:1.6",
+                                ssh               : "io.belov:soyuz-ssh:1.1",
+                                tasksQueue        : "io.belov:soyuz-tasks-queue:1.4",
+                                tasksQueueMetrics : "io.belov:soyuz-tasks-queue-metrics:1.1",
+                                template          : "io.belov:soyuz-template:1.0",
+                                test              : "io.belov:soyuz-test:1.0",
+                                text              : "io.belov:soyuz-text:1.0",
+                                textMd            : "io.belov:soyuz-text-md:1.0",
+                                ua                : "io.belov:soyuz-ua:1.1",
+                                validator         : "io.belov:soyuz-validator:1.23",
+                                validatorMessage  : "io.belov:soyuz-validator-message:1.0",
+                                validatorSpring   : "io.belov:soyuz-validator-spring:1.3",
+                                validatorSpringWeb: "io.belov:soyuz-validator-spring-web:1.1",
+                                validatorToErr    : "io.belov:soyuz-validator-to-err:1.1",
+                                web               : "io.belov:soyuz-web:1.1",
                         ],
                         lombok    : "org.projectlombok:lombok:1.16.18",
                         ua        : "net.sf.uadetector:uadetector-resources:2014.10",
@@ -198,7 +199,7 @@ allprojects {
                 ],
                 json         : [
                         jackson: [
-                                core: "com.fasterxml.jackson.core:jackson-databind:2.4.4",
+                                core       : "com.fasterxml.jackson.core:jackson-databind:2.4.4",
                                 annotations: "com.fasterxml.jackson.core:jackson-annotations:2.6.3",
                                 jsr310     : "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion",
                         ]
