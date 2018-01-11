@@ -83,6 +83,35 @@ var vRoutes = {
         "/app/campaigns/7/edit" | "app.campaigns.item.edit"
     }
 
+    def "should correctly route urls with params"() {
+        setup:
+        def routes = """
+var vRoutes = {
+         surfaces: {
+            list: "/app/surfaces/",
+            item: {
+                create: "/app/surfaces/new/",
+                show: "/app/surfaces/:id/",
+            },
+            inventory: {
+                list: "/app/surfaces/inventory/",
+                set: "/app/surfaces/inventory/set/"
+            }
+        }
+};
+"""
+
+        assert getRouterFromString(routes).getRoutePath(url) == path
+
+        where:
+        url                            | path
+        "/app/surfaces/"               | "surfaces.list"
+        "/app/surfaces/7/"             | "surfaces.item.show"
+        "/app/surfaces/new/"           | "surfaces.item.create"
+        "/app/surfaces/inventory/"     | "surfaces.inventory.list"
+        "/app/surfaces/inventory/set/" | "surfaces.inventory.set"
+    }
+
     private getRouterFromString(String routes) {
         return new Router(new StringReader(routes))
     }

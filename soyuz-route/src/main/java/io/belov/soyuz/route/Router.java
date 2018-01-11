@@ -2,9 +2,8 @@ package io.belov.soyuz.route;
 
 import io.thedocs.soyuz.is;
 
-import javax.script.*;import javax.script.Bindings;import javax.script.ScriptEngine;import javax.script.ScriptEngineManager;import javax.script.ScriptException;import javax.script.SimpleBindings;
-import java.io.InputStream;
-import java.io.Reader;import java.lang.Object;
+import javax.script.*;
+import java.io.Reader;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -60,7 +59,7 @@ public class Router {
 
         Iterable<String> parts = Utils.splitPath(url);
         for (String part : parts) {
-            routes = routes.getChild(part);
+            routes = routes.getChildOrParamRoute(part);
             if (routes == null) break;
         }
 

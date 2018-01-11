@@ -36,11 +36,11 @@ public class Routes {
         String path = re.getPath().trim();
 
         if (path.startsWith(":")) {
-            if (paramRoute != null) {
-                throw new IllegalStateException("Already have param route " + paramRoute + " - " + path);
-            } else {
+            if (paramRoute == null) {
                 paramRoute = re;
             }
+
+            re = paramRoute;
         } else {
             if (children.containsKey(path)) {
                 throw new IllegalStateException("Already contains path " + path);
@@ -53,6 +53,10 @@ public class Routes {
     }
 
     Routes getChild(String path) {
+        return children.get(path);
+    }
+
+    Routes getChildOrParamRoute(String path) {
         return to.or(children.get(path), this::getParamRoute);
     }
 
