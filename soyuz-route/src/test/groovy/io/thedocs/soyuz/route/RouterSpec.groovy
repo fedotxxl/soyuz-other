@@ -1,4 +1,4 @@
-package io.belov.soyuz.route
+package io.thedocs.soyuz.route
 
 import spock.lang.Specification
 
