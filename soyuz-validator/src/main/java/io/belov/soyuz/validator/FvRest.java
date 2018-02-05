@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Created by fbelov on 14.11.16.
  */
+//todo remove it!
 public class FvRest {
 
     @AllArgsConstructor
