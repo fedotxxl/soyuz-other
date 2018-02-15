@@ -1,6 +1,7 @@
 package io.thedocs.soyuz.db.jooq.crud;
 
 import io.thedocs.soyuz.to;
+import org.jooq.impl.DSL;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -10,11 +11,14 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 /**
- * Добавляет операции чтения в сервис
+ * Сервис - операции чтения
  */
 public interface CrudReadServiceI<T extends CrudBeanI<I>, I, D extends CrudDaoI<T, I, LR>, LR extends JooqListRequestI> {
 
-    interface Int<T extends CrudBeanI.Int, D extends CrudDaoI<T, Integer, LR>, LR extends JooqListRequestI> extends CrudReadServiceI<T, Integer, D, LR> {
+    interface Int<T extends CrudBeanI<Integer>, D extends CrudDaoI<T, Integer, LR>, LR extends JooqListRequestI> extends CrudReadServiceI<T, Integer, D, LR> {
+    }
+
+    interface Long<T extends CrudBeanI<Long>, D extends CrudDaoI<T, Long, LR>, LR extends JooqListRequestI> extends CrudReadServiceI<T, Long, D, LR> {
     }
 
     D getDao();
@@ -22,10 +26,6 @@ public interface CrudReadServiceI<T extends CrudBeanI<I>, I, D extends CrudDaoI<
     default ExecutorService getPool() {
         return CrudUtils.getDefaultPool();
     };
-
-//    default FluentValidator<T> getValidator() {
-//        return null;
-//    }
 
     default T get(I id) {
         D dao = getDao();
@@ -36,13 +36,13 @@ public interface CrudReadServiceI<T extends CrudBeanI<I>, I, D extends CrudDaoI<
     default List<T> list() {
         D dao = getDao();
 
-        return postProcessLoadedData(dao.list());
+        return postProcessLoadedData(dao.list(DSL.trueCondition()));
     }
 
     default List<T> list(Collection<I> ids) {
         D dao = getDao();
 
-        return postProcessLoadedData(dao.list(ids));
+        return postProcessLoadedData(dao.list(getDao().getIdField().in(ids)));
     }
 
     default CollectionEntity<T> listWithTotal(LR request) {
@@ -79,15 +79,15 @@ public interface CrudReadServiceI<T extends CrudBeanI<I>, I, D extends CrudDaoI<
     }
 
     default T postProcessLoadedData(T item) {
-        return item;
+        return getDao().loadJoinToManyData(item);
     }
 
     default List<T> postProcessLoadedData(List<T> items) {
-        return postProcessLoadedData(items, null);
+        return getDao().loadJoinToManyData(items);
     }
 
     default List<T> postProcessLoadedData(List<T> items, @Nullable LR request) {
-        return items;
+        return getDao().loadJoinToManyData(items);
     }
 }
 

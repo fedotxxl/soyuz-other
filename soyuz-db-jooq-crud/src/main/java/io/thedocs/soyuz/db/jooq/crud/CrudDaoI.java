@@ -14,9 +14,12 @@ import java.util.Map;
 /**
  * Добавляет операции чтения
  */
-public interface CrudDaoI<T, I, LR extends JooqListRequestI> {
+public interface CrudDaoI<T extends CrudBeanI<I>, I, LR extends JooqListRequestI> {
 
-    interface Int<T, LR extends JooqListRequestI> extends CrudDaoI<T, Integer, LR> {
+    interface Int<T extends CrudBeanI<Integer>, LR extends JooqListRequestI> extends CrudDaoI<T, Integer, LR> {
+    }
+
+    interface Long<T extends CrudBeanI<Long>, LR extends JooqListRequestI> extends CrudDaoI<T, Long, LR> {
     }
 
     JooqEntryData<T> getJooqEntryData();
@@ -119,7 +122,7 @@ public interface CrudDaoI<T, I, LR extends JooqListRequestI> {
     }
 
     default Field<I> getIdField() {
-        return (Field<I>) getJooqEntryData().getTable().field("id");
+        return (Field<I>) toJooqField("id");
     }
 
     default List<SortField<?>> getSortFields(List<FieldWithOrder> fieldsWithOrder) {
