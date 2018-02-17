@@ -33,6 +33,10 @@ public interface CrudReadServiceI<T extends CrudBeanI<I>, I, D extends CrudDaoI<
         return postProcessLoadedData(dao.get(id));
     }
 
+    default boolean has(I id) {
+        return getDao().has(id);
+    }
+
     default List<T> list() {
         D dao = getDao();
 
