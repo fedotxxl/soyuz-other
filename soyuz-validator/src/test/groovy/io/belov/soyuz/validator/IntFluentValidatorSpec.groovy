@@ -1,5 +1,6 @@
 package io.belov.soyuz.validator
 
+import io.thedocs.soyuz.err.Err
 import spock.lang.Specification
 
 class IntFluentValidatorSpec extends Specification {
@@ -13,8 +14,8 @@ class IntFluentValidatorSpec extends Specification {
 
         where:
         car                 | result
-        new Car()           | { c -> FluentValidator.Result.failure(c, "power", "greaterThan", 0, [1] as Object[]) }
-        new Car(power: 1)   | { c -> FluentValidator.Result.failure(c, "power", "greaterThan", 1, [1] as Object[]) }
+        new Car()           | { c -> FluentValidator.Result.failure(c, Err.field("power").code("greaterThan").value(0).params([criterion: 1]).build()) }
+        new Car(power: 1)   | { c -> FluentValidator.Result.failure(c, Err.field("power").code("greaterThan").value(1).params([criterion: 1]).build()) }
         new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
     }
 
@@ -27,7 +28,7 @@ class IntFluentValidatorSpec extends Specification {
 
         where:
         car                 | result
-        new Car()           | { c -> FluentValidator.Result.failure(c, "power", "greaterOrEqual", 0, [1] as Object[]) }
+        new Car()           | { c -> FluentValidator.Result.failure(c, Err.field("power").code("greaterOrEqual").value(0).params([criterion: 1]).build()) }
         new Car(power: 1)   | { c -> FluentValidator.Result.success(c) }
         new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
     }
@@ -41,8 +42,8 @@ class IntFluentValidatorSpec extends Specification {
 
         where:
         car                  | result
-        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "lessThan", 1500, [999] as Object[]) }
-        new Car(power: 999)  | { c -> FluentValidator.Result.failure(c, "power", "lessThan", 999, [999] as Object[]) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, Err.field("power").code("lessThan").value(1500).params([criterion: 999]).build()) }
+        new Car(power: 999)  | { c -> FluentValidator.Result.failure(c, Err.field("power").code("lessThan").value(999).params([criterion: 999]).build()) }
         new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
     }
 
@@ -55,7 +56,7 @@ class IntFluentValidatorSpec extends Specification {
 
         where:
         car                  | result
-        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "lessOrEqual", 1500, [999] as Object[]) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, Err.field("power").code("lessOrEqual").value(1500).params([criterion: 999]).build()) }
         new Car(power: 999)  | { c -> FluentValidator.Result.success(c) }
         new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
     }
@@ -69,8 +70,8 @@ class IntFluentValidatorSpec extends Specification {
 
         where:
         car                  | result
-        new Car(power: -1)   | { c -> FluentValidator.Result.failure(c, "power", "greaterThan", -1, [1] as Object[]) }
-        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, "power", "lessThan", 1500, [999] as Object[]) }
+        new Car(power: -1)   | { c -> FluentValidator.Result.failure(c, Err.field("power").code("greaterThan").value(-1).params([criterion: 1]).build()) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, Err.field("power").code("lessThan").value(1500).params([criterion: 999]).build()) }
         new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
     }
 

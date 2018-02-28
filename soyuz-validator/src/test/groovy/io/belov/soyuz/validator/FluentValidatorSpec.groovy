@@ -1,6 +1,7 @@
 package io.belov.soyuz.validator
 
 import io.belov.soyuz.validator.test.Actress
+import io.thedocs.soyuz.err.Err
 import spock.lang.Specification
 
 import java.util.function.Function
@@ -31,7 +32,7 @@ class FluentValidatorSpec extends Specification {
         def validator = FluentValidator.of(String).eq("hello world").build()
 
         then:
-        assert validator.validate("hello") == FluentValidator.Result.failure("hello", "notEq", "hello")
+        assert validator.validate("hello") == FluentValidator.Result.failure("hello", Err.code("notEq").value("hello").build())
         assert validator.validate("hello world") == FluentValidator.Result.success("hello world")
     }
 
@@ -42,6 +43,6 @@ class FluentValidatorSpec extends Specification {
         then:
         assert validator.validate("hello") == FluentValidator.Result.success("hello")
         assert validator.validate("world") == FluentValidator.Result.success("world")
-        assert validator.validate("hello world") == FluentValidator.Result.failure("hello world", "notEq", "hello world")
+        assert validator.validate("hello world") == FluentValidator.Result.failure("hello world", Err.code("notEq").value("hello world").build())
     }
 }

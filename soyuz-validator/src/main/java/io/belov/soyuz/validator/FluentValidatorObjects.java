@@ -1,13 +1,13 @@
 package io.belov.soyuz.validator;
 
+import io.thedocs.soyuz.err.Err;
+import io.thedocs.soyuz.err.Errors;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -236,23 +236,18 @@ public class FluentValidatorObjects {
 
     public static class ErrorUtils {
 
-        public static List<FluentValidator.Error> addParentProperty(List<FluentValidator.Error> errors, String parentProperty) {
-            List<FluentValidator.Error> answer = new ArrayList<>(errors.size());
+        public static Errors addParentProperty(Errors errors, String parentProperty) {
+            List<Err> answer = new ArrayList<>(errors.get().size());
 
-            for (FluentValidator.Error error : errors) {
+            for (Err error : errors) {
                 answer.add(addParentProperty(error, parentProperty));
             }
 
-            return answer;
+            return Errors.reject(answer);
         }
 
-        public static FluentValidator.Error addParentProperty(FluentValidator.Error error, String parentProperty) {
-            return new FluentValidator.Error(
-                    PropertyUtils.mix(parentProperty, error.getProperty()),
-                    error.getCode(),
-                    error.getValue(),
-                    error.getArgs()
-            );
+        public static Err addParentProperty(Err error, String parentProperty) {
+            return error.toBuilder().field(PropertyUtils.mix(parentProperty, error.getField())).build();
         }
 
     }

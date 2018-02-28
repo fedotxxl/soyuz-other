@@ -1,5 +1,6 @@
 package io.belov.soyuz.validator
 
+import io.thedocs.soyuz.err.Err
 import spock.lang.Specification
 
 class StringFluentValidatorSpec extends Specification {
@@ -13,8 +14,8 @@ class StringFluentValidatorSpec extends Specification {
 
         where:
         car                    | result
-        new Car()              | { c -> FluentValidator.Result.failure(c, "title", "notEmpty", null) }
-        new Car(title: "")     | { c -> FluentValidator.Result.failure(c, "title", "notEmpty", "") }
+        new Car()              | { c -> FluentValidator.Result.failure(c, Err.field("title").code("notEmpty").build()) }
+        new Car(title: "")     | { c -> FluentValidator.Result.failure(c, Err.field("title").code("notEmpty").value("").build()) }
         new Car(title: "Lada") | { c -> FluentValidator.Result.success(c) }
     }
 
@@ -29,7 +30,7 @@ class StringFluentValidatorSpec extends Specification {
         if (result) {
             assert answer == FluentValidator.Result.success(car)
         } else {
-            assert answer == FluentValidator.Result.failure(car, "title", "isBoolean", title)
+            assert answer == FluentValidator.Result.failure(car, Err.field("title").code("isBoolean").value(title).build())
         }
 
         where:
@@ -54,7 +55,7 @@ class StringFluentValidatorSpec extends Specification {
         if (result) {
             assert answer == FluentValidator.Result.success(car)
         } else {
-            assert answer == FluentValidator.Result.failure(car, "title", "isByte", title)
+            assert answer == FluentValidator.Result.failure(car, Err.field("title").code("isByte").value(title).build())
         }
 
         where:
@@ -81,7 +82,7 @@ class StringFluentValidatorSpec extends Specification {
         if (result) {
             assert answer == FluentValidator.Result.success(car)
         } else {
-            assert answer == FluentValidator.Result.failure(car, "title", "isShort", title)
+            assert answer == FluentValidator.Result.failure(car, Err.field("title").code("isShort").value(title).build())
         }
 
         where:
@@ -108,7 +109,7 @@ class StringFluentValidatorSpec extends Specification {
         if (result) {
             assert answer == FluentValidator.Result.success(car)
         } else {
-            assert answer == FluentValidator.Result.failure(car, "title", "isInteger", title)
+            assert answer == FluentValidator.Result.failure(car, Err.field("title").code("isInteger").value(title).build())
         }
 
         where:
@@ -135,7 +136,7 @@ class StringFluentValidatorSpec extends Specification {
         if (result) {
             assert answer == FluentValidator.Result.success(car)
         } else {
-            assert answer == FluentValidator.Result.failure(car, "title", "isLong", title)
+            assert answer == FluentValidator.Result.failure(car, Err.field("title").code("isLong").value(title).build())
         }
 
         where:
@@ -162,7 +163,7 @@ class StringFluentValidatorSpec extends Specification {
         if (result) {
             assert answer == FluentValidator.Result.success(car)
         } else {
-            assert answer == FluentValidator.Result.failure(car, "title", "isFloat", title)
+            assert answer == FluentValidator.Result.failure(car, Err.field("title").code("isFloat").value(title).build())
         }
 
         where:
@@ -188,7 +189,7 @@ class StringFluentValidatorSpec extends Specification {
         if (result) {
             assert answer == FluentValidator.Result.success(car)
         } else {
-            assert answer == FluentValidator.Result.failure(car, "title", "isDouble", title)
+            assert answer == FluentValidator.Result.failure(car, Err.field("title").code("isDouble").value(title).build())
         }
 
         where:

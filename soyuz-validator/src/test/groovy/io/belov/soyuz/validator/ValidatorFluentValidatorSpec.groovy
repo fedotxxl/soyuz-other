@@ -1,5 +1,7 @@
 package io.belov.soyuz.validator
 
+import io.thedocs.soyuz.err.Err
+import io.thedocs.soyuz.err.Errors
 import spock.lang.Specification
 
 class ValidatorFluentValidatorSpec extends Specification {
@@ -25,22 +27,22 @@ class ValidatorFluentValidatorSpec extends Specification {
         new Car()                                                              | { c ->
             FluentValidator.Result.failure(
                     c,
-                    [
-                            new FluentValidator.Error("title", "notEmpty", null),
-                            new FluentValidator.Error("engine", "notNull", null)
-                    ]
+                    Errors.reject(
+                            Err.field("title").code("notEmpty").build(),
+                            Err.field("engine").code("notNull").build(),
+                    )
             )
         }
 
         new Car(title: "", engine: new CarEngine())                            | { c ->
             FluentValidator.Result.failure(
                     c,
-                    [
-                            new FluentValidator.Error("title", "notEmpty", ""),
-                            new FluentValidator.Error("engine.title", "notEmpty", null),
-                            new FluentValidator.Error("engine.power", "greaterThan", 0, 1)
-
-                    ])
+                    Errors.reject(
+                            Err.field("title").code("notEmpty").value("").build(),
+                            Err.field("engine.title").code("notEmpty").build(),
+                            Err.field("engine.power").code("greaterThan").value(0).params(["criterion": 1]).build(),
+                    )
+            )
         }
 
         new Car(title: "Lada", engine: new CarEngine(title: "v8", power: 113)) | { c -> FluentValidator.Result.success(c) }

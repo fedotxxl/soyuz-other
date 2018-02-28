@@ -1,14 +1,14 @@
 package io.belov.soyuz.validator;
 
+import io.thedocs.soyuz.err.Err;
+import io.thedocs.soyuz.err.Errors;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -50,7 +50,7 @@ public interface FluentValidator<T> {
         }
 
         public FluentValidator.Result<R> validate(R rootObject) {
-            List<Error> errors = new ArrayList<>();
+            Errors errors = Errors.ok();
 
             for (FluentValidatorBuilder.ValidationDataWithProperties validationDataWithProperties : validationData) {
                 String property = validationDataWithProperties.getProperty();
@@ -59,7 +59,7 @@ public interface FluentValidator<T> {
                 FluentValidator.Result result = validationDataWithProperties.getData().validate(rootObject, property, value);
 
                 if (result != null) {
-                    errors.addAll(result.getErrors());
+                    errors.add(result.getErrors());
                 }
             }
 
@@ -84,29 +84,29 @@ public interface FluentValidator<T> {
     @ToString
     @EqualsAndHashCode
     public static class Result<R> {
-        private static final Result SUCCESS = new Result(null, Collections.unmodifiableList(new ArrayList<>()));
+        private static final Result SUCCESS = new Result(null, Errors.ok());
 
         private R rootObject;
-        private List<Error> errors;
+        private Errors errors;
 
-        private Result(R rootObject, List<Error> errors) {
+        private Result(R rootObject, Errors errors) {
             this.rootObject = rootObject;
             this.errors = errors;
         }
 
         public boolean isOk() {
-            return errors.isEmpty();
+            return errors.isOk();
         }
 
         public boolean hasErrors() {
-            return !errors.isEmpty();
+            return errors.hasErrors();
         }
 
         public R getRootObject() {
             return rootObject;
         }
 
-        public List<Error> getErrors() {
+        public Errors getErrors() {
             return errors;
         }
 
@@ -115,30 +115,14 @@ public interface FluentValidator<T> {
         }
 
         public static <R> Result<R> success(R rootObject) {
-            return new Result<>(rootObject, new ArrayList<>());
+            return new Result<>(rootObject, Errors.ok());
         }
 
-        public static <R, V> Result<R> failure(R rootObject, String code, V value) {
-            return failure(rootObject, code, value, null);
+        public static <R> Result<R> failure(R rootObject, Err error) {
+            return new Result<>(rootObject, Errors.reject(error));
         }
 
-        public static <R, V> Result<R> failure(R rootObject, String code, V value, Object[] args) {
-            return failure(rootObject, null, code, value, args);
-        }
-
-        public static <R, V> Result<R> failure(R rootObject, String property, String code, V value) {
-            return failure(rootObject, property, code, value, null);
-        }
-
-        public static <R, V> Result<R> failure(R rootObject, String property, String code, V value, Object[] args) {
-            return failure(rootObject, new Error<>(property, code, value, args));
-        }
-
-        public static <R> Result<R> failure(R rootObject, Error error) {
-            return new Result<>(rootObject, FvUtils.to.list(error));
-        }
-
-        public static <R> Result<R> failure(R rootObject, List<Error> errors) {
+        public static <R> Result<R> failure(R rootObject, Errors errors) {
             return new Result<>(rootObject, errors);
         }
 
@@ -177,86 +161,22 @@ public interface FluentValidator<T> {
     @ToString
     public static class ValidationException extends RuntimeException {
         private Object rootObject;
-        private List<Error> errors; //todo replace with Errors
+        private Errors errors;
 
-        public ValidationException(Object rootObject, List<Error> errors) {
+        public ValidationException(Object rootObject, Errors errors) {
             super("{root=" + rootObject + ", errors=" + errors + "}");
 
             this.rootObject = rootObject;
             this.errors = errors;
         }
 
-        public ValidationException(Object rootObject, Error error) {
-            this(rootObject, FvUtils.to.list(error));
+        public ValidationException(Object rootObject, Err error) {
+            this(rootObject, Errors.reject(error));
         }
 
         //todo better constructor
         //throw new FluentValidator.ValidationException(dvd, to.list(new FluentValidator.Error<>(result.getFailureReason().toString(), dvd)));
 
     }
-
-    @Getter
-    @EqualsAndHashCode
-    @ToString
-    public static class Error<V> {
-
-        private String code;
-        @Nullable
-        private V value;
-        @Nullable
-        private String property;
-        @Nullable
-        private Object[] args;
-
-        public Error(String code, V value) {
-            this(null, code, value);
-        }
-
-        public Error(String property, String code, V value) {
-            this(property, code, value, null);
-        }
-
-        public Error(String property, String code, V value, Object[] args) {
-            this.property = property;
-            this.code = code;
-            this.value = value;
-            this.args = args;
-        }
-
-        public boolean hasProperty() {
-            return property != null && property.length() > 0;
-        }
-
-        public boolean hasArgs() {
-            return args != null;
-        }
-
-        public boolean hasValue() {
-            return value != null;
-        }
-    }
-
-//    public static void main(String[] args) {
-//        FluentValidator tagTranslationValidator = validate(TagTranslation.class)
-//                .string("title").notEmpty().build();
-//
-//        FluentValidator v = validate(FluentValidator.class)
-//                .integer("name").notNull().isGreaterThan(20).back()
-//                .string("hello").custom((a) -> {
-//
-//        }).back()
-//                .custom((o, context) -> {
-//                    Validator(context)
-//                            .string("property", o.getName()).notEmpty().back()
-//                            .integer("another", o.getAge()).isGreaterThan(20).back()
-//                            .object("trololo", o.getObject()).validator(vv)
-//                            .validate();
-//                })
-//                .list("tagTranslation").validator(tagTranslationValidator).back()
-//                .build();
-//
-//
-//
-//    }
 
 }

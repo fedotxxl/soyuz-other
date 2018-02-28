@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 
 /**
  * Created by fbelov on 31.05.16.
@@ -23,7 +24,7 @@ public class Err<V> {
     @Nullable
     private V value;
     @Nullable
-    private Object[] args;
+    private Map<String, Object> params;
 
     @JsonIgnore
     public boolean isGlobalScope() {
@@ -42,12 +43,32 @@ public class Err<V> {
     private Err() {
     }
 
-    private Err(String field, String code, String message, V value, Object[] args) {
+    private Err(String field, String code, String message, V value, Map<String, Object> params) {
         this.field = field;
         this.code = code;
         this.message = message;
         this.value = value;
-        this.args = args;
+        this.params = params;
+    }
+
+    public ErrBuilder<V> toBuilder() {
+        return Err.<V>builder().field(field).code(code).message(message).value(value).params(params);
+    }
+
+    public boolean hasField() {
+        return field != null;
+    }
+
+    public boolean hasMessage() {
+        return message != null;
+    }
+
+    public boolean hasValue() {
+        return value != null;
+    }
+
+    public boolean hasParams() {
+        return params != null;
     }
 
     public static <V> ErrBuilder<V> code(Code code) {
@@ -77,10 +98,10 @@ public class Err<V> {
         private String code;
         private String message;
         private V value;
-        private Object[] args;
+        private Map<String, Object> params;
 
         public Err<V> build() {
-            return new Err<>(field, code, message, value, args);
+            return new Err<>(field, code, message, value, params);
         }
 
         public ErrBuilder<V> field(String field) {
@@ -115,8 +136,8 @@ public class Err<V> {
             return this;
         }
 
-        public ErrBuilder<V> args(Object... args) {
-            this.args = args;
+        public ErrBuilder<V> params(Map<String, Object> params) {
+            this.params = params;
 
             return this;
         }

@@ -2,6 +2,7 @@ package io.belov.soyuz.validator
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import io.thedocs.soyuz.err.Err
 import spock.lang.Specification
 
 class CollectionFluentValidatorSpec extends Specification {
@@ -15,8 +16,8 @@ class CollectionFluentValidatorSpec extends Specification {
 
         where:
         team                                           | result
-        new Team()                                     | { t -> FluentValidator.Result.failure(t, "members", "notEmpty", null) }
-        new Team(members: [] as Set)                   | { t -> FluentValidator.Result.failure(t, "members", "notEmpty", [] as Set) }
+        new Team()                                     | { t -> FluentValidator.Result.failure(t, Err.field("members").code("notEmpty").build()) }
+        new Team(members: [] as Set)                   | { t -> FluentValidator.Result.failure(t, Err.field("members").code("notEmpty").value([] as Set).build()) }
         new Team(members: [new Member(name: "filya")]) | { t -> FluentValidator.Result.success(t) }
     }
 
@@ -29,9 +30,9 @@ class CollectionFluentValidatorSpec extends Specification {
 
         where:
         team                                                                                                         | result
-        new Team()                                                                                                   | { t -> FluentValidator.Result.failure(t, "members", "greaterThan", null) }
-        new Team(members: [new Member(name: "filya")] as Set)                                                        | { t -> FluentValidator.Result.failure(t, "members", "greaterThan", [new Member(name: "filya")] as Set) }
-        new Team(members: [new Member(name: "filya"), new Member(name: "l80")] as Set)                               | { t -> FluentValidator.Result.failure(t, "members", "greaterThan", [new Member(name: "filya"), new Member(name: "l80")] as Set) }
+        new Team()                                                                                                   | { t -> FluentValidator.Result.failure(t, Err.field("members").code("greaterThan").params(["criterion": 2]).build()) }
+        new Team(members: [new Member(name: "filya")] as Set)                                                        | { t -> FluentValidator.Result.failure(t, Err.field("members").code("greaterThan").params(["criterion": 2]).value([new Member(name: "filya")] as Set).build()) }
+        new Team(members: [new Member(name: "filya"), new Member(name: "l80")] as Set)                               | { t -> FluentValidator.Result.failure(t, Err.field("members").code("greaterThan").params(["criterion": 2]).value([new Member(name: "filya"), new Member(name: "l80")] as Set).build()) }
         new Team(members: [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set) | { t -> FluentValidator.Result.success(t) }
     }
 
@@ -44,8 +45,8 @@ class CollectionFluentValidatorSpec extends Specification {
 
         where:
         team                                                                                                         | result
-        new Team()                                                                                                   | { t -> FluentValidator.Result.failure(t, "members", "greaterOrEqual", null) }
-        new Team(members: [new Member(name: "filya")] as Set)                                                        | { t -> FluentValidator.Result.failure(t, "members", "greaterOrEqual", [new Member(name: "filya")] as Set) }
+        new Team()                                                                                                   | { t -> FluentValidator.Result.failure(t, Err.field("members").code("greaterOrEqual").params(["criterion": 2]).build()) }
+        new Team(members: [new Member(name: "filya")] as Set)                                                        | { t -> FluentValidator.Result.failure(t, Err.field("members").code("greaterOrEqual").params(["criterion": 2]).value([new Member(name: "filya")] as Set).build()) }
         new Team(members: [new Member(name: "filya"), new Member(name: "l80")] as Set)                               | { t -> FluentValidator.Result.success(t) }
         new Team(members: [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set) | { t -> FluentValidator.Result.success(t) }
     }
@@ -64,8 +65,8 @@ class CollectionFluentValidatorSpec extends Specification {
         members                                                                                   | result
         null                                                                                      | { t, m -> FluentValidator.Result.success(t) }
         [new Member(name: "filya")] as Set                                                        | { t, m -> FluentValidator.Result.success(t) }
-        [new Member(name: "filya"), new Member(name: "l80")] as Set                               | { t, m -> FluentValidator.Result.failure(t, "members", "lessThan", m) }
-        [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set | { t, m -> FluentValidator.Result.failure(t, "members", "lessThan", m) }
+        [new Member(name: "filya"), new Member(name: "l80")] as Set                               | { t, m -> FluentValidator.Result.failure(t, Err.field("members").code("lessThan").params(["criterion": 2]).value(m).build()) }
+        [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set | { t, m -> FluentValidator.Result.failure(t, Err.field("members").code("lessThan").params(["criterion": 2]).value(m).build()) }
     }
 
     def "lessOrEqual"() {
@@ -83,7 +84,7 @@ class CollectionFluentValidatorSpec extends Specification {
         null                                                                                      | { t, m -> FluentValidator.Result.success(t) }
         [new Member(name: "filya")] as Set                                                        | { t, m -> FluentValidator.Result.success(t) }
         [new Member(name: "filya"), new Member(name: "l80")] as Set                               | { t, m -> FluentValidator.Result.success(t) }
-        [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set | { t, m -> FluentValidator.Result.failure(t, "members", "lessOrEqual", m) }
+        [new Member(name: "filya"), new Member(name: "l80"), new Member(name: "sheishin")] as Set | { t, m -> FluentValidator.Result.failure(t, Err.field("members").code("lessOrEqual").params(["criterion": 2]).value(m).build()) }
     }
 
     def "itemValidator"() {
@@ -101,7 +102,7 @@ class CollectionFluentValidatorSpec extends Specification {
         members                            | result
         null                               | { t, m -> FluentValidator.Result.success(t) }
         [new Member(name: "filya")] as Set | { t, m -> FluentValidator.Result.success(t) }
-        [new Member(name: "")] as Set      | { t, m -> FluentValidator.Result.failure(t, "members.0.name", "notEmpty", "") } //todo think about value?
+        [new Member(name: "")] as Set      | { t, m -> FluentValidator.Result.failure(t, Err.field("members.0.name").code("notEmpty").value("").build()) } //todo think about value?
     }
 
     @EqualsAndHashCode

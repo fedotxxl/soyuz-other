@@ -1,5 +1,6 @@
 package io.belov.soyuz.validator
 
+import io.thedocs.soyuz.err.Err
 import spock.lang.Specification
 
 class CustomFluentValidatorSpec extends Specification {
@@ -21,7 +22,7 @@ class CustomFluentValidatorSpec extends Specification {
         where:
         car                 | result
         new Car(power: 150) | { c -> FluentValidator.Result.success(c) }
-        new Car(power: 90)  | { c -> FluentValidator.Result.failure(c, "power", "min", 90) }
+        new Car(power: 90)  | { c -> FluentValidator.Result.failure(c, Err.field("power").code("min").value(90).build()) }
     }
 
     def "collection"() {
@@ -40,7 +41,7 @@ class CustomFluentValidatorSpec extends Specification {
         where:
         car                                                                   | result
         new Car(wheels: [new Wheel(), new Wheel(), new Wheel(), new Wheel()]) | { c -> FluentValidator.Result.success(c) }
-        new Car(wheels: [new Wheel()])                                        | { c -> FluentValidator.Result.failure(c, "wheels", "wrongNumber", c.wheels) }
+        new Car(wheels: [new Wheel()])                                        | { c -> FluentValidator.Result.failure(c, Err.field("wheels").code("wrongNumber").value(c.wheels).build()) }
     }
 
     def "deep"() {
@@ -59,7 +60,7 @@ class CustomFluentValidatorSpec extends Specification {
 
         where:
         car                                       | result
-        new Car()                                 | { c -> FluentValidator.Result.failure(c, "engine.title", "notEmpty", null) }
+        new Car()                                 | { c -> FluentValidator.Result.failure(c, Err.field("engine.title").code("notEmpty").build()) }
         new Car(engine: new Engine(title: "bmw")) | { c -> FluentValidator.Result.success(c) }
     }
 

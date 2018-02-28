@@ -3,7 +3,7 @@ apply plugin: "groovy"
 version "1.2"
 
 dependencies {
-    compile project(":soyuz-validator")
+    compile project(":soyuz-validator-message")
     compile cl.jersey.api
 
     provided cl.utils.lombok

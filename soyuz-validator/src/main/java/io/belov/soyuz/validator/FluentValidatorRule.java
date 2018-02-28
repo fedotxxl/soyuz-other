@@ -1,14 +1,13 @@
 package io.belov.soyuz.validator;
 
+import io.thedocs.soyuz.err.Err;
+import io.thedocs.soyuz.err.Errors;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -23,14 +22,14 @@ public interface FluentValidatorRule<R, V> {
 
         public FluentValidator.Result validate(R rootObject, String property, V value) {
             if (!isValid(rootObject, value)) {
-                return FluentValidator.Result.failure(rootObject, property, getCode(), value, getErrorArgs());
+                return FluentValidator.Result.failure(rootObject, Err.field(property).code(getCode()).value(value).params(getErrorParams()).build());
             } else {
                 return null;
             }
         }
 
         @Nullable
-        public Object[] getErrorArgs() {
+        public Map<String, Object> getErrorParams() {
             return null;
         }
 
@@ -204,8 +203,8 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            public Object[] getErrorArgs() {
-                return new Object[]{value};
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", value);
             }
         }
 
@@ -227,8 +226,8 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            public Object[] getErrorArgs() {
-                return new Object[]{value};
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", value);
             }
         }
 
@@ -250,8 +249,8 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            public Object[] getErrorArgs() {
-                return new Object[]{value};
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", value);
             }
         }
 
@@ -273,8 +272,8 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            public Object[] getErrorArgs() {
-                return new Object[]{value};
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", value);
             }
         }
     }
@@ -298,8 +297,8 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            public Object[] getErrorArgs() {
-                return new Object[]{value};
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", value);
             }
         }
 
@@ -321,8 +320,8 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            public Object[] getErrorArgs() {
-                return new Object[]{value};
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", value);
             }
         }
 
@@ -344,8 +343,8 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            public Object[] getErrorArgs() {
-                return new Object[]{value};
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", value);
             }
         }
 
@@ -367,8 +366,8 @@ public interface FluentValidatorRule<R, V> {
             }
 
             @Override
-            public Object[] getErrorArgs() {
-                return new Object[]{value};
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", value);
             }
         }
     }
@@ -485,6 +484,11 @@ public interface FluentValidatorRule<R, V> {
             protected boolean isValid(R rootObject, Collection<V> value) {
                 return value != null && value.size() >= size;
             }
+
+            @Override
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", size);
+            }
         }
 
         class GreaterThan<R, V> extends AbstractRule<R, Collection<V>> {
@@ -502,6 +506,11 @@ public interface FluentValidatorRule<R, V> {
             @Override
             protected boolean isValid(R rootObject, Collection<V> value) {
                 return value != null && value.size() > size;
+            }
+
+            @Override
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", size);
             }
         }
 
@@ -521,6 +530,11 @@ public interface FluentValidatorRule<R, V> {
             protected boolean isValid(R rootObject, Collection<V> value) {
                 return value == null || value.size() <= size;
             }
+
+            @Override
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", size);
+            }
         }
 
         class LessThan<R, V> extends AbstractRule<R, Collection<V>> {
@@ -539,6 +553,11 @@ public interface FluentValidatorRule<R, V> {
             protected boolean isValid(R rootObject, Collection<V> value) {
                 return value == null || value.size() < size;
             }
+
+            @Override
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", size);
+            }
         }
 
         class ItemValidator<R, V> implements FluentValidatorRule<R, Collection<V>> {
@@ -554,20 +573,20 @@ public interface FluentValidatorRule<R, V> {
                 if (value == null) {
                     return FluentValidator.Result.success();
                 } else {
-                    List<FluentValidator.Error> errors = new ArrayList<>();
+                    Errors errors = Errors.ok();
                     int index = 0;
 
                     for (V item : value) {
                         FluentValidator.Result result = validator.validate(item);
 
                         if (result.hasErrors()) {
-                            errors.addAll(FluentValidatorObjects.ErrorUtils.addParentProperty(result.getErrors(), property + "." + index));
+                            errors.add(FluentValidatorObjects.ErrorUtils.addParentProperty(result.getErrors(), property + "." + index));
                         }
 
                         index++;
                     }
 
-                    if (errors.isEmpty()) {
+                    if (errors.isOk()) {
                         return FluentValidator.Result.success();
                     } else {
                         return FluentValidator.Result.failure(rootObject, errors);
@@ -679,19 +698,20 @@ public interface FluentValidatorRule<R, V> {
                 if (result.isOk()) {
                     return FluentValidator.Result.success(rootObject);
                 } else {
-                    List<FvCustomValidatorError> errorsSource = result.getErrors();
-                    List<FluentValidator.Error> errors = new ArrayList<>(errorsSource.size());
+                    Errors errorsSource = result.getErrors();
+                    List<Err> errors = new ArrayList<>(errorsSource.get().size());
 
-                    for (FvCustomValidatorError e : errorsSource) {
-                        errors.add(new FluentValidator.Error(
-                                FluentValidatorObjects.PropertyUtils.mix(property, e.getProperty()),
-                                e.getCode(),
-                                (e.hasProperty()) ? e.getValue() : value,
-                                e.getArgs()
-                        ));
+                    for (Err e : errorsSource) {
+                        errors.add(Err
+                                .field(FluentValidatorObjects.PropertyUtils.mix(property, e.getField()))
+                                .code(e.getCode())
+                                .value((e.hasField()) ? e.getValue() : value)
+                                .params(e.getParams())
+                                .build()
+                        );
                     }
 
-                    return FluentValidator.Result.failure(rootObject, errors);
+                    return FluentValidator.Result.failure(rootObject, Errors.reject(errors));
                 }
             }
         }

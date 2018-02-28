@@ -1,10 +1,11 @@
 apply plugin: "groovy"
 
-version "1.23"
+version "2.01"
 
 dependencies {
     compile cl.utils.commons.bean
     compile cl.utils.jsr305
+    compile cl.utils.thedocs.err
     compile cl.json.jackson.annotations
     provided cl.utils.lombok
 

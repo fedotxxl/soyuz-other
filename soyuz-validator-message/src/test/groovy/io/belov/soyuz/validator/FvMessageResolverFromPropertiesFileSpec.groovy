@@ -1,5 +1,6 @@
 package io.belov.soyuz.validator
 
+import io.belov.soyuz.validator.message.FvMessageResolverFromPropertiesFile
 import spock.lang.Specification
 
 /**

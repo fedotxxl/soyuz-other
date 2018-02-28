@@ -1,5 +1,6 @@
 package io.belov.soyuz.validator
 
+import io.thedocs.soyuz.err.Err
 import spock.lang.Specification
 
 class DateFluentValidatorSpec extends Specification {
@@ -16,8 +17,8 @@ class DateFluentValidatorSpec extends Specification {
         where:
         car                                                 | result
         new Car()                                           | { c -> FluentValidator.Result.success(c) }
-        new Car(constructed: new Date(1986 - 1900, 12, 31)) | { c -> FluentValidator.Result.failure(c, "constructed", "after", c.constructed) }
-        new Car(constructed: new Date(1988 - 1900, 01, 01)) | { c -> FluentValidator.Result.failure(c, "constructed", "before", c.constructed) }
+        new Car(constructed: new Date(1986 - 1900, 12, 31)) | { c -> FluentValidator.Result.failure(c, Err.field("constructed").code("after").value(c.constructed).build()) }
+        new Car(constructed: new Date(1988 - 1900, 01, 01)) | { c -> FluentValidator.Result.failure(c, Err.field("constructed").code("before").value(c.constructed).build()) }
         new Car(constructed: new Date(1987 - 1900, 05, 01)) | { c -> FluentValidator.Result.success(c) }
     }
 
@@ -33,8 +34,8 @@ class DateFluentValidatorSpec extends Specification {
         where:
         car                                                 | result
         new Car()                                           | { c -> FluentValidator.Result.success(c) }
-        new Car(constructed: new Date(1986 - 1900, 12, 31)) | { c -> FluentValidator.Result.failure(c, "constructed", "between", c.constructed) }
-        new Car(constructed: new Date(1988 - 1900, 01, 01)) | { c -> FluentValidator.Result.failure(c, "constructed", "between", c.constructed) }
+        new Car(constructed: new Date(1986 - 1900, 12, 31)) | { c -> FluentValidator.Result.failure(c, Err.field("constructed").code("between").value(c.constructed).build()) }
+        new Car(constructed: new Date(1988 - 1900, 01, 01)) | { c -> FluentValidator.Result.failure(c, Err.field("constructed").code("between").value(c.constructed).build()) }
         new Car(constructed: new Date(1987 - 1900, 05, 01)) | { c -> FluentValidator.Result.success(c) }
     }
 

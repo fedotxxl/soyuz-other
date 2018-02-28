@@ -1,5 +1,7 @@
 package io.belov.soyuz.validator;
 
+import io.belov.soyuz.validator.message.FvMessageResolverI;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;

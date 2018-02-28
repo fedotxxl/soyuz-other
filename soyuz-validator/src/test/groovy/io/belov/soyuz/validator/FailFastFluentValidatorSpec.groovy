@@ -1,5 +1,7 @@
 package io.belov.soyuz.validator
 
+import io.thedocs.soyuz.err.Err
+import io.thedocs.soyuz.err.Errors
 import spock.lang.Specification
 
 import java.util.concurrent.atomic.AtomicBoolean
@@ -31,7 +33,7 @@ class FailFastFluentValidatorSpec extends Specification {
         result = validator.validate(car)
 
         then:
-        assert result == FluentValidator.Result.failure(car, [new FluentValidator.Error("title", "notEmpty", null), new FluentValidator.Error("power", "min", 90)])
+        assert result == FluentValidator.Result.failure(car, Errors.reject(Err.field("title").code("notEmpty").build(), Err.field("power").code("min").value(90).build()))
         assert checked.get() == true
 
         when:
@@ -40,7 +42,7 @@ class FailFastFluentValidatorSpec extends Specification {
         result = getValidator(true, checked).validate(car)
 
         then:
-        assert result == FluentValidator.Result.failure(car, "title", "notEmpty", null)
+        assert result == FluentValidator.Result.failure(car, Err.field("title").code("notEmpty").build())
         assert checked.get() == false
     }
 

@@ -21,12 +21,20 @@ public class Errors implements Iterable<Err> {
         this.errors = errors;
     }
 
+    public Errors add(Errors errors) {
+        if (errors != null) add(errors.get());
+
+        return this;
+    }
+
     public Errors add(Err... errors) {
-        return add(Arrays.asList(errors));
+        if (errors != null) add(Arrays.asList(errors));
+
+        return this;
     }
 
     public Errors add(Collection<Err> errors) {
-        this.errors.addAll(errors);
+        if (errors != null) this.errors.addAll(errors);
 
         return this;
     }

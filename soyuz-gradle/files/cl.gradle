@@ -110,7 +110,7 @@ allprojects {
                         thedocs   : [
                                 isTo : "io.thedocs:soyuz-is-to:0.65",
                                 loge : "io.thedocs:soyuz-loge:1.2",
-                                err  : "io.thedocs:soyuz-err:1.13",
+                                err  : "io.thedocs:soyuz-err:2.01",
                                 route: "io.thedocs:soyuz-route:1.3",
                         ],
                         soyuz     : [
