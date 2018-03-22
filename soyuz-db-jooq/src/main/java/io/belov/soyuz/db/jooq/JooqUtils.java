@@ -2,10 +2,7 @@ package io.belov.soyuz.db.jooq;
 
 import io.thedocs.soyuz.is;
 import io.thedocs.soyuz.to;
-import org.jooq.Field;
-import org.jooq.Query;
-import org.jooq.Record;
-import org.jooq.Table;
+import org.jooq.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +20,20 @@ public class JooqUtils {
         }
 
         return query;
+    }
+
+    public static boolean hasField(Record record, TableField field) {
+        Field<?>[] fields = record.fields();
+
+        for (Field<?> fieldFromRecord : fields) {
+            if (fieldFromRecord instanceof TableField) {
+                if (fieldFromRecord.equals(field)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public static Field[] fields(Table<?> table, Map<Table<?>, String> tablesWithPrefixes) {
