@@ -76,6 +76,10 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
         return new IntegerBuilder<>(this, getFullProperty(property));
     }
 
+    public DoubleBuilder<T> double_(String property) {
+        return new DoubleBuilder<>(this, getFullProperty(property));
+    }
+
     public LongBuilder<T> long_(String property) {
         return new LongBuilder<>(this, getFullProperty(property));
     }
@@ -143,13 +147,19 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
 
     public static class IntegerBuilder<R> extends AbstractNumberBuilder<R, Integer, IntegerBuilder<R>, FluentValidatorObjects.NumberData<R, Integer>> {
         public IntegerBuilder(FluentValidatorBuilder<R> builder, String property) {
-            super(builder, new FluentValidatorObjects.NumberData<R, Integer>(), property);
+            super(builder, new FluentValidatorObjects.NumberData<>(), property);
         }
     }
 
     public static class LongBuilder<R> extends AbstractNumberBuilder<R, Long, IntegerBuilder<R>, FluentValidatorObjects.NumberData<R, Long>> {
         public LongBuilder(FluentValidatorBuilder<R> builder, String property) {
-            super(builder, new FluentValidatorObjects.NumberData<R, Long>(), property);
+            super(builder, new FluentValidatorObjects.NumberData<>(), property);
+        }
+    }
+
+    public static class DoubleBuilder<R> extends AbstractNumberBuilder<R, Double, DoubleBuilder<R>, FluentValidatorObjects.NumberData<R, Double>> {
+        public DoubleBuilder(FluentValidatorBuilder<R> builder, String property) {
+            super(builder, new FluentValidatorObjects.NumberData<>(), property);
         }
     }
 
