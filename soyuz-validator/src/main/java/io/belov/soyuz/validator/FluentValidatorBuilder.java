@@ -233,6 +233,30 @@ public class FluentValidatorBuilder<T> extends FluentValidatorObjects.BaseBuilde
             return this;
         }
 
+        public StringBuilder<R> greaterOrEqual(int size) {
+            data.addRule(new FluentValidatorRule.Str.GreaterOrEqual<>(size));
+
+            return this;
+        }
+
+        public StringBuilder<R> greaterThan(int size) {
+            data.addRule(new FluentValidatorRule.Str.GreaterThan<>(size));
+
+            return this;
+        }
+
+        public StringBuilder<R> lessOrEqual(int size) {
+            data.addRule(new FluentValidatorRule.Str.LessOrEqual<>(size));
+
+            return this;
+        }
+
+        public StringBuilder<R> lessThan(int size) {
+            data.addRule(new FluentValidatorRule.Str.LessThan<>(size));
+
+            return this;
+        }
+
         public StringBuilder<R> matches(Pattern pattern) {
             data.setMatches(pattern);
             return this;

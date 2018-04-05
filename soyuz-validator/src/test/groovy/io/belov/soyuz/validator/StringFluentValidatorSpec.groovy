@@ -204,6 +204,85 @@ class StringFluentValidatorSpec extends Specification {
         "19.a95"  | false
     }
 
+    def "greaterThan"() {
+        when:
+        def validator = FluentValidator.of(Car).string("title").greaterThan(2).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                                 | result
+        new Car(title: "pretty long title") | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "ok!")               | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "ab")                | { c -> FluentValidator.Result.failure(c, Err.field("title").code("greaterThan").value("ab").params(["criterion": 2]).build()) }
+        new Car(title: "")                  | { c -> FluentValidator.Result.failure(c, Err.field("title").code("greaterThan").value("").params(["criterion": 2]).build()) }
+        new Car(title: null)                | { c -> FluentValidator.Result.failure(c, Err.field("title").code("greaterThan").value(null).params(["criterion": 2]).build()) }
+    }
+
+    def "greaterOrEqual"() {
+        when:
+        def validator = FluentValidator.of(Car).string("title").greaterOrEqual(2).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                                 | result
+        new Car(title: "pretty long title") | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "ok!")               | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "ab")                | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "a")                 | { c -> FluentValidator.Result.failure(c, Err.field("title").code("greaterOrEqual").value("a").params(["criterion": 2]).build()) }
+        new Car(title: "")                  | { c -> FluentValidator.Result.failure(c, Err.field("title").code("greaterOrEqual").value("").params(["criterion": 2]).build()) }
+        new Car(title: null)                | { c -> FluentValidator.Result.failure(c, Err.field("title").code("greaterOrEqual").value(null).params(["criterion": 2]).build()) }
+    }
+
+    def "lessThan"() {
+        when:
+        def validator = FluentValidator.of(Car).string("title").lessThan(2).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                   | result
+        new Car(title: null)  | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "")    | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "a")   | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "ab")  | { c -> FluentValidator.Result.failure(c, Err.field("title").code("lessThan").value("ab").params(["criterion": 2]).build()) }
+        new Car(title: "abc") | { c -> FluentValidator.Result.failure(c, Err.field("title").code("lessThan").value("abc").params(["criterion": 2]).build()) }
+    }
+
+    def "lessOrEqual"() {
+        when:
+        def validator = FluentValidator.of(Car).string("title").lessOrEqual(2).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                   | result
+        new Car(title: null)  | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "")    | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "a")   | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "ab")  | { c -> FluentValidator.Result.success(c) }
+        new Car(title: "abc") | { c -> FluentValidator.Result.failure(c, Err.field("title").code("lessOrEqual").value("abc").params(["criterion": 2]).build()) }
+    }
+
+    def "greaterThan+lessThan"() {
+        when:
+        def validator = FluentValidator.of(Car).integer("power").greaterThan(1).lessThan(999).b().build()
+
+        then:
+        assert validator.validate(car) == result(car)
+
+        where:
+        car                  | result
+        new Car(power: -1)   | { c -> FluentValidator.Result.failure(c, Err.field("power").code("greaterThan").value(-1).params(["criterion": 1]).build()) }
+        new Car(power: 1500) | { c -> FluentValidator.Result.failure(c, Err.field("power").code("lessThan").value(1500).params(["criterion": 999]).build()) }
+        new Car(power: 150)  | { c -> FluentValidator.Result.success(c) }
+    }
+
 
     static class Car {
         private String title

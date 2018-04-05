@@ -182,6 +182,98 @@ public interface FluentValidatorRule<R, V> {
                 }
             }
         }
+
+        class GreaterOrEqual<R> extends AbstractRule<R, String> {
+            private int size;
+
+            public GreaterOrEqual(int size) {
+                this.size = size;
+            }
+
+            @Override
+            protected String getCode() {
+                return "greaterOrEqual";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                return value != null && value.length() >= size;
+            }
+
+            @Override
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", size);
+            }
+        }
+
+        class GreaterThan<R> extends AbstractRule<R, String> {
+            private int size;
+
+            public GreaterThan(int size) {
+                this.size = size;
+            }
+
+            @Override
+            protected String getCode() {
+                return "greaterThan";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                return value != null && value.length() > size;
+            }
+
+            @Override
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", size);
+            }
+        }
+
+        class LessOrEqual<R> extends AbstractRule<R, String> {
+            private int size;
+
+            public LessOrEqual(int size) {
+                this.size = size;
+            }
+
+            @Override
+            protected String getCode() {
+                return "lessOrEqual";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                return value == null || value.length() <= size;
+            }
+
+            @Override
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", size);
+            }
+        }
+
+        class LessThan<R> extends AbstractRule<R, String> {
+            private int size;
+
+            public LessThan(int size) {
+                this.size = size;
+            }
+
+            @Override
+            protected String getCode() {
+                return "lessThan";
+            }
+
+            @Override
+            protected boolean isValid(R rootObject, String value) {
+                return value == null || value.length() < size;
+            }
+
+            @Override
+            public Map<String, Object> getErrorParams() {
+                return FvUtils.to.map("criterion", size);
+            }
+        }
     }
 
     interface Int {
