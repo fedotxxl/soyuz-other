@@ -108,7 +108,7 @@ allprojects {
                 utils        : [
                         guava     : "com.google.guava:guava:18.0",
                         thedocs   : [
-                                isTo : "io.thedocs:soyuz-is-to:0.71",
+                                isTo : "io.thedocs:soyuz-is-to:0.72",
                                 loge : "io.thedocs:soyuz-loge:1.2",
                                 err  : "io.thedocs:soyuz-err:2.02",
                                 route: "io.thedocs:soyuz-route:1.3",
