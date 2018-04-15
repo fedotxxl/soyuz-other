@@ -83,8 +83,8 @@ public class Err<V> {
         return Err.<V>builder().field(field);
     }
 
-    public static <V> ErrBuilder<V> message(Code code) {
-        return Err.<V>builder().code(code);
+    public static <V> ErrBuilder<V> message(String  message) {
+        return Err.<V>builder().message(message);
     }
 
     public interface Code {
