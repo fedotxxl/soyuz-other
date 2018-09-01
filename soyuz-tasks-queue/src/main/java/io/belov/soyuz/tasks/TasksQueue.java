@@ -1,22 +1,24 @@
 package io.belov.soyuz.tasks;
 
-import io.belov.soyuz.concurrent.BoundedExecutor;
-import io.belov.soyuz.concurrent.ThreadUtils;
-import io.thedocs.soyuz.log.LoggerEvents;
-import io.belov.soyuz.log.Mdc;
-import io.belov.soyuz.tasks.events.TaskQueueStoppedEvent;
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import io.belov.soyuz.tasks.events.TaskQueueStoppedEvent;
+import io.thedocs.soyuz.log.LoggerEvents;
+import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.MDC;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionOperations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -277,4 +279,160 @@ public class TasksQueue<T> {
     private String getEventName(String postfix) {
         return eventPrefix + postfix;
     }
+
+    /**
+     * http://stackoverflow.com/questions/2001086/how-to-make-threadpoolexecutors-submit-method-block-if-it-is-saturated
+     */
+    private static class BoundedExecutor {
+
+        private static final LoggerEvents loge = LoggerEvents.getInstance(BoundedExecutor.class);
+
+        private final ExecutorService exec;
+        private final Semaphore semaphore;
+
+        public BoundedExecutor(ExecutorService exec, int bound) {
+            this.exec = exec;
+            this.semaphore = new Semaphore(bound);
+        }
+
+        public synchronized void submitTask(final Runnable command) throws InterruptedException, RejectedExecutionException {
+            semaphore.acquire();
+
+            try {
+                exec.execute(() -> {
+                    try {
+                        command.run();
+                    } catch (Throwable e) {
+                        loge.error("be.e", e);
+                    } finally {
+                        semaphore.release();
+                    }
+                });
+            } catch (RejectedExecutionException e) {
+                semaphore.release();
+                throw e;
+            }
+        }
+
+        public synchronized boolean canScheduleMore() {
+            return semaphore.availablePermits() > 0;
+        }
+
+        public void shutdown() {
+            exec.shutdown();
+        }
+
+        public boolean isTerminated() {
+            return exec.isTerminated();
+        }
+    }
+
+    /**
+     * Created by fbelov on 22.11.15.
+     */
+    private static class Mdc {
+
+        public static void with(Map<String, Object> context, Runnable action) {
+            moveDataToMdc(context);
+
+            try {
+                action.run();
+            } finally {
+                removeDataFromMdc(context);
+            }
+        }
+
+        @SneakyThrows
+        public static <T> T with(Map<String, Object> context, Callable<T> action) {
+            moveDataToMdc(context);
+
+            try {
+                return action.call();
+            } finally {
+                removeDataFromMdc(context);
+            }
+        }
+
+        public static Runnable wrap(Map<String, Object> context, Runnable action) {
+            return () -> with(context, action);
+        }
+
+        public static <T> Callable<T> wrap(Map<String, Object> context, Callable<T> action) {
+            return () -> with(context, action);
+        }
+
+        public static void put(String key, String val) throws IllegalArgumentException {
+            MDC.put(key, val);
+        }
+
+        public static String get(String key) throws IllegalArgumentException {
+            return MDC.get(key);
+        }
+
+        public static void remove(String key) throws IllegalArgumentException {
+            MDC.remove(key);
+        }
+
+        public static void clear() {
+            MDC.clear();
+        }
+
+        private static void moveDataToMdc(Map<String, Object> context) {
+            for (Map.Entry<String, Object> e : context.entrySet()) {
+                Object value = e.getValue();
+                String valueString = (value == null) ? null : value.toString();
+
+                MDC.put(e.getKey(), valueString);
+            }
+        }
+
+        private static void removeDataFromMdc(Map<String, Object> context) {
+            for (String key : context.keySet()) {
+                MDC.remove(key);
+            }
+        }
+
+    }
+
+    private static class ThreadUtils {
+
+        private static final ExecutorService POOL = Executors.newCachedThreadPool();
+        private static final Random RANDOM = new Random();
+
+        public static ThreadFactory withName(String name) {
+            return new ThreadFactoryBuilder().setNameFormat(name).build();
+        }
+
+        public static ThreadFactory withPrefix(String prefix) {
+            return withName(prefix + "-%d");
+        }
+
+        public static void sleep(long millis) {
+            try {
+                Thread.sleep(millis);
+            } catch (InterruptedException e) {
+                throw Throwables.propagate(e);
+            }
+        }
+
+        public static void randomSleep(Integer max) {
+            sleep(RANDOM.nextInt(max));
+        }
+
+        public static Future<?> timeout(long millis, Runnable runnable) {
+            return POOL.submit(() -> {
+                sleep(millis);
+                runnable.run();
+            });
+        }
+
+        public static <T> Future<T> timeout(long millis, Callable<T> callable) {
+            return POOL.submit(() -> {
+                sleep(millis);
+                return callable.call();
+            });
+        }
+
+    }
+
 }

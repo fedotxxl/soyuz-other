@@ -1,12 +1,17 @@
 package io.belov.soyuz.tasks;
 
-import io.belov.soyuz.json.JacksonUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import io.thedocs.soyuz.log.LoggerEvents;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -98,5 +103,28 @@ public class TasksQueueDao {
                 return Task.Status.myValueOf(status.charAt(0));
             }
         }
+    }
+
+    private static class JacksonUtils {
+        private static final LoggerEvents loge = LoggerEvents.getInstance(JacksonUtils.class);
+
+        private static final ObjectWriter writer = new ObjectMapper().writer();
+
+        public static String toJson(Object o) {
+            return toJson(o, writer);
+        }
+
+        public static String toJson(Object o, ObjectMapper objectMapper) {
+            return toJson(o, objectMapper.writer());
+        }
+
+        public static String toJson(Object o, ObjectWriter writer) {
+            try {
+                return writer.writeValueAsString(o);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 }

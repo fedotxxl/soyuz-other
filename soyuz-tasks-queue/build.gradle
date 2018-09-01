@@ -1,17 +1,21 @@
 apply plugin: "groovy"
 
-version "1.4"
+version "1.5"
 
 dependencies {
+    compile "org.springframework:spring-tx:$springVersion"
+
     compile cl.utils.commons.collections
     compile cl.utils.commons.lang
     compile cl.utils.guava
     compile cl.utils.jsr305
-    compile cl.utils.soyuz.bus
-    compile cl.utils.soyuz.concurrent
-    compile cl.utils.soyuz.json
-    compile cl.utils.soyuz.log
-    compile cl.utils.soyuz.springJdbc
+    compile cl.utils.thedocs.loge
+
+    //todo remove dao
+    compile cl.json.jackson.core
+    compile "org.springframework:spring-jdbc:$springVersion"
+
+    compileOnly cl.utils.lombok
 
     testCompile cl.test.spock.core
     testCompile cl.db.connection.zaxxer

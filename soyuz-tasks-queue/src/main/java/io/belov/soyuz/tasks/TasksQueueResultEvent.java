@@ -1,14 +1,12 @@
 package io.belov.soyuz.tasks;
 
 
-import io.belov.soyuz.bus.GuavaBusEvent;
-
 import javax.annotation.Nullable;
 
 /**
  * Created by fbelov on 14.03.16.
  */
-public class TasksQueueResultEvent implements GuavaBusEvent {
+public class TasksQueueResultEvent {
 
     @Nullable
     private String queueName;
