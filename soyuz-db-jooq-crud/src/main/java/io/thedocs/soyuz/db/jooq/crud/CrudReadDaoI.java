@@ -106,7 +106,7 @@ public interface CrudReadDaoI<T, I, LR extends JooqListRequestI> extends CrudDao
         private DSLContext dsl;
         private Table<? extends Record> table;
         private RecordMapper<Record, T> mapper;
-        private JoinToManyDataMapper<T> joinToManyDataMapper;
+        private JoinToManyMapper<T> joinToManyMapper;
 
         public JooqEntryData(DSLContext dsl, Table<? extends Record> table, RecordMapper<Record, T> mapper) {
             this.dsl = dsl;
@@ -114,8 +114,8 @@ public interface CrudReadDaoI<T, I, LR extends JooqListRequestI> extends CrudDao
             this.mapper = mapper;
         }
 
-        public boolean hasJoinToManyDataMapper() {
-            return joinToManyDataMapper != null;
+        public boolean hasJoinToManyMapper() {
+            return joinToManyMapper != null;
         }
     }
 }

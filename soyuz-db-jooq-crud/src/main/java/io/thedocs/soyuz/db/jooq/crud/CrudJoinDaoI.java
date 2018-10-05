@@ -61,7 +61,7 @@ public interface CrudJoinDaoI<T extends CrudBeanI<I>, I, LR extends JooqListRequ
     default T loadJoinToManyData(T entry) {
         if (entry == null) {
             return null;
-        } else if (!getJooqEntryData().hasJoinToManyDataMapper()) {
+        } else if (!getJooqEntryData().hasJoinToManyMapper()) {
             return entry;
         } else {
             return loadJoinToManyData(to.list(entry)).get(0);
@@ -71,24 +71,16 @@ public interface CrudJoinDaoI<T extends CrudBeanI<I>, I, LR extends JooqListRequ
     default List<T> loadJoinToManyData(List<T> entries) {
         JooqEntryData<T> data = getJooqEntryData();
 
-        if (!data.hasJoinToManyDataMapper()) {
+        if (!data.hasJoinToManyMapper()) {
             return entries;
         } else {
             Map<I, T> entriesByIds = to.map(entries, CrudBeanI::getId);
 
-            JoinToManyDataMapper<T> joinToManyDataMapper = data.getJoinToManyDataMapper();
+            JoinToManyMapper<T> joinToManyMapper = data.getJoinToManyMapper();
 
-            Map<I, Result<Record>> result = getJoinToManyStep().where(getIdField().in(entriesByIds.keySet())).fetchGroups(getIdField());
+            Result<Record> result = getJoinToManyStep().where(getIdField().in(entriesByIds.keySet())).fetch();
 
-            return to.list(entries, (e) -> {
-                Result<Record> record = result.get(e.getId());
-
-                if (record == null) {
-                    return e;
-                } else {
-                    return joinToManyDataMapper.map(e, record);
-                }
-            });
+            return joinToManyMapper.mapList(getIdField(), result);
         }
     }
 }

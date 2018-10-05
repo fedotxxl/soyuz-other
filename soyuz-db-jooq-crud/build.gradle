@@ -1,9 +1,9 @@
 group = "io.thedocs"
-version = "1.5"
+version = "2.0.1"
 
 dependencies {
     compile project(":soyuz-db-jooq-crud-domain")
-    compile cl.db.jooq
+    compile "org.jooq:jooq:3.10.8"
     compile cl.utils.thedocs.isTo
     compile cl.utils.soyuz.validator
     compile cl.json.jackson.annotations
