@@ -1,6 +1,5 @@
 package io.thedocs.soyuz.db.jooq.crud;
 
-import io.thedocs.soyuz.to;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
@@ -8,6 +7,7 @@ import org.jooq.Result;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Маппер - преобразует множество joined записей в одну
@@ -19,13 +19,24 @@ public interface JoinToManyMapper<E> {
     E map(E entry, Result<? extends Record> result);
 
     default E mapSingle(Result<? extends Record> result) {
-        return map(getMapper().map(result.get(0)), result);
+        Record record = result.stream().findFirst().orElse(null);
+
+        if (record == null) {
+            return null;
+        } else {
+            return map(getMapper().map(result.get(0)), result);
+        }
     }
 
     default List<E> mapList(Field groupField, Result<? extends Record> result) {
         Map<Object, Result<? extends Record>> map = result.intoGroups(groupField);
 
-        return to.list(map.values(), this::map);
+        return map
+                .values()
+                .stream()
+                .map(this::map)
+                .filter(i -> i != null)
+                .collect(Collectors.toList());
     }
 
     default E map(Result<? extends Record> result) {
