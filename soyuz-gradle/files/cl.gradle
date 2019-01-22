@@ -108,10 +108,11 @@ allprojects {
                 utils        : [
                         guava     : "com.google.guava:guava:18.0",
                         thedocs   : [
-                                isTo : "io.thedocs:soyuz-is-to:0.73",
-                                loge : "io.thedocs:soyuz-loge:1.2",
-                                err  : "io.thedocs:soyuz-err:2.02",
-                                route: "io.thedocs:soyuz-route:1.3",
+                                isTo     : "io.thedocs:soyuz-is-to:0.73",
+                                loge     : "io.thedocs:soyuz-loge:1.2",
+                                err      : "io.thedocs:soyuz-err:2.02",
+                                route    : "io.thedocs:soyuz-route:1.3",
+                                validator: "io.thedocs:soyuz-validator:3.0.2",
                         ],
                         soyuz     : [
                                 base              : "io.belov:soyuz-utils:1.29",
@@ -129,11 +130,6 @@ allprojects {
                                 http              : "io.belov:soyuz-http:1.1",
                                 io                : "io.belov:soyuz-io:1.3",
                                 jerseyClient      : "io.belov:soyuz-jersey-client:1.1",
-                                jjwt              : [
-                                        api    : "io.jsonwebtoken:jjwt-api:0.10.5",
-                                        impl   : "io.jsonwebtoken:jjwt-impl:0.10.5",
-                                        jackson: "io.jsonwebtoken:jjwt-jackson:0.10.5"
-                                ],
                                 jongo             : "io.belov:soyuz-jongo:1.1",
                                 jooq              : [
                                         crud       : "io.belov:soyuz-db-jooq-crud:1.4",
@@ -176,6 +172,11 @@ allprojects {
                         mustache  : "com.github.spullara.mustache.java:compiler:0.9.1",
                         handlebars: "com.github.jknack:handlebars:4.0.5",
                         humanize  : "com.github.mfornos:humanize-slim:1.2.2",
+                        jjwt              : [
+                                api    : "io.jsonwebtoken:jjwt-api:0.10.5",
+                                impl   : "io.jsonwebtoken:jjwt-impl:0.10.5",
+                                jackson: "io.jsonwebtoken:jjwt-jackson:0.10.5"
+                        ],
                         jsch      : "com.jcraft:jsch:0.1.53",
                         prometheus: [
                                 "io.prometheus:simpleclient:0.0.10",
