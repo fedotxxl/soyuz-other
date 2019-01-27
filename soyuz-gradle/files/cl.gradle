@@ -55,7 +55,8 @@ allprojects {
                                 julToSlf4j: "org.slf4j:jul-to-slf4j:$slf4jVersion"
                         ],
                         logentries: "com.logentries:logentries-appender:1.1.35",
-                        sentry    : "com.getsentry.raven:raven-logback:7.8.2"
+                        sentry    : "com.getsentry.raven:raven-logback:7.8.2",
+                        janino    : "org.codehaus.janino:janino:2.7.8"
                 ],
                 mongo        : [
                         driver: "org.mongodb:mongo-java-driver:2.13.0",
@@ -172,7 +173,7 @@ allprojects {
                         mustache  : "com.github.spullara.mustache.java:compiler:0.9.1",
                         handlebars: "com.github.jknack:handlebars:4.0.5",
                         humanize  : "com.github.mfornos:humanize-slim:1.2.2",
-                        jjwt              : [
+                        jjwt      : [
                                 api    : "io.jsonwebtoken:jjwt-api:0.10.5",
                                 impl   : "io.jsonwebtoken:jjwt-impl:0.10.5",
                                 jackson: "io.jsonwebtoken:jjwt-jackson:0.10.5"
