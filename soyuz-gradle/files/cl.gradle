@@ -113,7 +113,7 @@ allprojects {
                                 loge     : "io.thedocs:soyuz-loge:1.2",
                                 err      : "io.thedocs:soyuz-err:2.02",
                                 route    : "io.thedocs:soyuz-route:1.3",
-                                validator: "io.thedocs:soyuz-validator:3.0.3",
+                                validator: "io.thedocs:soyuz-validator:3.0.4",
                         ],
                         soyuz     : [
                                 base              : "io.belov:soyuz-utils:1.29",
