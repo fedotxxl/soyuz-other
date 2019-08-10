@@ -15,14 +15,23 @@ import java.util.function.Consumer;
  */
 public class LockerMap<T> {
 
-    private Map<T, Lock> locksByProjectIds = new ConcurrentHashMap<>();
+    private Map<T, Lock> locksByKeys = new ConcurrentHashMap<>();
+    private T keyDefault;
+
+    public LockerMap() {
+    }
+
+    public LockerMap(T keyDefault) {
+        this.keyDefault = keyDefault;
+    }
 
     public synchronized Lock get(T key) {
-        Lock answer = locksByProjectIds.get(key);
+        T keyToUse = this.getKey(key);
+        Lock answer = locksByKeys.get(keyToUse);
 
         if (answer == null) {
             answer = new ReentrantLock();
-            locksByProjectIds.put(key, answer);
+            locksByKeys.put(keyToUse, answer);
         }
 
         return answer;
@@ -81,6 +90,14 @@ public class LockerMap<T> {
             throw Throwables.propagate(e);
         } finally {
             lock.unlock();
+        }
+    }
+
+    private T getKey(T key) {
+        if (key != null) {
+            return key;
+        } else {
+            return keyDefault;
         }
     }
 }
