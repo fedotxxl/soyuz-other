@@ -1,0 +1,7 @@
+version "1.0"
+
+dependencies {
+    compile cl.utils.thedocs.isTo
+    compile cl.utils.thedocs.validator
+    compileOnly cl.utils.lombok
+}

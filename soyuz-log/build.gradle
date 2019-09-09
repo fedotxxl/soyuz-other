@@ -1,7 +1,12 @@
 version "1.13"
 
+repositories {
+    maven { url "https://mymavenrepo.com/repo/SbfutqGx3LM3VdY6CLKu/" }
+}
+
 dependencies {
     compile cl.log.logback
     compile cl.log.slf4j.julToSlf4j
+    compile "com.lz:slothlog:1.1-SNAPSHOT"
     compileOnly cl.utils.lombok
 }
