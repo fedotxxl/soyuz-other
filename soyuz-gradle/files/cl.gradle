@@ -168,7 +168,7 @@ allprojects {
                                 validatorProcessor: "io.belov:soyuz-validator-processor:1.0",
                                 web               : "io.belov:soyuz-web:1.1",
                         ],
-                        lombok    : "org.projectlombok:lombok:1.16.18",
+                        lombok    : "org.projectlombok:lombok:1.16.22",
                         ua        : "net.sf.uadetector:uadetector-resources:2014.10",
                         metrics   : "io.dropwizard.metrics:metrics-core:3.1.2",
                         mustache  : "com.github.spullara.mustache.java:compiler:0.9.1",

@@ -22,7 +22,3 @@ allprojects {
         testLogging.showStandardStreams = true //display stdout on tests
     }
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "2.3"
-}
