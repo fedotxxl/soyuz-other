@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import io.belov.soyuz.tasks.events.TaskQueueStoppedByExceptionEvent;
 import io.belov.soyuz.tasks.events.TaskQueueStoppedEvent;
 import io.thedocs.soyuz.log.LoggerEvents;
 import lombok.SneakyThrows;
@@ -148,10 +149,20 @@ public class TasksQueue<T> {
             }
         } catch (InterruptedException ie) {
             loge.info(getEventName("interrupted"));
-            if (task != null) release(task, TasksQueueProcessorI.Result.REPEAT_NOW);
+
+            if (task != null)  {
+                release(task, TasksQueueProcessorI.Result.REPEAT_NOW);
+            }
+
+            bus.post(new TaskQueueStoppedByExceptionEvent(config.getQueueName(), ie));
         } catch (Exception e) {
             loge.error(getEventName("e"), e);
-            if (task != null) release(task, TasksQueueProcessorI.Result.EXCEPTION);
+
+            if (task != null) {
+                release(task, TasksQueueProcessorI.Result.EXCEPTION);
+            }
+
+            bus.post(new TaskQueueStoppedByExceptionEvent(config.getQueueName(), e));
         } finally {
             bus.post(new TaskQueueStoppedEvent(config.getQueueName()));
         }

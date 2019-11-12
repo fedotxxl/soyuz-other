@@ -1,6 +1,6 @@
 apply plugin: "groovy"
 
-version "1.5"
+version "1.6"
 
 dependencies {
     compile "org.springframework:spring-tx:$springVersion"
