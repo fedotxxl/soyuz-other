@@ -8,7 +8,7 @@ include(
                 "git",
                 "html", "http",
                 "guava",
-                "io",
+                "io", "io-classpath",
                 "jersey-client", "jongo", "json", "js-stacktrace-parser", "js-stacktrace-domain",
                 "local-date-as-int", "log",
                 "mail", "metrics", "metrics-prometheus",
