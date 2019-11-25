@@ -153,7 +153,7 @@ allprojects {
                                 rsync             : "io.belov:soyuz-rsync:1.1",
                                 springJdbc        : "io.belov:soyuz-spring-jdbc:1.6",
                                 ssh               : "io.belov:soyuz-ssh:1.1",
-                                tasksQueue        : "io.belov:soyuz-tasks-queue:1.4",
+                                tasksQueue        : "io.belov:soyuz-tasks-queue:1.6",
                                 tasksQueueMetrics : "io.belov:soyuz-tasks-queue-metrics:1.1",
                                 template          : "io.belov:soyuz-template:1.0",
                                 test              : "io.belov:soyuz-test:1.0",
