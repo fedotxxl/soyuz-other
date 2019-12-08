@@ -42,7 +42,19 @@ public class FvValidatorsProcessor {
     }
 
     @SneakyThrows
+    public <V> AnswerOrErrors<V> process(FvValidatableI request, AnswerOrErrorsCallable<V> command) {
+        return process(null, request, command);
+    }
+
+    @SneakyThrows
     public <V> AnswerOrErrors<V> process(@Nullable Class<?> validatorClass, FvValidatableI request, Callable<V> command) {
+        return process(validatorClass, request, () -> {
+           return AnswerOrErrors.ok(command.call());
+        });
+    }
+
+    @SneakyThrows
+    public <V> AnswerOrErrors<V> process(@Nullable Class<?> validatorClass, FvValidatableI request, AnswerOrErrorsCallable<V> command) {
         FvValidateComponentI validator = validators.get(request.getClass());
 
         if (validator == null) {
@@ -55,9 +67,12 @@ public class FvValidatorsProcessor {
             if (answer.hasErrors()) {
                 return AnswerOrErrors.failure(answer.getErrors());
             } else {
-                return AnswerOrErrors.ok(command.call());
+                return command.call();
             }
         }
     }
 
+    public interface AnswerOrErrorsCallable<V> extends Callable<AnswerOrErrors<V>> {
+
+    }
 }
