@@ -1,0 +1,8 @@
+group = "io.thedocs"
+version = "1.0"
+
+dependencies {
+    compile cl.json.jackson.annotations
+    compile cl.utils.thedocs.isTo
+    compileOnly cl.utils.lombok
+}

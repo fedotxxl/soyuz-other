@@ -2,7 +2,7 @@ include(
         [
                 "bus",
                 "concurrent", "crypto",
-                "db-jooq", "db-jooq-crud",  "db-jooq-crud-domain", "db-jooq-performance",
+                "db-jooq", "db-jooq-crud",  "db-jooq-crud-domain", "db-jooq-performance", "domain-wrapper",
                 "err", "exec",
                 "func", "func-processor",
                 "git",
