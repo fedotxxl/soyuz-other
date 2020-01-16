@@ -106,14 +106,19 @@ allprojects {
                 html         : [
                         jsoup: "org.jsoup:jsoup:1.8.3"
                 ],
+                paddle       : [
+                        client: "io.bitrepo:paddle-api-client:1.2",
+                        domain: "io.bitrepo:paddle-api-client-domain:1.2"
+                ],
                 utils        : [
                         guava     : "com.google.guava:guava:18.0",
                         thedocs   : [
-                                isTo     : "io.thedocs:soyuz-is-to:0.73",
-                                loge     : "io.thedocs:soyuz-loge:1.2",
-                                err      : "io.thedocs:soyuz-err:3.03",
-                                route    : "io.thedocs:soyuz-route:1.3",
-                                validator: "io.thedocs:soyuz-validator:3.0.4",
+                                isTo         : "io.thedocs:soyuz-is-to:0.73",
+                                loge         : "io.thedocs:soyuz-loge:1.2",
+                                err          : "io.thedocs:soyuz-err:3.03",
+                                route        : "io.thedocs:soyuz-route:1.3",
+                                validator    : "io.thedocs:soyuz-validator:3.0.4",
+                                domainWrapper: "io.thedocs:soyuz-domain-wrapper:1.0",
                         ],
                         soyuz     : [
                                 base              : "io.belov:soyuz-utils:1.29",
@@ -165,10 +170,10 @@ allprojects {
                                 validatorSpring   : "io.belov:soyuz-validator-spring:1.3",
                                 validatorSpringWeb: "io.belov:soyuz-validator-spring-web:1.1",
                                 validatorToErr    : "io.belov:soyuz-validator-to-err:1.1",
-                                validatorProcessor: "io.belov:soyuz-validator-processor:1.0",
+                                validatorProcessor: "io.belov:soyuz-validator-processor:1.2",
                                 web               : "io.belov:soyuz-web:1.1",
                         ],
-                        lombok    : "org.projectlombok:lombok:1.16.22",
+                        lombok    : "org.projectlombok:lombok:1.18.8",
                         ua        : "net.sf.uadetector:uadetector-resources:2014.10",
                         metrics   : "io.dropwizard.metrics:metrics-core:3.1.2",
                         mustache  : "com.github.spullara.mustache.java:compiler:0.9.1",
