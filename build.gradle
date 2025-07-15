@@ -11,6 +11,11 @@ allprojects {
 
     }
 
+    dependencies {
+        compileOnly 'org.projectlombok:lombok:1.18.8'
+        annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    }
+
     repositories {
         maven { url repos.jongo }
         maven { url repos.urlBuilder }
