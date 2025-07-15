@@ -93,6 +93,10 @@ public class LockerMap<T> {
         }
     }
 
+    public void cleanup(T key) {
+        locksByKeys.remove(key);
+    }
+
     private T getKey(T key) {
         if (key != null) {
             return key;
